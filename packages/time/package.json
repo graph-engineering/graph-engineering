@@ -1,0 +1,31 @@
+{
+	"name": "@grapheng/time",
+	"version": "0.0.1",
+	"description": "Time types for GraphQL",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"example1": "ts-node ./src/test-dev-server/server-example-using-typedefs-resolvers.ts",
+		"example2": "ts-node ./src/test-dev-server/server-example-using-old.ts",
+		"build": "npm run clean && tsc",
+		"test": "jest",
+		"test:dev": "jest --watchAll",
+		"clean": "rm -rf dist",
+		"prepack": "npm run build",
+		"prepublish": "npm run test"
+	},
+	"devDependencies": {
+		"@types/graphql": "^14.2.0",
+		"@types/graphql-iso-date": "^3.3.1",
+		"@types/moment-timezone": "^0.5.12",
+		"apollo-server": "^2.4.8",
+		"graphql": "^14.2.1",
+		"graphql-iso-date": "^3.6.1",
+		"graphql-tag": "^2.10.1",
+		"graphql-tools": "^4.0.4"
+	},
+	"dependencies": {
+		"moment": "^2.24.0",
+		"moment-timezone": "^0.5.25"
+	}
+}
