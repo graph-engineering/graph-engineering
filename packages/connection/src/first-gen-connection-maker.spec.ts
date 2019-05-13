@@ -5,7 +5,7 @@ describe('first gen connection maker', () => {
 	const items = 'abcdefghijklmnop'
 		.split('')
 		.map(char => ({ id: char }))
-		.map(node => ({ node }))
+		.map(node => ({ node, additionalEdgeProperties: {} }))
 	const cursors = items.map(item => encodeCursor(item.node.id))
 
 	it('should return 3 items when you put in first 3', () => {
@@ -38,13 +38,20 @@ describe('first gen connection maker', () => {
 		const after = page.edges[afterIndex].cursor
 		const first = 3
 
-		expect(makeConnection(items, first, after).pageInfo).toEqual(
-			expect.objectContaining({
-				startCursor: cursors[afterIndex + 1],
-				endCursor: cursors[afterIndex + first],
-				hasNextPage: true,
-				hasPreviousPage: true
-			})
-		)
+		expect(makeConnection(items, first, after).pageInfo).toEqual({
+			startCursor: cursors[afterIndex + 1],
+			endCursor: cursors[afterIndex + first],
+			hasNextPage: true,
+			hasPreviousPage: true
+		})
+	})
+
+	it('should work even when the array is empty', () => {
+		expect(makeConnection([], 3).pageInfo).toEqual({
+			startCursor: null,
+			endCursor: null,
+			hasNextPage: false,
+			hasPreviousPage: false
+		})
 	})
 })
