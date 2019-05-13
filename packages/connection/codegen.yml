@@ -1,0 +1,15 @@
+schema: ./test-dev-server/index.ts
+require:
+  - ts-node/register
+overwrite: true
+generates:
+  __generated__.ts:
+    plugins:
+      - add: '// THIS IS A GENERATED FILE, DO NOT MODIFY'
+      - add: '// tslint:disable'
+      - typescript
+      - typescript-resolvers
+    config:
+      showUnusedMappers: true
+      mappers:
+        Human: ./codegen-mappers#Human

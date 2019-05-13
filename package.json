@@ -5,11 +5,15 @@
 		"tst:init": "tst init --install false",
 		"tst:scripts": "tst scripts",
 		"tst:deps": "tst deps",
+		"connection:test": "tst test connection",
+		"connection:test:watch": "tst test connection --watch",
+		"connection:dev": "lerna exec --scope @grapheng/connection -- npm run start",
+		"connection:build": "lerna exec --scope @grapheng/connection -- npm run build",
 		"time:test": "tst test time",
 		"time:test:watch": "tst test time --watch",
+		"time:build": "lerna exec --scope @grapheng/time -- npm run build",
 		"time:dev1": "lerna exec --scope @grapheng/time -- npm run example1",
-		"time:dev2": "lerna exec --scope @grapheng/time -- npm run example2",
-		"time:build": "lerna exec --scope @grapheng/time -- npm run build"
+		"time:dev2": "lerna exec --scope @grapheng/time -- npm run example2"
 	},
 	"dependencies": {
 		"typescript-tooling": "^4.1.0"
