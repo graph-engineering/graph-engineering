@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { HumanResolvers } from '../__generated__'
+import { FamilialRelationshipType, HumanResolvers } from '../__generated__'
 import * as Connection from '../src'
 import { loadHumanById, projectLoader } from './loaders'
 
@@ -84,25 +84,32 @@ export const typeDefs = gql`
 	}
 `
 
+// TODO: make sure typegen will guard against putting wrong familial relationships in
+
 export const humanResovlers: HumanResolvers = {
 	friendsConnection: (source, { first, after }) =>
 		Connection.makeConnection(
-			source.friends.map(node => ({ node })),
+			source.friends.map(node => ({ node, additionalEdgeProperties: {} })),
 			first,
 			after
 		),
 	relativesConnection: (source, { first, after }) =>
-		Connection.makeConnection<any, any>(
+		Connection.makeConnection(
 			source.relatives.map(node => ({
 				node,
-				additionalEdgeProperties: { familialRelationship: 'BROTHER' }
+				additionalEdgeProperties: {
+					familialRelationship: FamilialRelationshipType.Brother
+				}
 			})),
 			first,
 			after
 		),
 	projectsConnection: async (source, { first, after }) =>
 		Connection.makeConnection(
-			(await projectLoader(source.id)).map(project => ({ node: project })),
+			(await projectLoader(source.id)).map(project => ({
+				node: project,
+				additionalEdgeProperties: {}
+			})),
 			first,
 			after
 		)
