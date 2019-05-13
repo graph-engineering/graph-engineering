@@ -1,28 +1,14 @@
 import gql from 'graphql-tag'
 import { HumanResolvers } from '../__generated__'
-import { makeConnection } from '../src/first-gen-connection-maker'
+import * as Connection from '../src'
 import { loadHumanById, projectLoader } from './loaders'
 
 // take connection stuff out
 export const typeDefs = gql`
+	${Connection.typeDefs}
+
 	type Project {
 		id: String!
-	}
-
-	type PageInfo {
-		hasPreviousPage: Boolean!
-		hasNextPage: Boolean!
-		startCursor: String
-		endCursor: String
-	}
-
-	interface Connection {
-		pageInfo: PageInfo!
-		totalCount: Int!
-	}
-
-	interface ConnectionEdge {
-		cursor: String!
 	}
 
 	type Human {
@@ -100,9 +86,13 @@ export const typeDefs = gql`
 
 export const humanResovlers: HumanResolvers = {
 	friendsConnection: (source, { first, after }) =>
-		makeConnection(source.friends.map(node => ({ node })), first, after),
+		Connection.makeConnection(
+			source.friends.map(node => ({ node })),
+			first,
+			after
+		),
 	relativesConnection: (source, { first, after }) =>
-		makeConnection<any, any>(
+		Connection.makeConnection<any, any>(
 			source.relatives.map(node => ({
 				node,
 				additionalEdgeProperties: { familialRelationship: 'BROTHER' }
@@ -111,7 +101,7 @@ export const humanResovlers: HumanResolvers = {
 			after
 		),
 	projectsConnection: async (source, { first, after }) =>
-		makeConnection(
+		Connection.makeConnection(
 			(await projectLoader(source.id)).map(project => ({ node: project })),
 			first,
 			after
