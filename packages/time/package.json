@@ -26,5 +26,7 @@
 		"moment": "^2.24.0",
 		"moment-timezone": "^0.5.25"
 	},
-	"gitHead": "162fa4ab8b4b1daa9c886a95237eb867a7ff2146"
+	"publishConfig": {
+		"access": "public"
+	}
 }
