@@ -1,7 +1,7 @@
 import {
+	GraphQLNonNull,
 	GraphQLObjectType,
 	GraphQLString,
-	GraphQLNonNull,
 	printType
 } from 'graphql'
 import Moment from 'moment-timezone'
