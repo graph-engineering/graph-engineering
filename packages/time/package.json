@@ -1,8 +1,9 @@
 {
 	"name": "@grapheng/time",
-	"version": "0.0.1",
+	"version": "null-alpha.7+a746d9b",
 	"description": "Time types for GraphQL",
 	"main": "dist/index.js",
+	"license": "MIT",
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"example1": "ts-node ./src/test-dev-server/server-example-using-typedefs-resolvers.ts",
@@ -27,5 +28,6 @@
 	"dependencies": {
 		"moment": "^2.24.0",
 		"moment-timezone": "^0.5.25"
-	}
+	},
+	"gitHead": "a746d9b130d5f64856bec453a2a04805381eb429"
 }
