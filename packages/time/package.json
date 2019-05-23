@@ -1,6 +1,6 @@
 {
 	"name": "@grapheng/time",
-	"version": "null-alpha.7+a746d9b",
+	"version": "0.0.0",
 	"description": "Time types for GraphQL",
 	"main": "dist/index.js",
 	"license": "MIT",
@@ -29,5 +29,5 @@
 		"moment": "^2.24.0",
 		"moment-timezone": "^0.5.25"
 	},
-	"gitHead": "a746d9b130d5f64856bec453a2a04805381eb429"
+	"gitHead": "bf925094e58604eeff4ac2289b2cc0168acdeb44"
 }
