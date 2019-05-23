@@ -9,11 +9,8 @@
 		"example1": "ts-node ./src/test-dev-server/server-example-using-typedefs-resolvers.ts",
 		"example2": "ts-node ./src/test-dev-server/server-example-using-old.ts",
 		"build": "npm run clean && tsc",
-		"test": "jest",
-		"test:dev": "jest --watchAll",
 		"clean": "rm -rf dist",
-		"prepack": "npm run build",
-		"prepublish": "npm run test"
+		"prepack": "npm run build"
 	},
 	"devDependencies": {
 		"@types/graphql": "^14.2.0",
@@ -29,5 +26,5 @@
 		"moment": "^2.24.0",
 		"moment-timezone": "^0.5.25"
 	},
-	"gitHead": "bf925094e58604eeff4ac2289b2cc0168acdeb44"
+	"gitHead": "162fa4ab8b4b1daa9c886a95237eb867a7ff2146"
 }

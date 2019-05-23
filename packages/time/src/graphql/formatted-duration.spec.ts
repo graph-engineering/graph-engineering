@@ -1,6 +1,6 @@
+import Moment from 'moment-timezone'
 import * as FormattedDuration from './formatted-duration'
 import { expectSimpleObjectType } from './utils'
-import Moment from 'moment-timezone'
 
 describe('formatted duration', () => {
 	const ten = Moment.duration(5, 'minutes')

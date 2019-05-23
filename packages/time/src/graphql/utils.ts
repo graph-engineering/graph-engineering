@@ -1,8 +1,8 @@
 import {
-	GraphQLObjectType,
+	graphql,
 	GraphQLFieldResolver,
-	GraphQLSchema,
-	graphql
+	GraphQLObjectType,
+	GraphQLSchema
 } from 'graphql'
 
 export const extractResolvers = (
