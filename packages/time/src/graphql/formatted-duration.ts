@@ -1,12 +1,12 @@
-import Moment from 'moment-timezone'
 import {
+	GraphQLFloat,
+	GraphQLInt,
+	GraphQLNonNull,
 	GraphQLObjectType,
 	GraphQLString,
-	GraphQLInt,
-	GraphQLFloat,
-	GraphQLNonNull,
 	printType
 } from 'graphql'
+import Moment from 'moment-timezone'
 import { extractResolvers } from './utils'
 type Duration = Moment.Duration
 

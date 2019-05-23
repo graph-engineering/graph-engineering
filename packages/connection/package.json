@@ -9,7 +9,6 @@
 		"build": "npm run clean && tsc",
 		"clean": "rm -rf dist",
 		"prepack": "npm run build",
-		"prepublish": "npm run test",
 		"start": "nodemon --config ./nodemon.json",
 		"typegen": "TS_NODE_TRANSPILE_ONLY=true gql-gen"
 	},
@@ -28,5 +27,5 @@
 		"graphql-tools": "^4.0.4",
 		"nodemon": "^1.19.0"
 	},
-	"gitHead": "bf925094e58604eeff4ac2289b2cc0168acdeb44"
+	"gitHead": "162fa4ab8b4b1daa9c886a95237eb867a7ff2146"
 }
