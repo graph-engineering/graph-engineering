@@ -14,15 +14,16 @@
 	},
 	"devDependencies": {
 		"@types/graphql": "^14.2.0",
-		"@types/graphql-iso-date": "^3.3.1",
 		"@types/moment-timezone": "^0.5.12",
 		"apollo-server": "^2.4.8",
+		"fp-ts": "^1.18.2",
 		"graphql": "^14.2.1",
-		"graphql-iso-date": "^3.6.1",
 		"graphql-tag": "^2.10.1",
 		"graphql-tools": "^4.0.4"
 	},
 	"dependencies": {
+		"@types/lodash.flattendeep": "^4.4.6",
+		"lodash.flattendeep": "^4.4.0",
 		"moment": "^2.24.0",
 		"moment-timezone": "^0.5.25"
 	},
