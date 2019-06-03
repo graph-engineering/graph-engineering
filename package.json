@@ -32,7 +32,9 @@
 		"tsconfig-paths": "^3.8.0",
 		"tslint": "^5.16.0",
 		"tslint-config-prettier": "^1.18.0",
-		"typescript": "^3.4.5"
+		"tslint-config-security": "^1.16.0",
+		"tslint-immutable": "^5.5.2",
+		"typescript": "^3.5.1"
 	},
 	"repository": {
 		"type": "git",

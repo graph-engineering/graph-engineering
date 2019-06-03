@@ -1,7 +1,15 @@
 {
-	"extends": "./.tst/tslint.json",
-	"rules": {
-		"no-console": false,
-		"radix": false
-	}
+  "extends": "./.tst/tslint.json",
+  "rules": {
+    "no-expression-statement": [
+      true,
+      { "ignore-prefix": ["main", "describe", "test", "expect"] }
+    ],
+    "no-duplicate-imports": {
+      "severity": "error",
+      "options": {
+        "allow-namespace-imports": true
+      }
+    }
+  }
 }
