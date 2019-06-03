@@ -1,3 +1,6 @@
 {
-  "extends": "./.tst/tsconfig.json"
+  "extends": "./.tst/tsconfig.json",
+  "compilerOptions": {
+    "declaration": true
+  }
 }
