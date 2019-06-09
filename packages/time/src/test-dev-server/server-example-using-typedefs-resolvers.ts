@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 import { makeExecutableSchema } from "graphql-tools";
 
 import * as MoarTypes from "../graphql";
-import { getTwoHoursAgo, runApolloServer } from "./utils";
+import { getMillisForTwoHoursAgo, runApolloServer } from "./utils";
 
 runApolloServer(
   makeExecutableSchema({
@@ -15,7 +15,7 @@ runApolloServer(
     resolvers: {
       ...MoarTypes.resolvers,
       Query: {
-        twoHoursAgo: getTwoHoursAgo
+        twoHoursAgo: getMillisForTwoHoursAgo
       }
     }
   })
