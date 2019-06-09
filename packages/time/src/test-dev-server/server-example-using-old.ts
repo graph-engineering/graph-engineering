@@ -1,6 +1,8 @@
 import { GraphQLNonNull, GraphQLObjectType, GraphQLSchema } from "graphql";
+
 import { FormattedDate } from "../graphql";
-import { getMillisForTwoHoursAgo, runApolloServer } from "./utils";
+import { getMillisForTwoHoursAgo } from "../graphql/utils";
+import { runApolloServer } from "./utils";
 
 export const schemaTogether = new GraphQLObjectType({
   name: "Query",

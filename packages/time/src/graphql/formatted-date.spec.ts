@@ -1,8 +1,7 @@
 import Moment from "moment";
 
-import { getMillisForTwoHoursAgo } from "../test-dev-server/utils";
 import * as FormattedDate from "./formatted-date";
-import { expectSimpleObjectType } from "./utils";
+import { expectSimpleObjectType, getMillisForTwoHoursAgo } from "./utils";
 
 describe("formatted duration", () => {
   const twoHoursAgo = getMillisForTwoHoursAgo();

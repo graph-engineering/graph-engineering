@@ -5,6 +5,12 @@ import {
   GraphQLSchema
 } from "graphql";
 
+export const getMillisForTwoHoursAgo = (): number => {
+  const d = new Date();
+  d.setHours(d.getHours() - 2);
+  return d.getTime();
+};
+
 export const extractResolvers = (
   object: GraphQLObjectType
 ): { [fieldName: string]: GraphQLFieldResolver<any, any> } =>
