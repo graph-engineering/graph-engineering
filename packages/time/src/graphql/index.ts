@@ -5,6 +5,8 @@ import * as FormattedDuration from './formatted-duration'
 
 // export all typedefs together
 export const typeDefs = gql`
+	scalar GraphengMS
+
 	${FormattedDate.typeDefs}
 	${FormattedDuration.typeDefs}
 `

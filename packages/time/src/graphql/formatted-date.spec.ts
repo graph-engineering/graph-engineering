@@ -1,14 +1,15 @@
+import { getTwoHoursAgo } from '../test-dev-server/utils'
 import * as FormattedDate from './formatted-date'
 import { expectSimpleObjectType } from './utils'
 
 describe('formatted duration', () => {
-	const twoHoursAgoDate = new Date()
-	twoHoursAgoDate.setHours(twoHoursAgoDate.getHours() - 2)
+	const twoHoursAgo = getTwoHoursAgo()
+	const twoHoursAgoDate = new Date(twoHoursAgo)
 
 	test('that a basic case works', () => {
 		return expectSimpleObjectType(
 			FormattedDate.FormattedDate,
-			twoHoursAgoDate,
+			twoHoursAgo,
 			`
 			{
 				humanized
@@ -16,7 +17,7 @@ describe('formatted duration', () => {
 				unix {
 					seconds
 				}
-				formatted(template: "YYYY-MM-DD", timezone: "GMT")
+				formatted(template: "YYYY-MM-DD")
 			}`
 		).resolves.toEqual({
 			humanized: '2 hours ago',

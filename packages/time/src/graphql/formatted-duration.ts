@@ -1,13 +1,15 @@
 import {
 	GraphQLFloat,
-	GraphQLInt,
 	GraphQLNonNull,
 	GraphQLObjectType,
 	GraphQLString,
 	printType
 } from 'graphql'
 import Moment from 'moment-timezone'
+
+import GraphengMS from './ms'
 import { extractResolvers } from './utils'
+
 type Duration = Moment.Duration
 
 export const FormattedDuration = new GraphQLObjectType({
@@ -18,7 +20,7 @@ export const FormattedDuration = new GraphQLObjectType({
 			resolve: (duration: Duration) => duration.humanize()
 		},
 		milliseconds: {
-			type: new GraphQLNonNull(GraphQLInt),
+			type: new GraphQLNonNull(GraphengMS),
 			resolve: (duration: Duration) => duration.asMilliseconds()
 		},
 		seconds: {
