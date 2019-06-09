@@ -5,39 +5,42 @@ import {
 	printType
 } from 'graphql'
 import Moment from 'moment-timezone'
+
 import { FormattedDuration } from './formatted-duration'
 import { extractResolvers } from './utils'
 
 // TODO: I'm not immediately sure why this can't be used below.
 // interface FormattedFieldArgs {
 // 	template: string
-// 	timezone: string
+// 	zone: string
 // }
+
+// TODO: If input is not millis, it would still work here. Should we fail? How?
 
 export const FormattedDate = new GraphQLObjectType({
 	name: 'FormattedDate',
 	fields: () => ({
 		unix: {
 			type: new GraphQLNonNull(FormattedDuration),
-			resolve: (date: Date) => Moment.duration(date.valueOf(), 'ms')
+			resolve: (millis: number) =>
+				Moment.duration(new Date(millis).valueOf(), 'ms')
 		},
 		iso: {
 			type: new GraphQLNonNull(GraphQLString),
-			resolve: (date: Date) => date.toISOString()
+			resolve: (millis: number) => new Date(millis).toISOString()
 		},
 		humanized: {
 			type: new GraphQLNonNull(GraphQLString),
-			resolve: (date: Date) => Moment(date).fromNow()
+			resolve: (millis: number) => Moment(new Date(millis)).fromNow()
 		},
 		formatted: {
 			type: new GraphQLNonNull(GraphQLString),
 			args: {
-				template: { type: new GraphQLNonNull(GraphQLString) },
-				timezone: { type: new GraphQLNonNull(GraphQLString) }
+				template: { type: new GraphQLNonNull(GraphQLString) }
 			},
-			resolve: (date: Date, args: any) =>
-				Moment(date)
-					.tz(args.timezone)
+			resolve: (millis: number, args: any) =>
+				Moment(new Date(millis))
+					.tz(args.zone || 'UTC')
 					.format(args.template)
 		}
 	})

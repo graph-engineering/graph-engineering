@@ -1,4 +1,5 @@
 import Moment from 'moment-timezone'
+
 import * as FormattedDuration from './formatted-duration'
 import { expectSimpleObjectType } from './utils'
 
