@@ -2,7 +2,8 @@ import gql from "graphql-tag";
 import { makeExecutableSchema } from "graphql-tools";
 
 import * as MoarTypes from "../graphql";
-import { getMillisForTwoHoursAgo, runApolloServer } from "./utils";
+import { getMillisForTwoHoursAgo } from "../graphql/utils";
+import { runApolloServer } from "./utils";
 
 runApolloServer(
   makeExecutableSchema({

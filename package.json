@@ -12,7 +12,7 @@
     "connection:pack": "lerna exec --scope @grapheng/connection -- npm pack",
     "time:test": "tst test time",
     "time:test:watch": "tst test time --watch",
-    "time:build": "lerna exec --scope @grapheng/time -- npm run build",
+    "time:build": "npm run time:test && lerna exec --scope @grapheng/time -- npm run build",
     "time:dev1": "lerna exec --scope @grapheng/time -- npm run example1",
     "time:dev2": "lerna exec --scope @grapheng/time -- npm run example2"
   },
