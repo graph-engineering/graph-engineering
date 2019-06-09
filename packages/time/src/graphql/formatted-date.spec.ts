@@ -1,9 +1,11 @@
-import { getTwoHoursAgo } from "../test-dev-server/utils";
+import Moment from "moment";
+
+import { getMillisForTwoHoursAgo } from "../test-dev-server/utils";
 import * as FormattedDate from "./formatted-date";
 import { expectSimpleObjectType } from "./utils";
 
 describe("formatted duration", () => {
-  const twoHoursAgo = getTwoHoursAgo();
+  const twoHoursAgo = getMillisForTwoHoursAgo();
   const twoHoursAgoDate = new Date(twoHoursAgo);
 
   test("that a basic case works", () => {
@@ -11,14 +13,14 @@ describe("formatted duration", () => {
       FormattedDate.FormattedDate,
       twoHoursAgo,
       `
-			{
-				humanized
-				iso
-				unix {
-					seconds
-				}
-				formatted(template: "YYYY-MM-DD")
-			}`
+  		{
+  			humanized
+  			iso
+  			unix {
+  				seconds
+  			}
+  			formatted(template: "YYYY-MM-DD")
+  		}`
     ).resolves.toEqual({
       humanized: "2 hours ago",
       iso: twoHoursAgoDate.toISOString(),
@@ -28,4 +30,22 @@ describe("formatted duration", () => {
       formatted: twoHoursAgoDate.toISOString().slice(0, 10)
     });
   });
+
+  test.each`
+    sampleType
+    ${new Date()}
+    ${"2019-05-02"}
+    ${"2019-06-09T19:41:31.091Z"}
+    ${"July 22, 2018 07:22:13 +0700"}
+    ${Moment()}
+  `(
+    "that a source with value $sampleType should throw an error because it's not a number",
+    ({ sampleType }) => {
+      return expectSimpleObjectType(
+        FormattedDate.FormattedDate,
+        sampleType,
+        `{ humanized }`
+      ).rejects.toThrowError();
+    }
+  );
 });

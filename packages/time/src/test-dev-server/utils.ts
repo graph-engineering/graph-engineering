@@ -1,7 +1,7 @@
 import { ApolloServer } from "apollo-server";
 import { GraphQLSchema } from "graphql";
 
-export const getTwoHoursAgo = (): number => {
+export const getMillisForTwoHoursAgo = (): number => {
   const d = new Date();
   d.setHours(d.getHours() - 2);
   return d.getTime();

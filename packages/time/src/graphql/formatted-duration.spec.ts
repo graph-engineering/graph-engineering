@@ -4,12 +4,12 @@ import * as FormattedDuration from "./formatted-duration";
 import { expectSimpleObjectType } from "./utils";
 
 describe("formatted duration", () => {
-  const ten = Moment.duration(5, "minutes");
+  const fiveMinutes = Moment.duration(5, "minutes");
 
   test("that a basic case works", () => {
     return expectSimpleObjectType(
       FormattedDuration.FormattedDuration,
-      ten,
+      fiveMinutes,
       `{
         humanized
         milliseconds

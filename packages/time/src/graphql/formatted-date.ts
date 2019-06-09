@@ -1,4 +1,5 @@
 import {
+  GraphQLError,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
@@ -15,31 +16,36 @@ import { extractResolvers } from "./utils";
 // 	zone: string
 // }
 
-// TODO: If input is not millis, it would still work here. Should we fail? How?
+const getDate = (millis: unknown): Date => {
+  if (typeof millis === "number") {
+    return new Date(millis);
+  }
+  throw new GraphQLError("Input must be milliseconds since Unix Epoch.");
+};
 
 export const FormattedDate = new GraphQLObjectType({
   name: "FormattedDate",
   fields: () => ({
     unix: {
       type: new GraphQLNonNull(FormattedDuration),
-      resolve: (millis: number) =>
-        Moment.duration(new Date(millis).valueOf(), "ms")
+      resolve: (millis: unknown) =>
+        Moment.duration(getDate(millis).valueOf(), "ms")
     },
     iso: {
       type: new GraphQLNonNull(GraphQLString),
-      resolve: (millis: number) => new Date(millis).toISOString()
+      resolve: (millis: unknown) => getDate(millis).toISOString()
     },
     humanized: {
       type: new GraphQLNonNull(GraphQLString),
-      resolve: (millis: number) => Moment(new Date(millis)).fromNow()
+      resolve: (millis: unknown) => Moment(getDate(millis)).fromNow()
     },
     formatted: {
       type: new GraphQLNonNull(GraphQLString),
       args: {
         template: { type: new GraphQLNonNull(GraphQLString) }
       },
-      resolve: (millis: number, args: any) =>
-        Moment(new Date(millis))
+      resolve: (millis: unknown, args: any) =>
+        Moment(getDate(millis))
           .tz(args.zone || "UTC")
           .format(args.template)
     }
