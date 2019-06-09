@@ -9,8 +9,29 @@ import * as Runtime from "./Runtime";
 import * as TaskEither from "./TaskEither";
 import * as These from "./These";
 import * as Time from "./Time";
-export { Either, Exception, Identity, JSON, Option, ReadonlyArray, Runtime, TaskEither, These, Time };
+export {
+  Either,
+  Exception,
+  Identity,
+  JSON,
+  Option,
+  ReadonlyArray,
+  Runtime,
+  TaskEither,
+  These,
+  Time
+};
 export * from "./FP";
 export declare type Maybe<A> = A | null | undefined;
-export declare type Omit<A, PropertyName extends keyof A> = Pick<A, Exclude<keyof A, PropertyName>>;
-export declare const property: <PropertyName extends string | number | symbol>(propertyName: PropertyName) => <A extends SomeObject[PropertyName], SomeObject extends Pick<any, PropertyName>>(object: SomeObject) => A;
+export declare type Omit<A, PropertyName extends keyof A> = Pick<
+  A,
+  Exclude<keyof A, PropertyName>
+>;
+export declare const property: <PropertyName extends string | number | symbol>(
+  propertyName: PropertyName
+) => <
+  A extends SomeObject[PropertyName],
+  SomeObject extends Pick<any, PropertyName>
+>(
+  object: SomeObject
+) => A;

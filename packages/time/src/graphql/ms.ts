@@ -1,6 +1,6 @@
-import { GraphQLScalarType } from 'graphql'
+import { GraphQLScalarType } from "graphql";
 
 export default new GraphQLScalarType({
-	name: 'GraphengMS',
-	serialize: (val: number) => val
-})
+  name: "GraphengMS",
+  serialize: (val: number) => val
+});

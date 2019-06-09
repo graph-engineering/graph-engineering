@@ -1,41 +1,41 @@
-import { encodeCursor } from './cursor'
+import { encodeCursor } from "./cursor";
 
 export function makeConnection<
-	T extends {
-		id: string
-	},
-	K
+  T extends {
+    id: string;
+  },
+  K
 >(
-	items: Array<{ node: T; additionalEdgeProperties: K }>,
-	first?: number | null,
-	after?: string | null
+  items: Array<{ node: T; additionalEdgeProperties: K }>,
+  first?: number | null,
+  after?: string | null
 ) {
-	const itemsLength = items.length
-	const itemsCopy = [...items]
+  const itemsLength = items.length;
+  const itemsCopy = [...items];
 
-	const indexOfGivenCursor = after
-		? itemsCopy
-				.map(item => item.node)
-				.map(node => encodeCursor(node.id))
-				.findIndex(item => item === after)
-		: -1
-	const startIndex = indexOfGivenCursor > -1 ? indexOfGivenCursor + 1 : 0
-	const endIndex = first
-		? Math.min(startIndex + first, itemsLength)
-		: itemsLength
+  const indexOfGivenCursor = after
+    ? itemsCopy
+        .map(item => item.node)
+        .map(node => encodeCursor(node.id))
+        .findIndex(item => item === after)
+    : -1;
+  const startIndex = indexOfGivenCursor > -1 ? indexOfGivenCursor + 1 : 0;
+  const endIndex = first
+    ? Math.min(startIndex + first, itemsLength)
+    : itemsLength;
 
-	return {
-		totalCount: itemsLength,
-		pageInfo: {
-			hasNextPage: !!endIndex && itemsLength > endIndex,
-			hasPreviousPage: startIndex > 0,
-			startCursor: itemsLength ? encodeCursor(items[startIndex].node.id) : null,
-			endCursor: itemsLength ? encodeCursor(items[endIndex - 1].node.id) : null
-		},
-		edges: itemsCopy.slice(startIndex, endIndex).map(item => ({
-			node: item.node,
-			cursor: encodeCursor(item.node.id),
-			...item.additionalEdgeProperties
-		}))
-	}
+  return {
+    totalCount: itemsLength,
+    pageInfo: {
+      hasNextPage: !!endIndex && itemsLength > endIndex,
+      hasPreviousPage: startIndex > 0,
+      startCursor: itemsLength ? encodeCursor(items[startIndex].node.id) : null,
+      endCursor: itemsLength ? encodeCursor(items[endIndex - 1].node.id) : null
+    },
+    edges: itemsCopy.slice(startIndex, endIndex).map(item => ({
+      node: item.node,
+      cursor: encodeCursor(item.node.id),
+      ...item.additionalEdgeProperties
+    }))
+  };
 }
