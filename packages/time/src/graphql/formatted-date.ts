@@ -42,7 +42,8 @@ export const FormattedDate = new GraphQLObjectType({
     formatted: {
       type: new GraphQLNonNull(GraphQLString),
       args: {
-        template: { type: new GraphQLNonNull(GraphQLString) }
+        template: { type: new GraphQLNonNull(GraphQLString) },
+        zone: { type: GraphQLString }
       },
       resolve: (millis: unknown, args: any) =>
         Moment(getDate(millis))

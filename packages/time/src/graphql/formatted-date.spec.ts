@@ -30,6 +30,21 @@ describe("formatted duration", () => {
     });
   });
 
+  test("that a time zone makes a different formatted date", () => {
+    return expectSimpleObjectType(
+      FormattedDate.FormattedDate,
+      twoHoursAgo,
+      `
+  		{
+  			formatted(template: "M/D/YYYY, h:mm:ss A", zone: "America/New_York")
+  		}`
+    ).resolves.toEqual({
+      formatted: twoHoursAgoDate.toLocaleString("en-US", {
+        timeZone: "America/New_York"
+      })
+    });
+  });
+
   test.each`
     sampleType
     ${new Date()}
