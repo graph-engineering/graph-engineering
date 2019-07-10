@@ -1,21 +1,21 @@
-import gql from 'graphql-tag'
+import gql from "graphql-tag";
 
-export { makeConnection } from './first-gen-connection-maker'
+export { makeConnection } from "./first-gen-connection-maker";
 
 export const typeDefs = gql`
-	type PageInfo {
-		hasPreviousPage: Boolean!
-		hasNextPage: Boolean!
-		startCursor: String
-		endCursor: String
-	}
+  type PageInfo {
+    hasPreviousPage: Boolean!
+    hasNextPage: Boolean!
+    startCursor: String
+    endCursor: String
+  }
 
-	interface Connection {
-		pageInfo: PageInfo!
-		totalCount: Int!
-	}
+  interface Connection {
+    pageInfo: PageInfo!
+    totalCount: Int!
+  }
 
-	interface ConnectionEdge {
-		cursor: String!
-	}
-`
+  interface ConnectionEdge {
+    cursor: String!
+  }
+`;

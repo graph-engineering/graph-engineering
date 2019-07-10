@@ -1,3 +1,3 @@
-import { HumanFromDB } from './test-dev-server/loaders'
+import { HumanFromDB } from "./test-dev-server/loaders";
 
-export type Human = HumanFromDB
+export type Human = HumanFromDB;
