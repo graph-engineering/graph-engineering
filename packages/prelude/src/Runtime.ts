@@ -18,8 +18,11 @@ export const maybe = <A extends Runtime.Any>(
 ): Runtime.UnionC<[A, Runtime.NullC, Runtime.UndefinedC]> =>
   Runtime.union([type, Runtime.null, Runtime.undefined]);
 
-export const decode = <A>(
-  type: Runtime.Any,
+export const decode = <
+  Type extends Runtime.Any,
+  A extends ReadonlyTypeOf<Type>
+>(
+  type: Type,
   value: unknown
 ): Either.ErrorOr<A> =>
   Fn.applyFlipped(type.decode(value))(
