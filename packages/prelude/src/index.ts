@@ -1,24 +1,34 @@
-export { Do as chained } from "fp-ts-contrib/lib/Do";
+export { Do as chainOf } from "fp-ts-contrib/lib/Do";
+export { pipe } from "fp-ts/lib/pipeable";
 
+export const equals = (a: unknown) => (b: unknown): boolean => a === b;
+
+export const property = <Key extends keyof any>(key: Key) => <
+  A extends B[Key],
+  B extends Pick<any, Key>
+>(
+  object: B
+): A => object[key];
+
+import * as Array from "./Array";
 import * as Either from "./Either";
-import * as Exception from "./Exception";
-import * as Identity from "./Identity";
+import * as Error from "./Error";
 import * as JSON from "./JSON";
 import * as Option from "./Option";
-import * as ReadonlyArray from "./ReadonlyArray";
 import * as Runtime from "./Runtime";
+import * as String from "./String";
 import * as TaskEither from "./TaskEither";
 import * as These from "./These";
 import * as Time from "./Time";
 
 export {
   Either,
-  Exception,
-  Identity,
+  Error,
   JSON,
   Option,
-  ReadonlyArray,
+  Array,
   Runtime,
+  String,
   TaskEither,
   These,
   Time
@@ -27,16 +37,3 @@ export {
 export * from "./FP";
 
 export type Maybe<A> = A | null | undefined;
-export type Omit<A, PropertyName extends keyof A> = Pick<
-  A,
-  Exclude<keyof A, PropertyName>
->;
-
-export const property = <PropertyName extends keyof any>(
-  propertyName: PropertyName
-) => <
-  A extends SomeObject[PropertyName],
-  SomeObject extends Pick<any, PropertyName>
->(
-  object: SomeObject
-): A => object[propertyName];
