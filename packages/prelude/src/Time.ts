@@ -13,6 +13,8 @@ export const minute: Time = second * 60;
 export const hour: Time = minute * 60;
 export const day: Time = hour * 24;
 
+export const now = (): Time => new Date().valueOf();
+
 export const toEnglishShort = (time: Time): Either.ErrorOr<English> =>
   Either.tryCatchError(() => convertUnsafe(time));
 
