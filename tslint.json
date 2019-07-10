@@ -10,6 +10,7 @@
       "options": {
         "allow-namespace-imports": true
       }
-    }
+    },
+    "array-type": false
   }
 }

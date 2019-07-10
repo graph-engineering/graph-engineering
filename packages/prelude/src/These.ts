@@ -1,9 +1,11 @@
-import { Maybe, Option, These } from ".";
-
 export * from "fp-ts/lib/These";
 
-export const fromNullables = <L, A>(
-  l?: Maybe<L>,
-  a?: Maybe<A>
-): Option.Option<These.These<L, A>> =>
-  These.fromOptions(Option.fromNullable(l), Option.fromNullable(a));
+import { Maybe } from ".";
+import * as Option from "./Option";
+import * as These from "./These";
+
+export const fromNullables = <A, B>(
+  a?: Maybe<A>,
+  b?: Maybe<B>
+): Option.Option<These.These<A, B>> =>
+  These.fromOptions(Option.fromNullable(a), Option.fromNullable(b));

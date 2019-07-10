@@ -1,8 +1,9 @@
 import convertUnsafe from "ms";
 
-import { Either, Exception } from ".";
+import { pipe } from ".";
+import * as Either from "./Either";
+import * as Error from "./Error";
 
-export type Date = number;
 export type Time = number;
 export type English = string;
 
@@ -13,18 +14,20 @@ export const hour: Time = minute * 60;
 export const day: Time = hour * 24;
 
 export const toEnglishShort = (time: Time): Either.ErrorOr<English> =>
-  Either.tryCatch(() => convertUnsafe(time), Exception.unknown);
+  Either.tryCatchError(() => convertUnsafe(time));
 
 export const toEnglishLong = (time: Time): Either.ErrorOr<English> =>
-  Either.tryCatch(() => convertUnsafe(time, { long: true }), Exception.unknown);
+  Either.tryCatchError(() => convertUnsafe(time, { long: true }));
 
 export const fromEnglish = (english: English): Either.ErrorOr<Time> =>
-  Either.tryCatch(() => convertUnsafe(english), Exception.unknown).refineOrElse(
-    (time: Time): time is Time =>
-      time !== undefined &&
-      time !== null &&
-      !Number.isNaN(time) &&
-      Number.isFinite(time),
-
-    Error(`\`${english}\` cannot be converted into milliseconds`)
+  pipe(
+    Either.tryCatchError(() => convertUnsafe(english)),
+    Either.filterOrElse(
+      (time: Time): time is Time =>
+        time !== undefined &&
+        time !== null &&
+        !Number.isNaN(time) &&
+        Number.isFinite(time),
+      Error.ofL(`\`${english}\` cannot be converted into milliseconds`)
+    )
   );

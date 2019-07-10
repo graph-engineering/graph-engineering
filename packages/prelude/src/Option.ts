@@ -1,16 +1,18 @@
+export * from "fp-ts/lib/Option";
 import * as Option from "fp-ts/lib/Option";
 
-import { chained, Fn, These } from ".";
+import { chainOf, pipe } from ".";
+import { Fn } from "./FP";
+import * as These from "./These";
 
-export * from "fp-ts/lib/Option";
+export const chained = chainOf(Option.option);
 
-export const chain = chained(Option.option);
-
-export const merge = <A>(
-  first: Option.Option<A>,
-  second: Option.Option<A>,
-  merge: (first: A, second: A) => A
+export const combine = <A>(
+  a: Option.Option<A>,
+  b: Option.Option<A>,
+  fn: (a: A, b: A) => A
 ): Option.Option<A> =>
-  These.fromOptions(first, second).map<A>(these =>
-    these.fold(Fn.identity, Fn.identity, merge)
+  pipe(
+    These.fromOptions(a, b),
+    Option.map(These.fold(Fn.identity, Fn.identity, fn))
   );
