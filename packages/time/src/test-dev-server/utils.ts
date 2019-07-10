@@ -1,14 +1,9 @@
-import { GraphQLSchema } from 'graphql'
-import { ApolloServer } from 'apollo-server'
+import { ApolloServer } from "apollo-server";
+import { GraphQLSchema } from "graphql";
 
-export function getTwoHoursAgo(): Date {
-	const d = new Date()
-	d.setHours(d.getHours() - 2)
-	return d
-}
-
-export function runApolloServer(schema: GraphQLSchema): void {
-	new ApolloServer({ schema }).listen().then(({ url }) => {
-		console.log(`🚀 Server ready at ${url}`)
-	})
-}
+export const runApolloServer = (schema: GraphQLSchema): void => {
+  new ApolloServer({ schema }).listen().then(({ url }) => {
+    // tslint:disable-next-line:no-console
+    console.log(`🚀 Server ready at ${url}`);
+  });
+};
