@@ -2,12 +2,16 @@ export * from "fp-ts/lib/TaskEither";
 import * as TaskEither from "fp-ts/lib/TaskEither";
 
 import { chainOf } from ".";
+import * as Either from "./Either";
 import * as Error from "./Error";
 import { Fn } from "./FP";
 
 export type ErrorOr<A, L extends Error = Error> = TaskEither.TaskEither<L, A>;
 
 export const chained = chainOf(TaskEither.taskEither);
+
+export const fromRight = <A, L = Error>(a: A): TaskEither.TaskEither<L, A> =>
+  TaskEither.fromEither(Either.right(a));
 
 export const tryCatchError = <A>(fn: Fn.Lazy<Promise<A>>): ErrorOr<A> =>
   TaskEither.tryCatch(fn, Error.of);
