@@ -1,7 +1,7 @@
 export { Do as chainOf } from "fp-ts-contrib/lib/Do";
 export { pipe } from "fp-ts/lib/pipeable";
 
-export const equals = (a: unknown) => (b: unknown): boolean => a === b;
+export const equals = <A>(a: A) => (b: A): boolean => a === b;
 
 export const property = <Key extends keyof any>(key: Key) => <
   A extends B[Key],

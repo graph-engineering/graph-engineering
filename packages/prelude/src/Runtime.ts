@@ -12,11 +12,15 @@ import * as String from "./String";
 
 export type ReadonlyTypeOf<A extends Runtime.Any> = Readonly<Runtime.TypeOf<A>>;
 
+// tslint:disable: readonly-array
+
 export const maybe = <A extends Runtime.Any>(
   type: A
-  // tslint:disable-next-line: readonly-array
 ): Runtime.UnionC<[A, Runtime.NullC, Runtime.UndefinedC]> =>
   Runtime.union([type, Runtime.null, Runtime.undefined]);
+
+// tslint:enable: readonly-array
+
 
 export const decode = <
   Type extends Runtime.Any,
