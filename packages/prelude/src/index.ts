@@ -1,4 +1,4 @@
-export { Do as chainOf } from "fp-ts-contrib/lib/Do";
+export { Do as chainFrom } from "fp-ts-contrib/lib/Do";
 export { pipe } from "fp-ts/lib/pipeable";
 
 export const equals = <A>(a: A) => (b: A): boolean => a === b;
