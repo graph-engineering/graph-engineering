@@ -8,7 +8,7 @@ import * as These from "./These";
 
 export type ErrorOr<A> = A | Error;
 
-export const of: (error?: Maybe<unknown>) => Error = Fn.flow(
+export const from: (error?: Maybe<unknown>) => Error = Fn.flow(
   Option.fromNullable,
   Option.fold(
     () => Error("An unknown error occurred"),
@@ -25,51 +25,53 @@ export const of: (error?: Maybe<unknown>) => Error = Fn.flow(
   )
 );
 
-export const ofL = (error?: Maybe<unknown>) => (): Error => of(error);
+export const fromL = (error?: Maybe<unknown>) => (): Error => from(error);
 
 export const throw_ = (error?: Maybe<unknown>) => (): never => throwL(error);
 export const throwL = (error?: Maybe<unknown>): never => {
-  throw of(error);
+  throw from(error);
 };
 
-export const detailed = (message: string, details: unknown): Error =>
-  of(
-    `${message}${pipe(
-      Option.fromNullable(details),
-      Option.map(details => `\n\n${JSON.stringifyPrettyAlways(details)}`),
-      Option.getOrElse(() => "")
-    )}`
-  );
-
-export const detailedL = (message: string, knownDetails?: Maybe<unknown>) => (
-  unknownDetails: unknown
+export const detailed = (
+  messageOrError?: Maybe<unknown>,
+  details?: Maybe<unknown>
 ): Error =>
-  detailed(
-    message,
-    pipe(
-      These.fromNullables(knownDetails, unknownDetails),
-      Option.map(details),
-      Option.toUndefined
+  pipe(
+    These.fromNullables(messageOrError, details),
+    Option.fold(
+      from,
+      These.fold(from, from, (messageOrError, details) =>
+        from(
+          `${from(messageOrError).message}\n\n${JSON.stringifyPrettyAlways(
+            details
+          )}`
+        )
+      )
     )
   );
 
-const details: (
-  details: These.These<unknown, unknown>
-) => { readonly details: unknown } = These.fold(
-  knownDetails => ({ details: knownDetails }),
-  unknownDetails => ({ details: unknownDetails }),
-  (knownDetails, unknownDetails) => ({
-    details: {
-      knownDetails,
-      unknownDetails
-    }
-  })
-);
+export const detailedL = (
+  messageOrError?: Maybe<unknown>,
+  details?: Maybe<unknown>
+) => (error?: Maybe<unknown>): Error =>
+  detailed(
+    messageOrError,
+    pipe(
+      These.fromNullables(details, error),
+      Option.fold(
+        Fn.constUndefined,
+        These.fold(Fn.identity, Fn.identity, (details, error) => ({
+          details,
+          error
+        }))
+      )
+    )
+  );
 
 export const combine = (errors: readonly Error[]): Error =>
   pipe(
     errors,
-    Array.mutable,
+    Array.toMutable,
     Array.map(property("message")),
     String.joinL("\n\n"),
     Error

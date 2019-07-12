@@ -21,7 +21,6 @@ export const maybe = <A extends Runtime.Any>(
 
 // tslint:enable: readonly-array
 
-
 export const decode = <
   Type extends Runtime.Any,
   A extends ReadonlyTypeOf<Type>
@@ -35,7 +34,7 @@ export const decode = <
         Array.map(errorMessage),
         Array.catOptions,
         String.joinL("\n"),
-        Error.of
+        Error.from
       )
     )
   );
@@ -45,7 +44,7 @@ export const errorMessage = (
 ): Option.Option<string> =>
   pipe(
     error.context,
-    Array.mutable,
+    Array.toMutable,
     Array.last,
     Option.map(context =>
       pipe(

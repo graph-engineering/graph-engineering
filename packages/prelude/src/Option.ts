@@ -1,11 +1,11 @@
 export * from "fp-ts/lib/Option";
 import * as Option from "fp-ts/lib/Option";
 
-import { chainOf, pipe } from ".";
+import { chainFrom, pipe } from ".";
 import { Fn } from "./FP";
 import * as These from "./These";
 
-export const chained = chainOf(Option.option);
+export const chained = chainFrom(Option.option);
 
 export const combine = <A>(
   a: Option.Option<A>,
