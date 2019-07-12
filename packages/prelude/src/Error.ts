@@ -27,8 +27,8 @@ export const from: (error?: Maybe<unknown>) => Error = Fn.flow(
 
 export const fromL = (error?: Maybe<unknown>) => (): Error => from(error);
 
-export const throw_ = (error?: Maybe<unknown>) => (): never => throwL(error);
-export const throwL = (error?: Maybe<unknown>): never => {
+export const throwL = (error?: Maybe<unknown>) => (): never => throw_(error);
+export const throw_ = (error?: Maybe<unknown>): never => {
   throw from(error);
 };
 
