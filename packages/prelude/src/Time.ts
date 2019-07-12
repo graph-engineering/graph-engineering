@@ -30,6 +30,6 @@ export const fromEnglish = (english: English): Either.ErrorOr<Time> =>
         time !== null &&
         !Number.isNaN(time) &&
         Number.isFinite(time),
-      Error.ofL(`\`${english}\` cannot be converted into milliseconds`)
+      Error.fromL(`\`${english}\` cannot be converted into milliseconds`)
     )
   );
