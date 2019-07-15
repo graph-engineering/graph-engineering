@@ -25,6 +25,7 @@ export {
   distributiveLattice as DistributiveLattice,
   // either as Either,
   eitherT as EitherT,
+  eq as Eq,
   exception as Exception,
   extend as Extend,
   field as Field,
