@@ -37,3 +37,9 @@ export {
 export * from "./FP";
 
 export type Maybe<A> = A | null | undefined;
+
+export type Mutable<T> = {
+  -readonly [P in keyof T]: T[P] extends ReadonlyArray<infer U>
+    ? readonly Mutable<U>[]
+    : Mutable<T[P]>
+};
