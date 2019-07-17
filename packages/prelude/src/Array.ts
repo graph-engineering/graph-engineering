@@ -1,7 +1,7 @@
 export * from "fp-ts/lib/Array";
+import * as Array from "fp-ts/lib/Array";
 
 import { Maybe, pipe } from ".";
-import * as Array from "./Array";
 import { Fn } from "./FP";
 import * as Option from "./Option";
 
