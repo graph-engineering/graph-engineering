@@ -41,11 +41,7 @@ export const detailed = (
     Option.fold(
       from,
       These.fold(from, from, (messageOrError, details) =>
-        from(
-          `${from(messageOrError).message}\n\n${JSON.stringifyPrettyAlways(
-            details
-          )}`
-        )
+        from(`${from(messageOrError).message}\n\n${from(details)}`)
       )
     )
   );
