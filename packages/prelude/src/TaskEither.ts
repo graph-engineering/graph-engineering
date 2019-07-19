@@ -15,7 +15,3 @@ export const fromRight = <A, L = Error>(a: A): TaskEither.TaskEither<L, A> =>
 
 export const tryCatchError = <A>(fn: Fn.Lazy<Promise<A>>): ErrorOr<A> =>
   TaskEither.tryCatch(fn, Error.from);
-
-export const runUnsafe = <A>(
-  taskEither: TaskEither.TaskEither<any, A>
-): Promise<A> => taskEither.fold(Error.throw_, Fn.identity).run();

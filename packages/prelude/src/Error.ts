@@ -18,7 +18,7 @@ export const from: (error?: Maybe<unknown>) => Error = Fn.flow(
         : typeof error === "string"
         ? Error(error)
         : Error(
-            `An unknown error occurred...\n\n${JSON.stringifyPrettyAlways(
+            `An unknown error occurred...\n\n${JSON.Stringify.Always.pretty(
               error
             )}`
           )
@@ -66,8 +66,7 @@ export const detailedL = (
 
 export const combine = (errors: readonly Error[]): Error =>
   pipe(
-    errors,
-    Array.toMutable,
+    Array.toMutable(errors),
     Array.map(property("message")),
     String.joinL("\n\n"),
     Error

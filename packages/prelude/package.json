@@ -1,7 +1,7 @@
 {
   "name": "@grapheng/prelude",
   "description": "Common functionality used in Graph Engineering projects",
-  "version": "5.2.1",
+  "version": "6.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,9 +16,10 @@
     "build": "tsc"
   },
   "dependencies": {
-    "fp-ts": "^1.14.3",
-    "fp-ts-contrib": "^0.0.6",
-    "io-ts": "^1.8.3",
+    "fp-ts": "^2.0.2",
+    "fp-ts-contrib": "^0.1.2",
+    "io-ts": "^2.0.0",
+    "monocle-ts": "^2.0.0",
     "ms": "^2.1.1"
   },
   "devDependencies": {
