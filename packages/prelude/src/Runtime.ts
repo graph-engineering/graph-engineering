@@ -28,11 +28,17 @@ export const decode = <
   type: Type,
   value: unknown
 ): Either.ErrorOr<A> =>
-  Fn.applyFlipped(type.decode(value))(
+  pipe(
+    type.decode(value),
     Either.mapLeft(
       Fn.flow(
         Array.map(errorMessage),
-        Array.catOptions,
+        Array.reduce([] as string[], (previous, message) =>
+          pipe(
+            message,
+            Option.fold(() => previous, message => [...previous, message])
+          )
+        ),
         String.joinL("\n"),
         Error.from
       )
@@ -58,7 +64,7 @@ export const errorMessage = (
           }but instead got \`${
             error.value === undefined
               ? "undefined"
-              : JSON.stringifyPrettyAlways(error.value)
+              : JSON.Stringify.Always.short(error.value)
           }\``
       )
     )

@@ -9,6 +9,5 @@ export type ErrorOr<A, L extends Error = Error> = Either.Either<L, A>;
 
 export const chained = chainFrom(Either.either);
 
-export const tryCatch = Either.tryCatch2v;
 export const tryCatchError = <A>(fn: Fn.Lazy<A>): ErrorOr<A> =>
-  tryCatch(fn, Error.from);
+  Either.tryCatch(fn, Error.from);

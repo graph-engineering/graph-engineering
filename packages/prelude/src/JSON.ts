@@ -14,21 +14,25 @@ export interface JSONObject {
 export const parse = (string: string): Either.ErrorOr<string> =>
   Either.tryCatch(() => JSON.parse(string), onError);
 
-export const stringifyShort = (json: unknown): Either.ErrorOr<string> =>
-  Either.tryCatch(() => JSON.stringify(json), onError);
+export namespace Stringify {
+  export const short = (json: unknown): Either.ErrorOr<string> =>
+    Either.tryCatch(() => JSON.stringify(json), onError);
 
-export const stringifyShortAlways: (json: unknown) => string = Fn.flow(
-  stringifyShort,
-  Either.fold(property("message"), Fn.identity)
-);
+  export const pretty = (json: unknown): Either.ErrorOr<string> =>
+    Either.tryCatch(() => JSON.stringify(json, undefined, 2), onError);
 
-export const stringifyPretty = (json: unknown): Either.ErrorOr<string> =>
-  Either.tryCatch(() => JSON.stringify(json, undefined, 2), onError);
+  export namespace Always {
+    export const short: (json: unknown) => string = Fn.flow(
+      Stringify.short,
+      Either.fold(property("message"), Fn.identity)
+    );
 
-export const stringifyPrettyAlways: (json: unknown) => string = Fn.flow(
-  stringifyPretty,
-  Either.fold(property("message"), Fn.identity)
-);
+    export const pretty: (json: unknown) => string = Fn.flow(
+      Stringify.pretty,
+      Either.fold(property("message"), Fn.identity)
+    );
+  }
+}
 
 const onError: (error: unknown) => Error = () =>
   Error("Unrepresentable JSON value...");

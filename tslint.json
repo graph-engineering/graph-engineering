@@ -19,6 +19,8 @@
       }
     },
 
+    "no-namespace": false,
+
     "array-type": false
   }
 }

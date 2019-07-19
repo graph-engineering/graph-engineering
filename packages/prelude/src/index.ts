@@ -1,5 +1,8 @@
+import * as Lens from "monocle-ts";
+
 export { Do as chainFrom } from "fp-ts-contrib/lib/Do";
 export { pipe } from "fp-ts/lib/pipeable";
+export { flow } from "fp-ts/lib/function";
 
 export const equals = <A>(a: A) => (b: A): boolean => a === b;
 
@@ -31,7 +34,8 @@ export {
   String,
   TaskEither,
   These,
-  Time
+  Time,
+  Lens
 };
 
 export * from "./FP";
