@@ -1,7 +1,7 @@
 export * from "fp-ts/lib/TaskEither";
 import * as TaskEither from "fp-ts/lib/TaskEither";
 
-import { chainFrom } from ".";
+import { chainFrom, flow } from ".";
 import * as Either from "./Either";
 import * as Error from "./Error";
 import { Fn } from "./FP";
@@ -15,3 +15,12 @@ export const fromRight = <A, L = Error>(a: A): TaskEither.TaskEither<L, A> =>
 
 export const tryCatchError = <A>(fn: Fn.Lazy<Promise<A>>): ErrorOr<A> =>
   TaskEither.tryCatch(fn, Error.from);
+
+export const runUnsafe = <A>(taskEither: ErrorOr<A>): Promise<A> | never =>
+  taskEither().then(
+    Either.fold(Error.throw_, Fn.identity),
+    flow(
+      Error.from,
+      Error.throw_
+    )
+  );
