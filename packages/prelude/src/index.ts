@@ -16,6 +16,7 @@ export const property = <Key extends keyof any>(key: Key) => <
 import * as Array from "./Array";
 import * as Either from "./Either";
 import * as Error from "./Error";
+import * as Immutable from "./Immutable";
 import * as JSON from "./JSON";
 import * as Option from "./Option";
 import * as Runtime from "./Runtime";
@@ -25,11 +26,12 @@ import * as These from "./These";
 import * as Time from "./Time";
 
 export {
+  Array,
   Either,
   Error,
+  Immutable,
   JSON,
   Option,
-  Array,
   Runtime,
   String,
   TaskEither,
@@ -41,15 +43,3 @@ export {
 export * from "./FP";
 
 export type Maybe<A> = A | null | undefined;
-
-export type Mutable<A> = {
-  -readonly [Property in keyof A]: A[Property] extends ReadonlyArray<infer B>
-    ? Mutable<B>[]
-    : Mutable<A[Property]>
-};
-
-export type Immutable<A> = {
-  readonly [Property in keyof A]: A[Property] extends Array<infer B>
-    ? readonly Immutable<B>[]
-    : Immutable<A[Property]>
-};
