@@ -28,8 +28,7 @@ export const FormattedDate = new GraphQLObjectType({
   fields: () => ({
     unix: {
       type: new GraphQLNonNull(FormattedDuration),
-      resolve: (millis: unknown) =>
-        Moment.duration(getDate(millis).valueOf(), "ms")
+      resolve: (millis: unknown) => millis
     },
     iso: {
       type: new GraphQLNonNull(GraphQLString),
