@@ -50,7 +50,6 @@ export const errorMessage = (
 ): Option.Option<string> =>
   pipe(
     error.context,
-    Array.toMutable,
     Array.last,
     Option.map(context =>
       pipe(
