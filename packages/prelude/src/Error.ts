@@ -1,9 +1,8 @@
-import { Maybe, pipe, property } from ".";
+import { Maybe, pipe } from ".";
 import * as Array from "./Array";
 import { Fn } from "./FP";
 import * as JSON from "./JSON";
 import * as Option from "./Option";
-import * as String from "./String";
 import * as These from "./These";
 
 export type ErrorOr<A> = A | Error;
@@ -64,10 +63,11 @@ export const detailedL = (
     )
   );
 
-export const combine = (errors: readonly Error[]): Error =>
+export const concat = (a: Error, b: Error): Error =>
+  Error(`${a.message}\n\n${b.message}`);
+
+export const concatAll = (errors: readonly Error[]): Error =>
   pipe(
-    Array.toMutable(errors),
-    Array.map(property("message")),
-    String.joinL("\n\n"),
-    Error
+    errors,
+    Array.reduce(from("Several errors occured..."), concat)
   );

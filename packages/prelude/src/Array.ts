@@ -4,8 +4,10 @@ import * as Array from "fp-ts/lib/Array";
 import { Maybe, pipe } from ".";
 import * as Option from "./Option";
 
-// This is required since fp-ts doesn't work with readonly arrays yet...
-// tslint:disable readonly-array
+// TODO: This is a temporary fix for dealing with fp-ts's mutable `Array` module
+declare global {
+  interface ReadonlyArray<T> extends Array<T> {}
+}
 
 export const from = <A>(a: A): A[] => [a];
 

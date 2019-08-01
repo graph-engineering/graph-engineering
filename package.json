@@ -14,7 +14,9 @@
     "time:test:watch": "tst test time --watch",
     "time:build": "npm run time:test && lerna exec --scope @grapheng/time -- npm run build",
     "time:dev1": "lerna exec --scope @grapheng/time -- npm run example1",
-    "time:dev2": "lerna exec --scope @grapheng/time -- npm run example2"
+    "time:dev2": "lerna exec --scope @grapheng/time -- npm run example2",
+    "prelude:test": "lerna exec --scope @grapheng/prelude -- npm run test",
+    "prelude:test:watch": "lerna exec --scope @grapheng/prelude -- npm run test:watch"
   },
   "dependencies": {
     "typescript-tooling": "^4.1.0"
@@ -22,7 +24,7 @@
   "devDependencies": {
     "@types/jest": "^23.3.14",
     "@types/node": "^10.14.6",
-    "jest": "^23.6.0",
+    "jest": "^24.8.0",
     "lerna": "^3.13.4",
     "nodemon": "^1.19.0",
     "parcel-bundler": "^1.12.3",
