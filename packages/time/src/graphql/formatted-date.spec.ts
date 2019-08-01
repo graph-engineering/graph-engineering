@@ -53,7 +53,7 @@ describe("formatted duration", () => {
     ${"July 22, 2018 07:22:13 +0700"}
     ${Moment()}
   `(
-    "that a source with value $sampleType should throw an error because it's not a number",
+    "that a source with value $sampleType should throw an error because it's not a number.",
     ({ sampleType }) => {
       return expectSimpleObjectType(
         FormattedDate.FormattedDate,
