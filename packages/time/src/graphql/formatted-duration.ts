@@ -17,39 +17,39 @@ export const FormattedDuration = new GraphQLObjectType({
   fields: () => ({
     humanized: {
       type: new GraphQLNonNull(GraphQLString),
-      resolve: (duration: Duration) => duration.humanize()
+      resolve: (millis: Duration) => Moment.duration(millis).humanize()
     },
     milliseconds: {
       type: new GraphQLNonNull(GraphengMS),
-      resolve: (duration: Duration) => duration.asMilliseconds()
+      resolve: (millis: Duration) => Moment.duration(millis).asMilliseconds()
     },
     seconds: {
       type: new GraphQLNonNull(GraphQLFloat),
-      resolve: (duration: Duration) => duration.asSeconds()
+      resolve: (millis: Duration) => Moment.duration(millis).asSeconds()
     },
     minutes: {
       type: new GraphQLNonNull(GraphQLFloat),
-      resolve: (duration: Duration) => duration.asMinutes()
+      resolve: (millis: Duration) => Moment.duration(millis).asMinutes()
     },
     hours: {
       type: new GraphQLNonNull(GraphQLFloat),
-      resolve: (duration: Duration) => duration.asHours()
+      resolve: (millis: Duration) => Moment.duration(millis).asHours()
     },
     days: {
       type: new GraphQLNonNull(GraphQLFloat),
-      resolve: (duration: Duration) => duration.asDays()
+      resolve: (millis: Duration) => Moment.duration(millis).asDays()
     },
     weeks: {
       type: new GraphQLNonNull(GraphQLFloat),
-      resolve: (duration: Duration) => duration.asWeeks()
+      resolve: (millis: Duration) => Moment.duration(millis).asWeeks()
     },
     months: {
       type: new GraphQLNonNull(GraphQLFloat),
-      resolve: (duration: Duration) => duration.asMonths()
+      resolve: (millis: Duration) => Moment.duration(millis).asMonths()
     },
     years: {
       type: new GraphQLNonNull(GraphQLFloat),
-      resolve: (duration: Duration) => duration.asYears()
+      resolve: (millis: Duration) => Moment.duration(millis).asYears()
     }
   })
 });
