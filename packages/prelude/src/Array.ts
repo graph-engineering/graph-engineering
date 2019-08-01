@@ -11,8 +11,6 @@ declare global {
 
 export const from = <A>(a: A): A[] => [a];
 
-export const toMutable = <A>(as: A[] | readonly A[]): A[] => as as A[];
-
 export const nonNullables = <A>(as: Maybe<A>[]): A[] =>
   pipe(
     as,

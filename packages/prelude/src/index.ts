@@ -22,6 +22,7 @@ import * as JSON from "./JSON";
 import * as Option from "./Option";
 import * as Runtime from "./Runtime";
 import * as String from "./String";
+import * as Task from "./Task";
 import * as TaskEither from "./TaskEither";
 import * as These from "./These";
 import * as Time from "./Time";
@@ -35,6 +36,7 @@ export {
   Option,
   Runtime,
   String,
+  Task,
   TaskEither,
   These,
   Time,

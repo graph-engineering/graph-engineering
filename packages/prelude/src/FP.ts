@@ -76,7 +76,7 @@ export {
   stateT as StateT,
   store as Store,
   strong as Strong,
-  task as Task,
+  // task as Task,
   // taskEither as TaskEither,
   // these as These,
   traced as Traced,
