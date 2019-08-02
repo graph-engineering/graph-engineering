@@ -12,22 +12,17 @@ import * as String from "./String";
 
 export type ReadonlyTypeOf<A extends Runtime.Any> = Readonly<Runtime.TypeOf<A>>;
 
-// tslint:disable: readonly-array
-
 export const maybe = <A extends Runtime.Any>(
   type: A
 ): Runtime.UnionC<[A, Runtime.NullC, Runtime.UndefinedC]> =>
   Runtime.union([type, Runtime.null, Runtime.undefined]);
 
-// tslint:enable: readonly-array
-
 export const decode = <
   Type extends Runtime.Any,
   A extends ReadonlyTypeOf<Type>
 >(
-  type: Type,
-  value: unknown
-): Either.ErrorOr<A> =>
+  type: Type
+) => (value: unknown): Either.ErrorOr<A> =>
   pipe(
     type.decode(value),
     Either.mapLeft(
@@ -39,7 +34,7 @@ export const decode = <
             Option.fold(() => previous, message => [...previous, message])
           )
         ),
-        String.joinL("\n"),
+        String.join("\n"),
         Error.from
       )
     )
