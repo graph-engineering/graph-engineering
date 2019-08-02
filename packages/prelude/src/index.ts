@@ -4,6 +4,9 @@ export { Do as chainFrom } from "fp-ts-contrib/lib/Do";
 export { pipe } from "fp-ts/lib/pipeable";
 export { flow } from "fp-ts/lib/function";
 
+// tslint:disable-next-line: no-console
+export const spy = <A>(a: A): A => void console.log(a) || a;
+
 export const equal = <A>(a: A) => (b: A): boolean => a === b;
 export const notEqual = <A>(a: A) => (b: A): boolean => a !== b;
 

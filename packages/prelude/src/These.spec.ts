@@ -15,6 +15,7 @@ describe.each`
     [eithers, expected],
     Array.map(JSON.Stringify.Always.short),
     ([eithers, expected]) => `\`fromEithers(${eithers}) === ${expected}\``,
+
     testName =>
       test(testName, () => expect(These.fromEithers(eithers)).toEqual(expected))
   );
