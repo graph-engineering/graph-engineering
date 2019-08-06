@@ -9,6 +9,8 @@ declare global {
   interface ReadonlyArray<T> extends Array<T> {}
 }
 
+export const empty = <A>(): A[] => [];
+
 export const from = <A>(a: A): A[] => [a];
 
 export const nonNullables = <A>(as: Maybe<A>[]): A[] =>

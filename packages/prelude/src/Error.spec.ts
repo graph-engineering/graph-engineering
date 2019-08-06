@@ -1,14 +1,14 @@
 import { Array, flow, JSON } from ".";
 
 import { pipe } from "fp-ts/lib/pipeable";
-import * as Error_ from "./Error";
+import * as PreludeError from "./Error";
 import { Fn } from "./FP";
 
 describe("`from`", () => {
   test(
     "returns default `Error` when none was given",
     flow(
-      () => Error_.from(),
+      () => PreludeError.from(),
       error =>
         expect(error).toBeInstanceOf(Error) &&
         expect(error.message).toBeDefined()
@@ -19,7 +19,7 @@ describe("`from`", () => {
     "returns unchanged `Error` returned given an `Error`",
     flow(
       () => Error("this should be unchanged"),
-      error => expect(Error_.from(error)).toEqual(error)
+      error => expect(PreludeError.from(error)).toEqual(error)
     )
   );
 
@@ -27,7 +27,7 @@ describe("`from`", () => {
     "returns `Error` with message from given `string`",
     flow(
       () => "this should be the error message",
-      message => expect(Error_.from(message)).toEqual(Error(message))
+      message => expect(PreludeError.from(message)).toEqual(Error(message))
     )
   );
 
@@ -35,7 +35,7 @@ describe("`from`", () => {
     "returns `Error` with message from given `string`",
     flow(
       () => "this should be the error message",
-      message => expect(Error_.from(message)).toEqual(Error(message))
+      message => expect(PreludeError.from(message)).toEqual(Error(message))
     )
   );
 
@@ -44,7 +44,7 @@ describe("`from`", () => {
     flow(
       () => ({ unknown: "what is this?" }),
       data =>
-        expect(Error_.from(data).message).toMatch(
+        expect(PreludeError.from(data).message).toMatch(
           JSON.Stringify.Always.pretty(data)
         )
     )
@@ -55,19 +55,20 @@ describe("`fromL`", () => {
   test(
     "returns lazy function which returns an `Error`",
     flow(
-      () => Error_.from("some error message"),
-      error => expect(Error_.fromL(error)()).toEqual(error)
+      () => PreludeError.from("some error message"),
+      error => expect(PreludeError.fromL(error)()).toEqual(error)
     )
   );
 });
 
 describe("`throwL`", () => {
   test("returns lazy function which throws an `Error`", () =>
-    expect(Error_.throwL()).toThrowError());
+    expect(PreludeError.throwL()).toThrowError());
 });
 
 describe("`throw_`", () => {
-  test("throws an `Error`", () => expect(() => Error_.throw_()).toThrowError());
+  test("throws an `Error`", () =>
+    expect(() => PreludeError.throw()).toThrowError());
 });
 
 describe("`detailed`", () => {
@@ -85,7 +86,10 @@ describe("`concat`", () => {
       () => ["first message", "second one"],
       ([first, second]) =>
         pipe(
-          Error_.concat(Error_.from(first), Error_.from(second)).message,
+          PreludeError.concat(
+            PreludeError.from(first),
+            PreludeError.from(second)
+          ).message,
           message =>
             expect(message).toMatch(first) && expect(message).toMatch(second)
         )
@@ -101,8 +105,8 @@ describe("`concatAll`", () => {
       ([first, second, third]) =>
         pipe(
           [first, second, third],
-          Array.map(Error_.from),
-          Error_.concatAll,
+          Array.map(PreludeError.from),
+          PreludeError.concatAll,
           ({ message }) =>
             expect(message).toMatch(first) &&
             expect(message).toMatch(second) &&

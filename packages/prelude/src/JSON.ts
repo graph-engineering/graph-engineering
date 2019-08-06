@@ -1,4 +1,4 @@
-import { property } from ".";
+import { pipe, property } from ".";
 import * as Either from "./Either";
 import { Fn } from "./FP";
 
@@ -22,15 +22,19 @@ export namespace Stringify {
     Either.tryCatch(() => JSON.stringify(json, undefined, 2), onError);
 
   export namespace Always {
-    export const short: (json: unknown) => string = Fn.flow(
-      Stringify.short,
-      Either.fold(property("message"), Fn.identity)
-    );
+    export const short = (json: unknown): string =>
+      pipe(
+        json,
+        Stringify.short,
+        Either.fold(property("message"), Fn.identity)
+      );
 
-    export const pretty: (json: unknown) => string = Fn.flow(
-      Stringify.pretty,
-      Either.fold(property("message"), Fn.identity)
-    );
+    export const pretty = (json: unknown): string =>
+      pipe(
+        json,
+        Stringify.pretty,
+        Either.fold(property("message"), Fn.identity)
+      );
   }
 }
 

@@ -18,9 +18,9 @@ export const tryCatchError = <A>(fn: Fn.Lazy<Promise<A>>): ErrorOr<A> =>
 
 export const runUnsafe = <A>(taskEither: ErrorOr<A>): Promise<A> | never =>
   taskEither().then(
-    Either.fold(Error.throw_, Fn.identity),
+    Either.fold(Error.throw, Fn.identity),
     flow(
       Error.from,
-      Error.throw_
+      Error.throw
     )
   );
