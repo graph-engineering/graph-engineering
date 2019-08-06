@@ -5,29 +5,33 @@ import * as JSON from "./JSON";
 import * as Option from "./Option";
 import * as These from "./These";
 
+export { throw_ as throw };
+
 export type ErrorOr<A> = A | Error;
 
-export const from: (error?: Maybe<unknown>) => Error = Fn.flow(
-  Option.fromNullable,
-  Option.fold(
-    () => Error("An unknown error occurred"),
-    error =>
-      error instanceof Error
-        ? error
-        : typeof error === "string"
-        ? Error(error)
-        : Error(
-            `An unknown error occurred...\n\n${JSON.Stringify.Always.pretty(
-              error
-            )}`
-          )
-  )
-);
+export const from = (error?: Maybe<unknown>): Error =>
+  pipe(
+    error,
+    Option.fromNullable,
+    Option.fold(
+      () => Error("An unknown error occurred"),
+      error =>
+        error instanceof Error
+          ? error
+          : typeof error === "string"
+          ? Error(error)
+          : Error(
+              `An unknown error occurred...\n\n${JSON.Stringify.Always.pretty(
+                error
+              )}`
+            )
+    )
+  );
 
 export const fromL = (error?: Maybe<unknown>) => (): Error => from(error);
 
 export const throwL = (error?: Maybe<unknown>) => (): never => throw_(error);
-export const throw_ = (error?: Maybe<unknown>): never => {
+const throw_ = (error?: Maybe<unknown>): never => {
   throw from(error);
 };
 

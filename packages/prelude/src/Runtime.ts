@@ -1,11 +1,10 @@
 export * from "io-ts";
 import * as Runtime from "io-ts";
 
-import { pipe } from ".";
+import { flow, pipe } from ".";
 import * as Array from "./Array";
 import * as Either from "./Either";
 import * as Error from "./Error";
-import { Fn } from "./FP";
 import * as JSON from "./JSON";
 import * as Option from "./Option";
 import * as String from "./String";
@@ -26,7 +25,7 @@ export const decode = <
   pipe(
     type.decode(value),
     Either.mapLeft(
-      Fn.flow(
+      flow(
         Array.map(errorMessage),
         Array.reduce([] as string[], (previous, message) =>
           pipe(
