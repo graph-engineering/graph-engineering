@@ -1,17 +1,9 @@
 {
-  "extends": "./.tst/tslint.json",
+  "extends": ["./.tst/tslint.json", "tslint-immutable/all"],
+
   "rules": {
-    "no-expression-statement": [
-      true,
-      { "ignore-prefix": ["main", "describe", "test", "expect"] }
-    ],
-
-    "variable-name": [
-      true,
-      "allow-leading-underscore",
-      "allow-trailing-underscore"
-    ],
-
+    "no-submodule-imports": [true, "~"],
+    "no-implicit-dependencies": false,
     "no-duplicate-imports": {
       "severity": "error",
       "options": {
@@ -19,8 +11,27 @@
       }
     },
 
-    "no-namespace": false,
+    "curly": [true, "as-needed"],
+    "no-object-mutation": [true, { "ignore-prefix": "mutable." }],
+    "no-expression-statement": [
+      true,
+      { "ignore-prefix": ["mutable.", "main", "describe", "test", "expect"] }
+    ],
 
-    "array-type": false
+    "array-type": false,
+    "no-internal-module": false,
+    "no-namespace": false,
+    "no-empty-interface": false,
+    "callable-types": false,
+
+    "object-literal-sort-keys": false,
+    "interface-name": false,
+    "no-shadowed-variable": false,
+    "no-unused-variable": [true, { "ignore-pattern": "^_" }],
+    "variable-name": [
+      true,
+      "allow-leading-underscore",
+      "allow-trailing-underscore"
+    ]
   }
 }
