@@ -28,7 +28,7 @@ export module TypeDefinition {
       export type Fields = readonly GraphQL.FieldDefinitionNode[];
       export const instance: Monoid.Monoid<Fields> = {
         empty: [],
-        concat: (x, y) => hole()
+        concat: (x, y) => Array.uniq(Field.instance)([...x, ...y])
       };
     }
 
