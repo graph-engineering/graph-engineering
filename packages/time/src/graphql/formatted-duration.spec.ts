@@ -33,4 +33,32 @@ describe("formatted duration", () => {
       years: 0.000009506621552043427
     });
   });
+
+  test("that a basic case works", () => {
+    return expectSimpleObjectType(
+      FormattedDuration.FormattedDuration,
+      fiveMinutesInMillis,
+      `{
+        humanized
+        milliseconds(numToRound: 4)
+        seconds(numToRound: 3)
+        minutes(numToRound: 2)
+        hours(numToRound: 1)
+        days(numToRound: 4)
+        weeks(numToRound: 3)
+        months(numToRound: 2)
+        years(numToRound: 1)
+			}`
+    ).resolves.toEqual({
+      days: 0.0035,
+      hours: 0.1,
+      humanized: "5 minutes",
+      milliseconds: 300000,
+      minutes: 5,
+      months: 0,
+      seconds: 300,
+      weeks: 0,
+      years: 0
+    });
+  });
 });
