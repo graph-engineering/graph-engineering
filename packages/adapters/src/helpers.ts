@@ -2,14 +2,10 @@ import {
   graphql,
   GraphQLFieldResolver,
   GraphQLObjectType,
-  GraphQLSchema
+  GraphQLSchema,
+  printType
 } from "graphql";
-
-export const getMillisForTwoHoursAgo = (): number => {
-  const d = new Date();
-  d.setHours(d.getHours() - 2);
-  return d.getTime();
-};
+import gql from "graphql-tag";
 
 export const extractResolvers = (
   object: GraphQLObjectType
@@ -37,16 +33,18 @@ export function expectSimpleObjectType(
   });
 
   return expect(
-    graphql(
-      schema,
-      `
-					{
-						arbitraryRootField ${queryString}
-					}
-				`
-    ).then(response => {
-      if (response.errors) throw new Error(response.errors[0].message);
-      return response.data && response.data.arbitraryRootField;
-    })
+    graphql(schema, `{ arbitraryRootField ${queryString} }`).then(response =>
+      response.errors
+        ? fail(new Error(response.errors[0].message))
+        : response.data && response.data.arbitraryRootField
+    )
   );
 }
+
+export const createGraphQLExports = (graphQLType: GraphQLObjectType) => ({
+  typeDefs: gql`
+    ${printType(graphQLType)}
+  `,
+  resolvers: extractResolvers(graphQLType),
+  rawType: graphQLType
+});

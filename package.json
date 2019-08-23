@@ -5,6 +5,8 @@
     "tst:init": "tst init --install false",
     "tst:scripts": "tst scripts",
     "tst:deps": "tst deps",
+    "adapters:test": "tst test adapters",
+    "adapters:test:watch": "tst test adapters --watch",
     "connection:test": "tst test connection",
     "connection:test:watch": "tst test connection --watch",
     "connection:dev": "lerna exec --scope @grapheng/connection -- npm run start",
