@@ -17,7 +17,7 @@ export const args = {
 
 export interface Args {
   readonly maxDecimalPlaces?: number;
-  readonly roundingDirection?: "UP" | "DOWN" | "NEAREST";
+  readonly roundingDirection?: "UP" | "DOWN" | "NEAREST" | 0 | 1 | 2;
 }
 
 const toTrunc = (input: number, maxDecimalPlaces: number): number => {
@@ -49,11 +49,14 @@ export const round = (
       const adjustmentNumber = Math.pow(10, finalMaxPlaces);
 
       switch (roundingDirection) {
-        case "DOWN":
-          return Math.floor(num * adjustmentNumber) / adjustmentNumber;
         case "UP":
+        case 0:
           return Math.ceil(num * adjustmentNumber) / adjustmentNumber;
+        case "DOWN":
+        case 1:
+          return Math.floor(num * adjustmentNumber) / adjustmentNumber;
         case "NEAREST":
+        case 2:
           return Math.round(num * adjustmentNumber) / adjustmentNumber;
         default:
           return toTrunc(num, finalMaxPlaces);
