@@ -1,10 +1,10 @@
 import { printType } from "graphql";
 import gql from "graphql-tag";
 
-import { RoundingDirectionEnum } from "./basic-rounder";
 import * as Distance from "./distance";
+import { RoundingDirectionEnum } from "./utils/basic-rounder";
 
-const distanceAdapter = Distance.makeDistanceAdapter();
+const distanceAdapter = Distance.makeAdapter();
 
 export const typeDefs = gql`
   ${distanceAdapter.typeDefs}

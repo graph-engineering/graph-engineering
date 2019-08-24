@@ -1,3 +1,4 @@
+import { pipe } from "@grapheng/prelude";
 import {
   graphql,
   GraphQLFieldResolver,
@@ -33,10 +34,15 @@ export function expectSimpleObjectType(
   });
 
   return expect(
-    graphql(schema, `{ arbitraryRootField ${queryString} }`).then(response =>
-      response.errors
-        ? fail(new Error(response.errors[0].message))
-        : response.data && response.data.arbitraryRootField
+    graphql(schema, `{ arbitraryRootField ${queryString} }`).then(
+      response => {
+        // tslint:disable-next-line:no-if-statement
+        if (response.errors) throw new Error(response.errors[0].message);
+        else return response.data && response.data.arbitraryRootField;
+      }
+      // response.errors
+      //   ? fail(new Error(response.errors[0].message))
+      //   : response.data && response.data.arbitraryRootField
     )
   );
 }
@@ -48,3 +54,9 @@ export const createGraphQLExports = (graphQLType: GraphQLObjectType) => ({
   resolvers: extractResolvers(graphQLType),
   rawType: graphQLType
 });
+
+export const getObjectKeysAsSelection = (type: object): string =>
+  pipe(
+    Object.keys(type).join(" "),
+    fields => `{ ${fields} }`
+  );
