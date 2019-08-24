@@ -20,14 +20,14 @@ export interface Args {
   readonly roundingDirection?: "UP" | "DOWN" | "NEAREST";
 }
 
-const toTrunc = (input: number, numberOfDecimals: number): number => {
+const toTrunc = (input: number, maxDecimalPlaces: number): number => {
   const [stringBefore, stringAfter] = `${input}.`.split(".");
   // tslint:disable
   let final = stringBefore;
-  if (numberOfDecimals <= 0) {
+  if (maxDecimalPlaces <= 0) {
     final = stringBefore;
-  } else if (stringAfter.length > numberOfDecimals) {
-    final = `${stringBefore}.${stringAfter.substr(0, numberOfDecimals)}`;
+  } else if (stringAfter.length > maxDecimalPlaces) {
+    final = `${stringBefore}.${stringAfter.substr(0, maxDecimalPlaces)}`;
   } else {
     final = `${stringBefore}.${stringAfter}`;
   }
@@ -41,7 +41,9 @@ export const round = (
   { maxDecimalPlaces, roundingDirection }: Args
 ): number =>
   pipe(
-    Option.fromNullable(maxDecimalPlaces || roundingDirection),
+    Option.fromNullable(
+      typeof maxDecimalPlaces === "number" || roundingDirection
+    ),
     Option.map(() => {
       const finalMaxPlaces = maxDecimalPlaces || 0;
       const adjustmentNumber = Math.pow(10, finalMaxPlaces);
