@@ -10,12 +10,20 @@ const schema = makeExecutableSchema({
 
     type Query {
       distance(millimetersInput: Float!): DistanceAdapter!
+      pressure(pascalsInput: Float!): PressureAdapter!
+      velocity(metersPerSecondInput: Float!): VelocityAdapter!
+      volume(millilitersInput: Float!): VolumeAdapter!
+      area(squareMetersInput: Float!): AreaAdapter!
     }
   `,
   resolvers: {
     ...AllTypes.resolvers,
     Query: {
-      distance: (_, args) => args.millimetersInput
+      distance: (_, args) => args.millimetersInput,
+      pressure: (_, args) => args.pascalsInput,
+      velocity: (_, args) => args.metersPerSecondInput,
+      volume: (_, args) => args.millilitersInput,
+      area: (_, args) => args.squareMetersInput
     }
   }
 });

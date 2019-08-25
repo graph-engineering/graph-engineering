@@ -12,7 +12,8 @@ export interface GenericRatioTable {
 export type PossibleFields = keyof GenericRatioTable;
 
 export const makeSimpleUnitAdapter = <T extends GenericRatioTable>(
-  baseRatioTable: T
+  baseRatioTable: T,
+  defaultTypeName: string
 ) => (
   config: {
     readonly strict?: boolean;
@@ -41,7 +42,7 @@ export const makeSimpleUnitAdapter = <T extends GenericRatioTable>(
     }),
     ratioTable =>
       new GraphQLObjectType({
-        name: config.name || "DistanceAdapter",
+        name: config.name || defaultTypeName,
         fields: () =>
           Object.entries(ratioTable).reduce(
             (previous, [unit, ratio]) => ({

@@ -1,0 +1,14 @@
+import { makeSimpleUnitAdapter } from "./utils/simple-unit-adapter-creator";
+
+export const areas = {
+  squareMeters: 1,
+  squareKilometers: 1000000,
+  hectares: 10000,
+  squareMiles: 2590000,
+  acres: 4046.86,
+  squareInches: 0.00064516,
+  squareFeet: 0.092903,
+  squareYards: 0.836127
+};
+
+export const makeAdapter = makeSimpleUnitAdapter(areas, "AreaAdapter");

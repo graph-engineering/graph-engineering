@@ -9,4 +9,4 @@ export const pressures = {
   torr: 133.32236842105
 };
 
-export const makeAdapter = makeSimpleUnitAdapter(pressures);
+export const makeAdapter = makeSimpleUnitAdapter(pressures, "PressureAdapter");

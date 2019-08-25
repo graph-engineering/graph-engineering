@@ -7,4 +7,4 @@ export const velocities = {
   knots: 0.514444855556
 };
 
-export const makeAdapter = makeSimpleUnitAdapter(velocities);
+export const makeAdapter = makeSimpleUnitAdapter(velocities, "VelocityAdapter");

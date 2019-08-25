@@ -14,4 +14,4 @@ export const volumes = {
   teaspoons: 48.6922
 };
 
-export const makeAdapter = makeSimpleUnitAdapter(volumes);
+export const makeAdapter = makeSimpleUnitAdapter(volumes, "VolumeAdapter");

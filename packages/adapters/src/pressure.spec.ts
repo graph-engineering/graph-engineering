@@ -1,4 +1,4 @@
-import * as Pressure from "./Pressure";
+import * as Pressure from "./pressure";
 import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
