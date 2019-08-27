@@ -1,7 +1,7 @@
 export * from "fp-ts/lib/Option";
 import * as Option from "fp-ts/lib/Option";
 
-import { chainFrom, pipe, Maybe, property } from ".";
+import { chainFrom, pipe, property } from ".";
 import { Fn } from "./FP";
 import * as These from "./These";
 
