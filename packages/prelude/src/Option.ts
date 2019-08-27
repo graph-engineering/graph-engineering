@@ -7,7 +7,7 @@ import * as These from "./These";
 
 export const chained = chainFrom(Option.option);
 
-export const combine = <A>(
+export const concatWith = <A>(
   a: Option.Option<A>,
   b: Option.Option<A>,
   fn: (a: A, b: A) => A
