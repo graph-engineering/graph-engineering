@@ -11,7 +11,7 @@ export interface JSONObject {
   readonly [key: string]: JSONValue;
 }
 
-export const parse = (string: string): Either.ErrorOr<string> =>
+export const parse = <A = unknown>(string: string): Either.ErrorOr<A> =>
   Either.tryCatch(() => JSON.parse(string), onError);
 
 export namespace Stringify {
