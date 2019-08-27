@@ -1,7 +1,7 @@
 export * from "fp-ts/lib/Option";
 import * as Option from "fp-ts/lib/Option";
 
-import { chainFrom, pipe } from ".";
+import { chainFrom, pipe, Maybe, property } from ".";
 import { Fn } from "./FP";
 import * as These from "./These";
 
@@ -15,4 +15,13 @@ export const combine = <A>(
   pipe(
     These.fromOptions(a, b),
     Option.map(These.fold(Fn.identity, Fn.identity, fn))
+  );
+
+export const fromProperty = <A extends keyof B, B extends Object>(a: A) => (
+  b: B
+): Option.Option<B[A]> =>
+  pipe(
+    b,
+    property(a),
+    Option.fromNullable
   );
