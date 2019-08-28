@@ -16,6 +16,18 @@ export const maybe = <A extends Runtime.Any>(
 ): Runtime.UnionC<readonly [A, Runtime.NullC, Runtime.UndefinedC]> =>
   Runtime.union([type, Runtime.null, Runtime.undefined]);
 
+export const fromPredicate = <A>(
+  name: string,
+  predicate: (a: unknown) => a is A
+): Runtime.Type<A> =>
+  new Runtime.Type(
+    name,
+    predicate,
+    (a, context) =>
+      predicate(a) ? Runtime.success(a) : Runtime.failure(a, context),
+    Runtime.identity
+  );
+
 export const decode = <
   Type extends Runtime.Any,
   A extends ReadonlyTypeOf<Type>

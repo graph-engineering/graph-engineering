@@ -1,5 +1,5 @@
 export * from "fp-ts/lib/Array";
-import * as Array from "fp-ts/lib/Array";
+import * as Array_ from "fp-ts/lib/Array";
 
 import { Maybe } from ".";
 import * as Option from "./Option";
@@ -9,9 +9,11 @@ declare global {
   interface ReadonlyArray<T> extends Array<T> {}
 }
 
+export const is = <A>(a: unknown): a is readonly A[] => Array.isArray(a);
+
 export const empty = <A>(): readonly A[] => [];
 
 export const from = <A>(a: A): readonly A[] => [a];
 
 export const nonNullables = <A>(as: readonly Maybe<A>[]): readonly A[] =>
-  Array.filterMap(Option.fromNullable)(as);
+  Array_.filterMap(Option.fromNullable)(as);
