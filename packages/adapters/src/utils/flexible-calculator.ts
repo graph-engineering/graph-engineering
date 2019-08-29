@@ -53,18 +53,6 @@ const makeTableAsFunctions = (
     {} as RatioTableWithOnlyRelationshipFunctions
   );
 
-export const temperatures = {
-  celsius: 1,
-  fahrenheit: {
-    fromBaseUnit: (celsius: number) => celsius * (9 / 5) + 32,
-    toBaseUnit: (fahrenheit: number) => (fahrenheit - 32) * (5 / 9)
-  },
-  kelvin: {
-    fromBaseUnit: (celsius: number) => celsius + 273.15,
-    toBaseUnit: (kelvin: number) => kelvin - 273.15
-  }
-};
-
 // TODO: output is GenericRatioTable
 export const flexibleCalculator = (
   input: Partial<RatioTableWithOnlyNumbers>,
