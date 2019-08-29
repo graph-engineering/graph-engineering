@@ -1,25 +1,25 @@
 import { Either, Error, pipe } from "@grapheng/prelude";
 
-import { GenericRatioTable } from "./simple-unit-adapter-creator";
+import {
+  RatioTableWithNumbersOrRelationshipFunctions,
+  RatioTableWithOnlyNumbers,
+  RatioTableWithOnlyRelationshipFunctions
+} from "./types";
 
 // TODO: make more typesafe
-
 // TODO: curry when available
-export const compareObjects = <T extends object>(
+export const compareObjects = <T extends object, K extends object>(
   include: boolean,
   input: T,
-  lookup: T
+  lookup: K
 ): T =>
   Object.entries(input)
-    .filter(([field]) => !!lookup[field as keyof T] === include)
+    .filter(([field]) => !!lookup[field as keyof K] === include)
     .reduce(
       (previous, [key, value]) => ({ ...previous, [key]: value }),
       // tslint:disable-next-line:no-object-literal-type-assertion
       {} as T
     );
-
-const objectIsNotEmpty = <T extends object>(obj: T): boolean =>
-  Object.keys(obj).length > 0;
 
 const objectValuesAreAllNumbers = <T>(obj: T): Either.ErrorOr<T> =>
   Either.fromPredicate<Error, T>(
@@ -27,44 +27,83 @@ const objectValuesAreAllNumbers = <T>(obj: T): Either.ErrorOr<T> =>
     Error.fromL("Not all the fields in the object are numbers.")
   )(obj);
 
+const objectIsNotEmpty = <T>(obj: T): Either.ErrorOr<T> =>
+  Either.fromPredicate<Error, T>(
+    input => Object.keys(input).length > 0,
+    Error.fromL(
+      "Flexible Calculator must have at least one key that exists in the provided ratio table."
+    )
+  )(obj);
+
+const makeTableAsFunctions = (
+  table: RatioTableWithNumbersOrRelationshipFunctions
+): RatioTableWithOnlyRelationshipFunctions =>
+  Object.entries(table).reduce(
+    (previous, [key, value]) => ({
+      ...previous,
+      [key]:
+        typeof value === "number"
+          ? {
+              toBaseUnit: (num: number) => num * value,
+              fromBaseUnit: (num: number) => num / value
+            }
+          : value
+    }),
+    // tslint:disable-next-line:no-object-literal-type-assertion
+    {} as RatioTableWithOnlyRelationshipFunctions
+  );
+
+export const temperatures = {
+  celsius: 1,
+  fahrenheit: {
+    fromBaseUnit: (celsius: number) => celsius * (9 / 5) + 32,
+    toBaseUnit: (fahrenheit: number) => (fahrenheit - 32) * (5 / 9)
+  },
+  kelvin: {
+    fromBaseUnit: (celsius: number) => celsius + 273.15,
+    toBaseUnit: (kelvin: number) => kelvin - 273.15
+  }
+};
+
 // TODO: output is GenericRatioTable
 export const flexibleCalculator = (
-  input: Partial<GenericRatioTable>,
-  table: GenericRatioTable
-): Either.ErrorOr<GenericRatioTable> =>
+  input: Partial<RatioTableWithOnlyNumbers>,
+  _table: RatioTableWithNumbersOrRelationshipFunctions
+): Either.ErrorOr<RatioTableWithOnlyNumbers> =>
   pipe(
-    compareObjects(true, input, table),
-    Either.fromPredicate(
-      objectIsNotEmpty,
-      Error.fromL(
-        "Flexible Calculator must have at least one key that exists in the provided ratio table."
-      )
-    ),
-    Either.chain(objectValuesAreAllNumbers),
-    Either.map(refinedInput => compareObjects(false, table, refinedInput)),
-    Either.map(Object.keys),
-    Either.map(uncalculatedFields =>
+    makeTableAsFunctions(_table),
+    table =>
       pipe(
-        Object.entries(input)[0],
-        ([firstItemUnit, firstItemUnitValue]) =>
-          uncalculatedFields.reduce(
-            (previous, field) => ({
-              ...previous,
-              [field]:
-                (firstItemUnitValue as number) *
-                (table[firstItemUnit] / table[field])
-            }),
-            // tslint:disable-next-line:no-object-literal-type-assertion
-            {} as Partial<GenericRatioTable>
+        Either.right(compareObjects(true, input, table)),
+        Either.chain(objectIsNotEmpty),
+        Either.chain(objectValuesAreAllNumbers),
+        Either.map(refinedInput => compareObjects(false, table, refinedInput)),
+        Either.map(Object.keys),
+        Either.map(uncalculatedInputFields =>
+          pipe(
+            Object.entries(input)[0],
+            ([firstItemUnit, firstItemUnitValue]) =>
+              uncalculatedInputFields.reduce(
+                (previous, inputField) => ({
+                  ...previous,
+                  [inputField]: pipe(
+                    firstItemUnitValue as number,
+                    table[firstItemUnit].toBaseUnit,
+                    table[inputField].fromBaseUnit
+                  )
+                }),
+                // tslint:disable-next-line:no-object-literal-type-assertion
+                {} as Partial<RatioTableWithOnlyNumbers>
+              )
           )
+        ),
+        Either.map(
+          recentlyCalculatedFieldsMap =>
+            // tslint:disable-next-line:no-object-literal-type-assertion
+            ({
+              ...recentlyCalculatedFieldsMap,
+              ...compareObjects(true, input, table)
+            } as RatioTableWithOnlyNumbers)
+        )
       )
-    ),
-    Either.map(
-      recentlyCalculatedFieldsMap =>
-        // tslint:disable-next-line:no-object-literal-type-assertion
-        ({
-          ...recentlyCalculatedFieldsMap,
-          ...compareObjects(true, input, table)
-        } as GenericRatioTable)
-    )
   );

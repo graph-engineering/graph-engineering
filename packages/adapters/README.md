@@ -15,3 +15,8 @@
   - temperature (not linear, can't use simple tables)
   - duration (from time)
   - date
+  - location -> tries to go out and get stuff async
+
+consider
+
+1. selection types for dictating
