@@ -9,7 +9,7 @@ import * as Pressure from "./pressure";
 import * as Velocity from "./velocity";
 import * as Volume from "./volume";
 
-const distanceAdapter = Distance.makeAdapter();
+export const distanceAdapter = Distance.makeAdapter();
 const pressureAdapter = Pressure.makeAdapter();
 const velocityAdapter = Velocity.makeAdapter();
 const volumeAdapter = Volume.makeAdapter();
@@ -18,17 +18,17 @@ const areaAdapter = Area.makeAdapter();
 export const typeDefs = gql`
   ${printType(RoundingDirectionEnum)}
 
-  ${distanceAdapter.typeDefs}
-  ${pressureAdapter.typeDefs}
-  ${velocityAdapter.typeDefs}
-  ${volumeAdapter.typeDefs}
-  ${areaAdapter.typeDefs}
+  ${distanceAdapter.outputType.typeDefs}
+  ${pressureAdapter.outputType.typeDefs}
+  ${velocityAdapter.outputType.typeDefs}
+  ${volumeAdapter.outputType.typeDefs}
+  ${areaAdapter.outputType.typeDefs}
 `;
 
 export const resolvers = {
-  DistanceAdapter: distanceAdapter.resolvers,
-  PressureAdapter: pressureAdapter.resolvers,
-  VelocityAdapter: velocityAdapter.resolvers,
-  VolumeAdapter: volumeAdapter.resolvers,
-  AreaAdapter: areaAdapter.resolvers
+  DistanceAdapter: distanceAdapter.outputType.resolvers,
+  PressureAdapter: pressureAdapter.outputType.resolvers,
+  VelocityAdapter: velocityAdapter.outputType.resolvers,
+  VolumeAdapter: volumeAdapter.outputType.resolvers,
+  AreaAdapter: areaAdapter.outputType.resolvers
 };

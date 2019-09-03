@@ -13,7 +13,7 @@ describe("velocity", () => {
 
   test("that 20 m/s makes the correct velocities", () => {
     expectSimpleObjectType(
-      velocityAdapter.rawType,
+      velocityAdapter.outputType.rawType,
       20,
       allDurationFieldsSelection
     ).resolves.toEqual({

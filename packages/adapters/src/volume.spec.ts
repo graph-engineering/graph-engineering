@@ -11,7 +11,7 @@ describe("volume", () => {
 
   test("that 20000 milliliters makes the correct volumes", () => {
     expectSimpleObjectType(
-      volumeAdapter.rawType,
+      volumeAdapter.outputType.rawType,
       20000,
       allDurationFieldsSelection
     ).resolves.toEqual({

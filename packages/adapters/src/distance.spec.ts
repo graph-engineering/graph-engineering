@@ -22,7 +22,7 @@ describe("distance", () => {
           Object.keys(
             Distance.makeAdapter({
               selectedFields: fields
-            }).rawType.getFields()
+            }).outputType.rawType.getFields()
           )
         ).toEqual(fields);
       }
@@ -34,7 +34,7 @@ describe("distance", () => {
 
     test("that 23783 millimeters makes the right distances", () => {
       expectSimpleObjectType(
-        distanceAdapter.rawType,
+        distanceAdapter.outputType.rawType,
         23783,
         allDurationFieldsSelection
       ).resolves.toEqual({
@@ -51,7 +51,7 @@ describe("distance", () => {
 
     test("that 1000 millimeters makes the right distances", () => {
       expectSimpleObjectType(
-        distanceAdapter.rawType,
+        distanceAdapter.outputType.rawType,
         1000,
         allDurationFieldsSelection
       ).resolves.toEqual({
@@ -72,7 +72,7 @@ describe("distance", () => {
 
     test("that limited selection with rounding works fine", () => {
       expectSimpleObjectType(
-        distanceAdapter.rawType,
+        distanceAdapter.outputType.rawType,
         123910,
         `{
           centimeters
@@ -96,7 +96,7 @@ describe("distance", () => {
 
     test("that limited selection with rounding works fine", () => {
       expectSimpleObjectType(
-        distanceAdapter.rawType,
+        distanceAdapter.outputType.rawType,
         105.5,
         `{
           decimeters(maxDecimalPlaces: 1, roundingDirection: NEAREST)
@@ -119,7 +119,7 @@ describe("distance", () => {
       "that $input should fail as a source because strict mode is not false",
       ({ source }) => {
         expectSimpleObjectType(
-          distanceAdapter.rawType,
+          distanceAdapter.outputType.rawType,
           source,
           allDurationFieldsSelection
         ).rejects.toThrowError();
@@ -137,7 +137,7 @@ describe("distance", () => {
       ${{ feet: 10.9 }} | ${`{feet(roundingDirection: DOWN)}`} | ${{ feet: 10 }}
     `("that $source should resolve", ({ source, selection, output }) => {
       expectSimpleObjectType(
-        distanceAdapter.rawType,
+        distanceAdapter.outputType.rawType,
         source,
         selection
       ).resolves.toEqual(output);

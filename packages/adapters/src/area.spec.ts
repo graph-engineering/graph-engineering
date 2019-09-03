@@ -11,7 +11,7 @@ describe("area", () => {
 
   test("that 4328 square meters makes the correct areas", () => {
     expectSimpleObjectType(
-      areaAdapter.rawType,
+      areaAdapter.outputType.rawType,
       4328,
       allDurationFieldsSelection
     ).resolves.toEqual({

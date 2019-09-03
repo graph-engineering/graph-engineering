@@ -1,108 +1,116 @@
-import { Either, Error, Fn, Option, pipe } from '@grapheng/prelude'
-import { GraphQLFloat, GraphQLNonNull, GraphQLObjectType } from 'graphql'
+import { Either, Error, Fn, Option, pipe } from "@grapheng/prelude";
+import {
+  GraphQLFloat,
+  GraphQLInputObjectType,
+  GraphQLNonNull,
+  GraphQLObjectType
+} from "graphql";
 
-import * as BasicRounder from './basic-rounder'
-import { flexibleCalculator } from './flexible-calculator'
-import { createGraphQLExports, makeTableAsFunctions } from './helpers'
+import * as BasicRounder from "./basic-rounder";
+import { flexibleCalculator } from "./flexible-calculator";
+import {
+  createGraphQLInputObjectTypeExports,
+  createGraphQLObjectTypeExports,
+  makeTableAsFunctions,
+  mapObject
+} from "./helpers";
 
 export interface GenericRatioTable {
-	readonly [key: string]: number
+  readonly [key: string]: number;
 }
 
-export type PossibleFields = keyof GenericRatioTable
+export type PossibleFields = keyof GenericRatioTable;
 
 // const createTypeFromTable = (table: )
 
 const keepFieldsOnObj = <T extends object>(
-	fieldsToKeep: ReadonlyArray<keyof T>,
-	obj: T
+  fieldsToKeep: ReadonlyArray<keyof T>,
+  obj: T
 ): Partial<T> =>
-	fieldsToKeep.reduce(
-		(previous, current) => ({
-			...previous,
-			[current]: obj[current]
-		}),
-		// tslint:disable-next-line:no-object-literal-type-assertion
-		{} as T
-	)
+  fieldsToKeep.reduce(
+    (previous, current) => ({
+      ...previous,
+      [current]: obj[current]
+    }),
+    // tslint:disable-next-line:no-object-literal-type-assertion
+    {} as T
+  );
 
 export const makeSimpleUnitAdapter = <T extends GenericRatioTable>(
-	baseRatioTable: T,
-	defaultTypeName: string
+  baseRatioTable: T,
+  defaultTypeName: string
 ) => (
-	config: {
-		readonly strict?: boolean
-		readonly name?: string
-		readonly selectedFields?: readonly PossibleFields[]
-		readonly customFields?: { readonly [key: string]: number }
-	} = { strict: true }
+  config: {
+    readonly strict?: boolean;
+    readonly name?: string;
+    readonly selectedFields?: readonly PossibleFields[];
+    readonly customFields?: { readonly [key: string]: number };
+  } = { strict: true }
 ) =>
-	pipe(
-		Option.fromNullable(config.selectedFields),
-		// TODO: handle runtime strings that don't exist in here
-		Option.map(selectedFields =>
-			keepFieldsOnObj(selectedFields, baseRatioTable)
-		),
-		Option.fold(() => baseRatioTable, Fn.identity),
-		ratioTable => ({
-			...ratioTable,
-			...(config.customFields || {})
-		}),
-		makeTableAsFunctions,
-		ratioTable => ({
-			outputType: new GraphQLObjectType({
-				name: config.name || defaultTypeName,
-				fields: () =>
-					Object.entries(ratioTable).reduce(
-						(previous, [unit, unitFunctions]) => ({
-							...previous,
-							[unit]: {
-								type: new GraphQLNonNull(GraphQLFloat),
-								args: BasicRounder.args,
-								resolve: (
-									source: number | Partial<GenericRatioTable>,
-									args: BasicRounder.Args
-								) =>
-									pipe(
-										typeof source === 'number'
-											? Either.right(unitFunctions.fromBaseUnit(source))
-											: pipe(
-													typeof config.strict === 'undefined'
-														? true
-														: config.strict,
-													Either.fromPredicate(
-														strict => !strict,
-														Error.fromL(
-															`In Strict mode, the source of ${config.name ||
-																'DistanceAdapter'} must be a number. Instead, you gave a(n) ${typeof source}`
-														)
-													),
-													Either.chain(() =>
-														flexibleCalculator(source, ratioTable)
-													),
-													Either.map(table => table[unit])
-											  ),
-										Either.map(num => BasicRounder.round(num, args)),
-										Either.fold(Error.throw, Fn.identity)
-									)
-							}
-						}),
-						{}
-					)
-			})
-		}),
-		types =>
-			Object.entries(types).reduce(
-				(previous, [key, value]) => ({ ...previous, [key]: value }),
-				{}
-			),
-		createGraphQLExports
-	)
-
-const mapObject = <T extends object, K>(fn: (value: T[keyof T]) => K) => (
-	obj: T
-): { readonly [key: keyof T]: K } =>
-	Object.entries(obj).reduce(
-		(previous, [key, value]) => ({ ...previous, [key]: fn(value) }),
-		{}
-	)
+  pipe(
+    Option.fromNullable(config.selectedFields),
+    // TODO: handle runtime strings that don't exist in here
+    Option.map(selectedFields =>
+      keepFieldsOnObj(selectedFields, baseRatioTable)
+    ),
+    Option.fold(() => baseRatioTable, Fn.identity),
+    ratioTable => ({
+      ...ratioTable,
+      ...(config.customFields || {})
+    }),
+    makeTableAsFunctions,
+    ratioTable => ({
+      inputType: new GraphQLInputObjectType({
+        name: `${config.name || defaultTypeName}Input`,
+        fields: () =>
+          pipe(
+            ratioTable,
+            mapObject(() => ({ type: GraphQLFloat }))
+          )
+      }),
+      outputType: new GraphQLObjectType({
+        name: config.name || defaultTypeName,
+        fields: () =>
+          Object.entries(ratioTable).reduce(
+            (previous, [unit, unitFunctions]) => ({
+              ...previous,
+              [unit]: {
+                type: new GraphQLNonNull(GraphQLFloat),
+                args: BasicRounder.args,
+                resolve: (
+                  source: number | Partial<GenericRatioTable>,
+                  args: BasicRounder.Args
+                ) =>
+                  pipe(
+                    typeof source === "number"
+                      ? Either.right(unitFunctions.fromBaseUnit(source))
+                      : pipe(
+                          typeof config.strict === "undefined"
+                            ? true
+                            : config.strict,
+                          Either.fromPredicate(
+                            strict => !strict,
+                            Error.fromL(
+                              `In Strict mode, the source of ${config.name ||
+                                "DistanceAdapter"} must be a number. Instead, you gave a(n) ${typeof source}`
+                            )
+                          ),
+                          Either.chain(() =>
+                            flexibleCalculator(source, ratioTable)
+                          ),
+                          Either.map(table => table[unit])
+                        ),
+                    Either.map(num => BasicRounder.round(num, args)),
+                    Either.fold(Error.throw, Fn.identity)
+                  )
+              }
+            }),
+            {}
+          )
+      })
+    }),
+    ({ inputType, outputType }) => ({
+      inputType: createGraphQLInputObjectTypeExports(inputType),
+      outputType: createGraphQLObjectTypeExports(outputType)
+    })
+  );

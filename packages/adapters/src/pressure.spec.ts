@@ -11,7 +11,7 @@ describe("pressure", () => {
 
   test("that 12345 pascals makes the correct pressures", () => {
     expectSimpleObjectType(
-      pressureAdapter.rawType,
+      pressureAdapter.outputType.rawType,
       12345,
       allDurationFieldsSelection
     ).resolves.toEqual({
