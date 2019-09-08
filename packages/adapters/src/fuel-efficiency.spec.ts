@@ -13,7 +13,7 @@ describe("fuel efficiency", () => {
   `("$input makes $output", ({ input, output }) => {
     // tslint:disable-next-line:no-expression-statement
     pipe(
-      flexibleCalculator(input, fuelEfficiencies),
+      flexibleCalculator(input, fuelEfficiencies.relationships),
       Either.fold(fail, result => {
         expect(result).toEqual(output);
       })

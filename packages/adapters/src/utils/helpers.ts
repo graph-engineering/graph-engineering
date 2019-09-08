@@ -99,12 +99,3 @@ export const makeTableAsFunctions = (
     // tslint:disable-next-line:no-object-literal-type-assertion
     {} as RatioTableWithOnlyRelationshipFunctions
   );
-
-export const mapObject = <T extends object, K>(
-  fn: (value: T[keyof T]) => K
-) => (obj: T): { readonly [N in keyof T]: K } =>
-  Object.entries(obj).reduce(
-    (previous, [key, value]) => ({ ...previous, [key]: fn(value) }),
-    // tslint:disable-next-line:no-object-literal-type-assertion
-    {} as { readonly [N in keyof T]: K }
-  );

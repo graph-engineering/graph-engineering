@@ -1,4 +1,4 @@
-import { Either, Error, Fn, Option, pipe } from "@grapheng/prelude";
+import { Either, Error, Fn, Option, pipe, Record } from "@grapheng/prelude";
 import {
   GraphQLFloat,
   GraphQLInputObjectType,
@@ -11,15 +11,12 @@ import { flexibleCalculator } from "./flexible-calculator";
 import {
   createGraphQLInputObjectTypeExports,
   createGraphQLObjectTypeExports,
-  makeTableAsFunctions,
-  mapObject
+  makeTableAsFunctions
 } from "./helpers";
-
-export interface GenericRatioTable {
-  readonly [key: string]: number;
-}
-
-export type PossibleFields = keyof GenericRatioTable;
+import {
+  RatioTableWithNumbersOrRelationshipFunctions,
+  StringsToNumbers
+} from "./types";
 
 // const createTypeFromTable = (table: )
 
@@ -36,17 +33,33 @@ const keepFieldsOnObj = <T extends object>(
     {} as T
   );
 
-export const makeSimpleUnitAdapter = <T extends GenericRatioTable>(
+export interface SimpleUnitAdapterConfig<T> {
+  readonly strict?: boolean;
+  readonly name?: string;
+  readonly selectedFields?: ReadonlyArray<keyof T>;
+  readonly customFields?: { readonly [key: string]: number };
+}
+
+export interface SimpleUnitAdapter {
+  readonly inputType: {
+    readonly typeDefs: any;
+    readonly rawType: GraphQLInputObjectType;
+  };
+  readonly outputType: {
+    readonly typeDefs: any;
+    readonly rawType: GraphQLObjectType;
+    readonly resolvers: object;
+  };
+}
+
+export const makeSimpleUnitAdapterGenerator = <
+  T extends RatioTableWithNumbersOrRelationshipFunctions
+>(
   baseRatioTable: T,
   defaultTypeName: string
 ) => (
-  config: {
-    readonly strict?: boolean;
-    readonly name?: string;
-    readonly selectedFields?: readonly PossibleFields[];
-    readonly customFields?: { readonly [key: string]: number };
-  } = { strict: true }
-) =>
+  config: SimpleUnitAdapterConfig<T> = { strict: true }
+): SimpleUnitAdapter =>
   pipe(
     Option.fromNullable(config.selectedFields),
     // TODO: handle runtime strings that don't exist in here
@@ -65,7 +78,7 @@ export const makeSimpleUnitAdapter = <T extends GenericRatioTable>(
         fields: () =>
           pipe(
             ratioTable,
-            mapObject(() => ({ type: GraphQLFloat }))
+            Record.map(() => ({ type: GraphQLFloat }))
           )
       }),
       outputType: new GraphQLObjectType({
@@ -78,7 +91,7 @@ export const makeSimpleUnitAdapter = <T extends GenericRatioTable>(
                 type: new GraphQLNonNull(GraphQLFloat),
                 args: BasicRounder.args,
                 resolve: (
-                  source: number | Partial<GenericRatioTable>,
+                  source: number | Partial<StringsToNumbers>,
                   args: BasicRounder.Args
                 ) =>
                   pipe(

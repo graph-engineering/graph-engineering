@@ -3,7 +3,9 @@ export interface RelationshipFunctions {
   readonly fromBaseUnit: (num: number) => number;
 }
 
-export interface RatioTableWithOnlyNumbers {
+export type AllRelationships<T> = { [K in keyof T]: number };
+
+export interface StringsToNumbers {
   readonly [key: string]: number;
 }
 
