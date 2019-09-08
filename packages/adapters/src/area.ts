@@ -1,6 +1,6 @@
 import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
 
-export const areas = {
+export const config = {
   defaultAdapterName: "AreaAdapter",
   baseUnit: "squareMeters" as const,
   relationships: {
@@ -15,5 +15,5 @@ export const areas = {
   }
 };
 
-const Area = createSimpleUnitModule(areas);
+const Area = createSimpleUnitModule(config);
 export default Area;

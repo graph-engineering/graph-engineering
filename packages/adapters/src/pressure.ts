@@ -1,6 +1,6 @@
 import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
 
-export const pressures = {
+export const config = {
   defaultAdapterName: "PressureAdapter",
   baseUnit: "pascals" as const,
   relationships: {
@@ -13,5 +13,5 @@ export const pressures = {
   }
 };
 
-const Pressure = createSimpleUnitModule(pressures);
+const Pressure = createSimpleUnitModule(config);
 export default Pressure;

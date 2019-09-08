@@ -2,7 +2,7 @@ import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
 
 // NOTE: terrestrial weight: i.e. a practical weight that is generally relevant to humans on Earth
 
-export const weights = {
+export const config = {
   defaultAdapterName: "WeightAdapter",
   baseUnit: "milligrams" as const,
   relationships: {
@@ -16,5 +16,5 @@ export const weights = {
   }
 };
 
-const Weight = createSimpleUnitModule(weights);
+const Weight = createSimpleUnitModule(config);
 export default Weight;

@@ -1,6 +1,6 @@
 import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
 
-export const volumes = {
+export const config = {
   defaultAdapterName: "VolumeAdapter",
   baseUnit: "milliliters" as const,
   relationships: {
@@ -18,5 +18,5 @@ export const volumes = {
   }
 };
 
-const Volume = createSimpleUnitModule(volumes);
+const Volume = createSimpleUnitModule(config);
 export default Volume;

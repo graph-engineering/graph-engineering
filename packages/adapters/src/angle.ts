@@ -1,6 +1,6 @@
 import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
 
-export const angles = {
+export const config = {
   defaultAdapterName: "AngleAdapter",
   baseUnit: "radians" as const,
   relationships: {
@@ -25,5 +25,5 @@ export const angles = {
   }
 };
 
-const Angle = createSimpleUnitModule(angles);
+const Angle = createSimpleUnitModule(config);
 export default Angle;

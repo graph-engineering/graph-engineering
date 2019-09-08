@@ -1,18 +1,17 @@
-import { areas } from "./area";
+import Area, { config } from "./area";
 import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
 } from "./utils/helpers";
-import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
 
 const allDurationFieldsSelection = getObjectKeysAsSelection(
-  areas.relationships
+  config.relationships
 );
 
 describe("area", () => {
   test("that 4328 square meters makes the correct areas", () => {
     expectSimpleObjectType(
-      createSimpleUnitModule(areas).makeAdapter().outputType.rawType,
+      Area.makeAdapter().outputType.rawType,
       4328,
       allDurationFieldsSelection
     ).resolves.toEqual({

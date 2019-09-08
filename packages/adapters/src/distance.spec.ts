@@ -1,17 +1,14 @@
-import { distances } from "./distance";
+import Distance, { config } from "./distance";
 import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
 } from "./utils/helpers";
-import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
 
 const allDurationFieldsSelection = getObjectKeysAsSelection(
-  distances.relationships
+  config.relationships
 );
 
 describe("distance", () => {
-  const distanceModule = createSimpleUnitModule(distances);
-
   describe("that asking for a limited number of fields works", () => {
     test.each`
       fields
@@ -25,11 +22,9 @@ describe("distance", () => {
       ({ fields }) => {
         expect(
           Object.keys(
-            distanceModule
-              .makeAdapter({
-                selectedFields: fields
-              })
-              .outputType.rawType.getFields()
+            Distance.makeAdapter({
+              selectedFields: fields
+            }).outputType.rawType.getFields()
           )
         ).toEqual(fields);
       }
@@ -37,7 +32,7 @@ describe("distance", () => {
   });
 
   describe("the default adapter should come with all the appropriate responses", () => {
-    const distanceAdapter = distanceModule.makeAdapter();
+    const distanceAdapter = Distance.makeAdapter();
 
     test("that 23783 millimeters makes the right distances", () => {
       expectSimpleObjectType(
@@ -75,7 +70,7 @@ describe("distance", () => {
   });
 
   describe("more complicated examples work", () => {
-    const distanceAdapter = distanceModule.makeAdapter();
+    const distanceAdapter = Distance.makeAdapter();
 
     test("that limited selection with rounding works fine", () => {
       expectSimpleObjectType(
@@ -97,7 +92,7 @@ describe("distance", () => {
   });
 
   describe("adding custom fields work", () => {
-    const distanceAdapter = distanceModule.makeAdapter({
+    const distanceAdapter = Distance.makeAdapter({
       customFields: { decimeters: 100 }
     });
 
@@ -115,7 +110,7 @@ describe("distance", () => {
   });
 
   describe("trying to use objects as source in strict mode fails", () => {
-    const distanceAdapter = distanceModule.makeAdapter();
+    const distanceAdapter = Distance.makeAdapter();
 
     test.each`
       source
@@ -135,7 +130,7 @@ describe("distance", () => {
   });
 
   describe("using non strict mode works", () => {
-    const distanceAdapter = distanceModule.makeAdapter({ strict: false });
+    const distanceAdapter = Distance.makeAdapter({ strict: false });
     test.each`
       source            | selection                            | output
       ${{ inches: 36 }} | ${`{feet}`}                          | ${{ feet: 3 }}

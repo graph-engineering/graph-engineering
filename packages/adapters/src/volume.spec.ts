@@ -2,17 +2,16 @@ import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
 } from "./utils/helpers";
-import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
-import { volumes } from "./volume";
+import Volume, { config } from "./volume";
 
 const allDurationFieldsSelection = getObjectKeysAsSelection(
-  volumes.relationships
+  config.relationships
 );
 
 describe("volume", () => {
   test("that 20000 milliliters makes the correct volumes", () => {
     expectSimpleObjectType(
-      createSimpleUnitModule(volumes).makeAdapter().outputType.rawType,
+      Volume.makeAdapter().outputType.rawType,
       20000,
       allDurationFieldsSelection
     ).resolves.toEqual({

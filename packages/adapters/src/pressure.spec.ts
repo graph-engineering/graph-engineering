@@ -1,18 +1,17 @@
-import { pressures } from "./pressure";
+import Pressure, { config } from "./pressure";
 import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
 } from "./utils/helpers";
-import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
 
 const allDurationFieldsSelection = getObjectKeysAsSelection(
-  pressures.relationships
+  config.relationships
 );
 
 describe("pressure", () => {
   test("that 12345 pascals makes the correct pressures", () => {
     expectSimpleObjectType(
-      createSimpleUnitModule(pressures).makeAdapter().outputType.rawType,
+      Pressure.makeAdapter().outputType.rawType,
       12345,
       allDurationFieldsSelection
     ).resolves.toEqual({

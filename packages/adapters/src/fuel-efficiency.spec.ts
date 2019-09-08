@@ -1,6 +1,6 @@
 import { Either, pipe } from "@grapheng/prelude";
 
-import { fuelEfficiencies } from "./fuel-efficiency";
+import { config } from "./fuel-efficiency";
 import { flexibleCalculator } from "./utils/flexible-calculator";
 
 describe("fuel efficiency", () => {
@@ -13,7 +13,7 @@ describe("fuel efficiency", () => {
   `("$input makes $output", ({ input, output }) => {
     // tslint:disable-next-line:no-expression-statement
     pipe(
-      flexibleCalculator(input, fuelEfficiencies.relationships),
+      flexibleCalculator(input, config.relationships),
       Either.fold(fail, result => {
         expect(result).toEqual(output);
       })

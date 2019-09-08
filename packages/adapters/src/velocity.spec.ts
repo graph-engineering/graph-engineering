@@ -2,17 +2,16 @@ import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
 } from "./utils/helpers";
-import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
-import { velocities } from "./velocity";
+import Velocity, { config } from "./velocity";
 
 const allDurationFieldsSelection = getObjectKeysAsSelection(
-  velocities.relationships
+  config.relationships
 );
 
 describe("velocity", () => {
   test("that 20 m/s makes the correct velocities", () => {
     expectSimpleObjectType(
-      createSimpleUnitModule(velocities).makeAdapter().outputType.rawType,
+      Velocity.makeAdapter().outputType.rawType,
       20,
       allDurationFieldsSelection
     ).resolves.toEqual({

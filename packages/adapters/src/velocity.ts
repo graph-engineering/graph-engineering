@@ -1,6 +1,6 @@
 import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
 
-export const velocities = {
+export const config = {
   defaultAdapterName: "VelocityAdapter",
   baseUnit: "metersPerSecond" as const,
   relationships: {
@@ -11,5 +11,5 @@ export const velocities = {
   }
 };
 
-const Velocity = createSimpleUnitModule(velocities);
+const Velocity = createSimpleUnitModule(config);
 export default Velocity;

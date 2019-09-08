@@ -1,13 +1,13 @@
 import { Either, pipe } from "@grapheng/prelude";
 
-import { angles } from "./angle";
+import { config } from "./angle";
 import { flexibleCalculator } from "./utils/flexible-calculator";
 
 describe("angle", () => {
   test("that basic angle conversions work", () => {
     // tslint:disable-next-line:no-expression-statement
     pipe(
-      flexibleCalculator({ degrees: 360 }, angles.relationships),
+      flexibleCalculator({ degrees: 360 }, config.relationships),
       Either.fold(fail, result => {
         expect(result).toEqual({
           arcMinutes: 21600,
