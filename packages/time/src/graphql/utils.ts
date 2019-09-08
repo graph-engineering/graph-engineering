@@ -7,13 +7,14 @@ import {
 
 export const getMillisForTwoHoursAgo = (): number => {
   const d = new Date();
+  // tslint:disable-next-line:no-expression-statement
   d.setHours(d.getHours() - 2);
   return d.getTime();
 };
 
 export const extractResolvers = (
   object: GraphQLObjectType
-): { [fieldName: string]: GraphQLFieldResolver<any, any> } =>
+): { readonly [fieldName: string]: GraphQLFieldResolver<any, any> } =>
   Object.entries(object.getFields()).reduce(
     (previous, [name, field]) => ({ ...previous, [name]: field.resolve }),
     {}
@@ -45,6 +46,7 @@ export function expectSimpleObjectType(
 					}
 				`
     ).then(response => {
+      // tslint:disable-next-line:no-if-statement
       if (response.errors) throw new Error(response.errors[0].message);
       return response.data && response.data.arbitraryRootField;
     })
