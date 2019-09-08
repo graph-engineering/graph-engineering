@@ -1,3 +1,5 @@
+import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
+
 export const temperatures = {
   defaultAdapterName: "TemperatureAdapter",
   baseUnit: "celsius" as const,
@@ -13,3 +15,6 @@ export const temperatures = {
     }
   }
 };
+
+const Temperature = createSimpleUnitModule(temperatures);
+export default Temperature;

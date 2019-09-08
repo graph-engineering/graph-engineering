@@ -1,3 +1,5 @@
+import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
+
 export const distances = {
   defaultAdapterName: "DistanceAdapter",
   baseUnit: "millimeters" as const,
@@ -12,3 +14,6 @@ export const distances = {
     miles: 1609344
   }
 };
+
+const Distance = createSimpleUnitModule(distances);
+export default Distance;

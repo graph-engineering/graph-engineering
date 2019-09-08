@@ -1,3 +1,5 @@
+import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
+
 export const pressures = {
   defaultAdapterName: "PressureAdapter",
   baseUnit: "pascals" as const,
@@ -10,3 +12,6 @@ export const pressures = {
     torr: 133.32236842105
   }
 };
+
+const Pressure = createSimpleUnitModule(pressures);
+export default Pressure;

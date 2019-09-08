@@ -1,3 +1,5 @@
+import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
+
 export const areas = {
   defaultAdapterName: "AreaAdapter",
   baseUnit: "squareMeters" as const,
@@ -12,3 +14,6 @@ export const areas = {
     squareYards: 0.836127
   }
 };
+
+const Area = createSimpleUnitModule(areas);
+export default Area;

@@ -1,3 +1,5 @@
+import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
+
 export const volumes = {
   defaultAdapterName: "VolumeAdapter",
   baseUnit: "milliliters" as const,
@@ -15,3 +17,6 @@ export const volumes = {
     teaspoons: 48.6922
   }
 };
+
+const Volume = createSimpleUnitModule(volumes);
+export default Volume;

@@ -1,3 +1,5 @@
+import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
+
 // NOTE: terrestrial weight: i.e. a practical weight that is generally relevant to humans on Earth
 
 export const weights = {
@@ -13,3 +15,6 @@ export const weights = {
     tons: 907184000
   }
 };
+
+const Weight = createSimpleUnitModule(weights);
+export default Weight;

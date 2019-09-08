@@ -1,27 +1,28 @@
 import { printType } from "graphql";
 import gql from "graphql-tag";
 
-import { angles } from "./angle";
-import { areas } from "./area";
-import { distances } from "./distance";
-import { fuelEfficiencies } from "./fuel-efficiency";
-import { pressures } from "./pressure";
-import { temperatures } from "./temperature";
+import Angle from "./angle";
+import Area from "./area";
+import Distance from "./distance";
+import FuelEfficiency from "./fuel-efficiency";
+import Pressure from "./pressure";
+import Temperature from "./temperature";
 import { RoundingDirectionEnum } from "./utils/basic-rounder";
-import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
-import { velocities } from "./velocity";
-import { volumes } from "./volume";
-import { weights } from "./weight";
+import Velocity from "./velocity";
+import Volume from "./volume";
+import Weight from "./weight";
 
-export const Angle = createSimpleUnitModule(angles);
-export const Area = createSimpleUnitModule(areas);
-export const FuelEfficiency = createSimpleUnitModule(fuelEfficiencies);
-export const Pressure = createSimpleUnitModule(pressures);
-export const Temperature = createSimpleUnitModule(temperatures);
-export const Distance = createSimpleUnitModule(distances);
-export const Velocity = createSimpleUnitModule(velocities);
-export const Volume = createSimpleUnitModule(volumes);
-export const Weight = createSimpleUnitModule(weights);
+export {
+  Angle,
+  Area,
+  Distance,
+  FuelEfficiency,
+  Pressure,
+  Temperature,
+  Velocity,
+  Volume,
+  Weight
+};
 
 export const allTypeDefs = gql`
   ${printType(RoundingDirectionEnum)}
