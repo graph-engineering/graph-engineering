@@ -4,6 +4,7 @@ import {
   flow,
   Fn,
   Monoid,
+  Option,
   pipe,
   Record
 } from "@grapheng/prelude";
@@ -13,6 +14,20 @@ import * as GraphQL from "graphql";
 import * as TypeDefinition from "./TypeDefinition";
 
 export type Document = GraphQL.DocumentNode;
+
+export const rename = (
+  names: { readonly [from: string]: string },
+  document: Document
+): Document =>
+  GraphQL.visit(document, {
+    leave: {
+      Name: node =>
+        pipe(
+          Record.lookup(node.value, names),
+          Option.fold(() => node, name => ({ ...node, value: name }))
+        )
+    }
+  });
 
 export const concat: Monoid.Monoid<Document>["concat"] = (x, y) => ({
   ...y,
