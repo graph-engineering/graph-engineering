@@ -2,17 +2,15 @@ import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
 } from "./utils/helpers";
-import Velocity, { config } from "./velocity";
+import Velocity, { relationships } from "./velocity";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(
-  config.relationships
-);
+const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
 
 describe("velocity", () => {
   test("that 20 m/s makes the correct velocities", () => {
     expectSimpleObjectType(
-      Velocity.makeAdapter().outputType.rawType,
-      20,
+      Velocity.outputType.rawType,
+      { metersPerSecond: 20 },
       allDurationFieldsSelection
     ).resolves.toEqual({
       kilometersPerHour: 71.99994240004608,

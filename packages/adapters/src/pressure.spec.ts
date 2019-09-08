@@ -1,18 +1,16 @@
-import Pressure, { config } from "./pressure";
+import Pressure, { relationships } from "./pressure";
 import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
 } from "./utils/helpers";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(
-  config.relationships
-);
+const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
 
 describe("pressure", () => {
   test("that 12345 pascals makes the correct pressures", () => {
     expectSimpleObjectType(
-      Pressure.makeAdapter().outputType.rawType,
-      12345,
+      Pressure.outputType.rawType,
+      { pascals: 12345 },
       allDurationFieldsSelection
     ).resolves.toEqual({
       atmospheres: 0.12183566525184651,

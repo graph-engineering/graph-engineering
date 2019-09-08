@@ -27,44 +27,34 @@ export {
 export const allTypeDefs = gql`
   ${printType(RoundingDirectionEnum)}
 
-  ${Angle.makeAdapter().outputType.typeDefs}
-  ${Angle.makeAdapter().inputType.typeDefs}
-  ${Area.makeAdapter().outputType.typeDefs}
-  ${Area.makeAdapter().inputType.typeDefs}
-  ${FuelEfficiency.makeAdapter().outputType.typeDefs}
-  ${FuelEfficiency.makeAdapter().inputType.typeDefs}
-  ${Pressure.makeAdapter().outputType.typeDefs}
-  ${Pressure.makeAdapter().inputType.typeDefs}
-  ${Temperature.makeAdapter().outputType.typeDefs}
-  ${Temperature.makeAdapter().inputType.typeDefs}
-  ${Distance.makeAdapter().outputType.typeDefs}
-  ${Distance.makeAdapter().inputType.typeDefs}
-  ${Velocity.makeAdapter().outputType.typeDefs}
-  ${Velocity.makeAdapter().inputType.typeDefs}
-  ${Volume.makeAdapter().outputType.typeDefs}
-  ${Volume.makeAdapter().inputType.typeDefs}
-  ${Weight.makeAdapter().outputType.typeDefs}
-  ${Weight.makeAdapter().inputType.typeDefs}
+  ${Angle.outputType.typeDefs}
+  ${Angle.inputType.typeDefs}
+  ${Area.outputType.typeDefs}
+  ${Area.inputType.typeDefs}
+  ${FuelEfficiency.outputType.typeDefs}
+  ${FuelEfficiency.inputType.typeDefs}
+  ${Pressure.outputType.typeDefs}
+  ${Pressure.inputType.typeDefs}
+  ${Temperature.outputType.typeDefs}
+  ${Temperature.inputType.typeDefs}
+  ${Distance.outputType.typeDefs}
+  ${Distance.inputType.typeDefs}
+  ${Velocity.outputType.typeDefs}
+  ${Velocity.inputType.typeDefs}
+  ${Volume.outputType.typeDefs}
+  ${Volume.inputType.typeDefs}
+  ${Weight.outputType.typeDefs}
+  ${Weight.inputType.typeDefs}
 `;
 
-export const allDefaultAdapters = [
-  Angle,
-  Area,
-  FuelEfficiency,
-  Pressure,
-  Temperature,
-  Distance,
-  Velocity,
-  Volume,
-  Weight
-].map(module => module.makeAdapter());
-
 export const allResolvers = {
-  ...allDefaultAdapters.reduce(
-    (previous, current) => ({
-      ...previous,
-      [current.outputType.rawType.name]: current.outputType.resolvers
-    }),
-    {}
-  )
+  AngleOutput: Angle.outputType.resolvers,
+  AreaOutput: Area.outputType.resolvers,
+  FuelEfficiencyOutput: FuelEfficiency.outputType.resolvers,
+  PressureOutput: Pressure.outputType.resolvers,
+  TemperatureOutput: Temperature.outputType.resolvers,
+  DistanceOutput: Distance.outputType.resolvers,
+  VelocityOutput: Velocity.outputType.resolvers,
+  VolumeOutput: Volume.outputType.resolvers,
+  WeightOutput: Weight.outputType.resolvers
 };

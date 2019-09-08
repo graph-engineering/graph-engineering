@@ -1,23 +1,24 @@
-import { Either, pipe } from "@grapheng/prelude";
+import Angle, { relationships } from "./angle";
+import {
+  expectSimpleObjectType,
+  getObjectKeysAsSelection
+} from "./utils/helpers";
 
-import { config } from "./angle";
-import { flexibleCalculator } from "./utils/flexible-calculator";
+const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
 
 describe("angle", () => {
-  test("that basic angle conversions work", () => {
-    // tslint:disable-next-line:no-expression-statement
-    pipe(
-      flexibleCalculator({ degrees: 360 }, config.relationships),
-      Either.fold(fail, result => {
-        expect(result).toEqual({
-          arcMinutes: 21600,
-          arcSeconds: 1296000,
-          degrees: 360,
-          gradians: 400,
-          milliradians: 6283.185307179586,
-          radians: 6.283185307179586
-        });
-      })
-    );
+  test("that 1 radian and 1000 milliradians equal the correct other unit amounts", () => {
+    expectSimpleObjectType(
+      Angle.outputType.rawType,
+      { radians: 1, milliradians: 1000 },
+      allDurationFieldsSelection
+    ).resolves.toEqual({
+      arcMinutes: 6875.493541569879,
+      arcSeconds: 412529.6124941927,
+      degrees: 114.59155902616465,
+      gradians: 127.32395447351627,
+      milliradians: 2000,
+      radians: 2
+    });
   });
 });

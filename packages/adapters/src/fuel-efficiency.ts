@@ -1,19 +1,15 @@
-import { createSimpleUnitModule } from "./utils/simple-unit-module-creator";
+import { makeSimpleUnitTypes } from "./utils/simple-unit-adapter-creator";
 
 const ratio = 235.2145833;
 const convert = (num: number): number => (num === 0 ? 0 : ratio / num);
 
-export const config = {
-  defaultAdapterName: "FuelEfficiencyAdapter",
-  baseUnit: "litersPer100KM" as const,
-  relationships: {
-    litersPer100KM: 1,
-    milesPerGallon: {
-      fromBaseUnit: convert,
-      toBaseUnit: convert
-    }
+export const relationships = {
+  litersPer100KM: 1,
+  milesPerGallon: {
+    fromBaseUnit: convert,
+    toBaseUnit: convert
   }
 };
 
-const FuelEfficiency = createSimpleUnitModule(config);
+const FuelEfficiency = makeSimpleUnitTypes(relationships, "FuelEfficiency");
 export default FuelEfficiency;

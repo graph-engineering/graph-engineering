@@ -1,18 +1,16 @@
-import Area, { config } from "./area";
+import Area, { relationships } from "./area";
 import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
 } from "./utils/helpers";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(
-  config.relationships
-);
+const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
 
 describe("area", () => {
   test("that 4328 square meters makes the correct areas", () => {
     expectSimpleObjectType(
-      Area.makeAdapter().outputType.rawType,
-      4328,
+      Area.outputType.rawType,
+      { squareMeters: 4328 },
       allDurationFieldsSelection
     ).resolves.toEqual({
       acres: 1.0694711455301147,

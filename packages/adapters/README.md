@@ -17,6 +17,14 @@
   - location -> tries to go out and get stuff async
   - price / or specific types like dollar?
 
+TODO:
+
+- adding together input fields
+- input types for precision and direction
+- DistanceInput && DistanceOutput
+
+- scalar distance
+
 consider
 
 1. selection types for dictating

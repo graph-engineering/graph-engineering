@@ -9,42 +9,29 @@ const schema = makeExecutableSchema({
     ${Adapters.allTypeDefs}
 
     type Query {
-      angle(input: AngleAdapterInput!): AngleAdapter!
-      area(input: AreaAdapterInput!): AreaAdapter!
-      fuelEfficiency(input: FuelEfficiencyAdapterInput!): FuelEfficiencyAdapter!
-      pressure(input: PressureAdapterInput!): PressureAdapter!
-      temperature(input: TemperatureAdapterInput!): TemperatureAdapter!
-      distance(input: DistanceAdapterInput!): DistanceAdapter!
-      velocity(input: VelocityAdapterInput!): VelocityAdapter!
-      volume(input: VolumeAdapterInput!): VolumeAdapter!
-      weight(input: WeightAdapterInput!): WeightAdapter!
+      angle(input: AngleInput!): AngleOutput!
+      area(input: AreaInput!): AreaOutput!
+      fuelEfficiency(input: FuelEfficiencyInput!): FuelEfficiencyOutput!
+      pressure(input: PressureInput!): PressureOutput!
+      temperature(input: TemperatureInput!): TemperatureOutput!
+      distance(input: DistanceInput!): DistanceOutput!
+      velocity(input: VelocityInput!): VelocityOutput!
+      volume(input: VolumeInput!): VolumeOutput!
+      weight(input: WeightInput!): WeightOutput!
     }
   `,
   resolvers: {
     ...Adapters.allResolvers,
     Query: {
-      angle: (_, args) =>
-        Adapters.Angle.fromInput(args.input)[Adapters.Angle.baseUnit],
-      area: (_, args) =>
-        Adapters.Area.fromInput(args.input)[Adapters.Area.baseUnit],
-      fuelEfficiency: (_, args) =>
-        Adapters.FuelEfficiency.fromInput(args.input)[
-          Adapters.FuelEfficiency.baseUnit
-        ],
-      pressure: (_, args) =>
-        Adapters.Pressure.fromInput(args.input)[Adapters.Pressure.baseUnit],
-      temperature: (_, args) =>
-        Adapters.Temperature.fromInput(args.input)[
-          Adapters.Temperature.baseUnit
-        ],
-      distance: (_, args) =>
-        Adapters.Distance.fromInput(args.input)[Adapters.Distance.baseUnit],
-      velocity: (_, args) =>
-        Adapters.Velocity.fromInput(args.input)[Adapters.Velocity.baseUnit],
-      volume: (_, args) =>
-        Adapters.Volume.fromInput(args.input)[Adapters.Volume.baseUnit],
-      weight: (_, args) =>
-        Adapters.Weight.fromInput(args.input)[Adapters.Weight.baseUnit]
+      angle: (_, args) => args.input,
+      area: (_, args) => args.input,
+      fuelEfficiency: (_, args) => args.input,
+      pressure: (_, args) => args.input,
+      temperature: (_, args) => args.input,
+      distance: (_, args) => args.input,
+      velocity: (_, args) => args.input,
+      volume: (_, args) => args.input,
+      weight: (_, args) => args.input
     }
   }
 });

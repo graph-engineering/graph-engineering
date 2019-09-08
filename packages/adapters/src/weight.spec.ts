@@ -2,17 +2,15 @@ import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
 } from "./utils/helpers";
-import Weight, { config } from "./weight";
+import Weight, { relationships } from "./weight";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(
-  config.relationships
-);
+const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
 
 describe("weight", () => {
   test("that 1mil milligrams should equal the correct things ", () => {
     expectSimpleObjectType(
-      Weight.makeAdapter().outputType.rawType,
-      1000000,
+      Weight.outputType.rawType,
+      { milligrams: 1000000 },
       allDurationFieldsSelection
     ).resolves.toEqual({
       grams: 1000,

@@ -1,18 +1,16 @@
-import Temperature, { config } from "./temperature";
+import Temperature, { relationships } from "./temperature";
 import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
 } from "./utils/helpers";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(
-  config.relationships
-);
+const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
 
 describe("temperature", () => {
   test("that 30 degree celsius makes the correct temperatures", () => {
     expectSimpleObjectType(
-      Temperature.makeAdapter().outputType.rawType,
-      30,
+      Temperature.outputType.rawType,
+      { celsius: 30 },
       allDurationFieldsSelection
     ).resolves.toEqual({
       celsius: 30,

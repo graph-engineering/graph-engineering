@@ -2,17 +2,15 @@ import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
 } from "./utils/helpers";
-import Volume, { config } from "./volume";
+import Volume, { relationships } from "./volume";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(
-  config.relationships
-);
+const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
 
 describe("volume", () => {
   test("that 20000 milliliters makes the correct volumes", () => {
     expectSimpleObjectType(
-      Volume.makeAdapter().outputType.rawType,
-      20000,
+      Volume.outputType.rawType,
+      { milliliters: 20000 },
       allDurationFieldsSelection
     ).resolves.toEqual({
       cubicFeet: 0.7062933344297717,
