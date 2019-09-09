@@ -62,10 +62,10 @@ export const makeSimpleUnitTypes = <
               ...previous,
               [unit]: {
                 type: new GraphQLNonNull(GraphQLFloat),
-                args: BasicRounder.args,
+                args: { round: { type: BasicRounder.RoundingInputType } },
                 resolve: (
                   source: Partial<StringsToNumbers>,
-                  args: BasicRounder.Args
+                  args: { readonly round: BasicRounder.RoundingArgs }
                 ) =>
                   pipe(
                     source,
@@ -75,7 +75,7 @@ export const makeSimpleUnitTypes = <
                         previous + ratioTable[unit].toBaseUnit(value as number)
                     ),
                     unitFunctions.fromBaseUnit,
-                    num => BasicRounder.round(num, args)
+                    num => BasicRounder.round(num, args.round)
                   )
               }
             }),

@@ -7,7 +7,10 @@ import Distance from "./distance";
 import FuelEfficiency from "./fuel-efficiency";
 import Pressure from "./pressure";
 import Temperature from "./temperature";
-import { RoundingDirectionEnum } from "./utils/basic-rounder";
+import {
+  RoundingDirectionEnum,
+  RoundingInputType
+} from "./utils/basic-rounder";
 import Velocity from "./velocity";
 import Volume from "./volume";
 import Weight from "./weight";
@@ -26,6 +29,7 @@ export {
 
 export const allTypeDefs = gql`
   ${printType(RoundingDirectionEnum)}
+  ${printType(RoundingInputType)}
 
   ${Angle.outputType.typeDefs}
   ${Angle.inputType.typeDefs}

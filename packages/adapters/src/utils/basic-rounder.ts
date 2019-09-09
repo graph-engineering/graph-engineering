@@ -1,5 +1,5 @@
 import { Fn, Option, pipe } from "@grapheng/prelude";
-import { GraphQLEnumType, GraphQLInt } from "graphql";
+import { GraphQLEnumType, GraphQLInputObjectType, GraphQLInt } from "graphql";
 
 export const RoundingDirectionEnum = new GraphQLEnumType({
   name: "RoundingDirection",
@@ -10,14 +10,17 @@ export const RoundingDirectionEnum = new GraphQLEnumType({
   }
 });
 
-export const args = {
-  maxDecimalPlaces: { type: GraphQLInt },
-  roundingDirection: { type: RoundingDirectionEnum }
-};
+export const RoundingInputType = new GraphQLInputObjectType({
+  name: "RoundInput",
+  fields: () => ({
+    toPrecision: { type: GraphQLInt },
+    direction: { type: RoundingDirectionEnum }
+  })
+});
 
-export interface Args {
-  readonly maxDecimalPlaces?: number;
-  readonly roundingDirection?: "UP" | "DOWN" | "NEAREST" | 0 | 1 | 2;
+export interface RoundingArgs {
+  readonly toPrecision?: number;
+  readonly direction?: "UP" | "DOWN" | "NEAREST" | 0 | 1 | 2;
 }
 
 const toTrunc = (input: number, maxDecimalPlaces: number): number => {
@@ -36,19 +39,16 @@ const toTrunc = (input: number, maxDecimalPlaces: number): number => {
   return parseFloat(final);
 };
 
-export const round = (
-  num: number,
-  { maxDecimalPlaces, roundingDirection }: Args
-): number =>
+export const round = (num: number, round: RoundingArgs): number =>
   pipe(
     Option.fromNullable(
-      typeof maxDecimalPlaces === "number" || roundingDirection
+      round && (typeof round.toPrecision === "number" || round.direction)
     ),
     Option.map(() => {
-      const finalMaxPlaces = maxDecimalPlaces || 0;
+      const finalMaxPlaces = round.toPrecision || 0;
       const adjustmentNumber = Math.pow(10, finalMaxPlaces);
 
-      switch (roundingDirection) {
+      switch (round.direction) {
         case "UP":
         case 0:
           return Math.ceil(num * adjustmentNumber) / adjustmentNumber;

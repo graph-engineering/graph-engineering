@@ -50,9 +50,9 @@ describe("distance", () => {
         { millimeters: 123910 },
         `{
           centimeters
-          feet(roundingDirection: UP)
-          meters(maxDecimalPlaces: 1, roundingDirection: NEAREST)
-          miles(maxDecimalPlaces: 2)
+          feet(round: { direction: UP })
+          meters(round: { toPrecision: 1, direction: NEAREST })
+          miles(round: { toPrecision: 2 })
         }`
       ).resolves.toEqual({
         centimeters: 12391,
