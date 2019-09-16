@@ -11,6 +11,7 @@ describe.each`
   ${[Either.right(9), Either.left(10)]}                                     | ${Option.some(These.both([10], [9]))}
   ${[Either.left(11), Either.right(12), Either.left(13), Either.right(14)]} | ${Option.some(These.both([11, 13], [12, 14]))}
 `("`fromEithers`", ({ eithers, expected }) => {
+  // tslint:disable-next-line: no-expression-statement
   pipe(
     [eithers, expected],
     Array.map(JSON.Stringify.Always.short),

@@ -5,11 +5,16 @@
     "tst:init": "tst init --install false",
     "tst:scripts": "tst scripts",
     "tst:deps": "tst deps",
+    "adapters:test": "tst test adapters",
+    "adapters:test:watch": "tst test adapters --watch",
     "connection:test": "tst test connection",
     "connection:test:watch": "tst test connection --watch",
     "connection:dev": "lerna exec --scope @grapheng/connection -- npm run start",
     "connection:build": "lerna exec --scope @grapheng/connection -- npm run build",
     "connection:pack": "lerna exec --scope @grapheng/connection -- npm pack",
+    "graphql-extra:test": "tst test graphql-extra",
+    "graphql-extra:test:watch": "tst test graphql-extra --watch",
+    "graphql-extra:build": "lerna exec --scope @grapheng/graphql-extra -- npm run build",
     "time:test": "tst test time",
     "time:test:watch": "tst test time --watch",
     "time:build": "npm run time:test && lerna exec --scope @grapheng/time -- npm run build",
@@ -19,6 +24,7 @@
     "prelude:test:watch": "lerna exec --scope @grapheng/prelude -- npm run test:watch"
   },
   "dependencies": {
+    "typescript": "^3.6.2",
     "typescript-tooling": "^4.1.0"
   },
   "devDependencies": {
@@ -35,8 +41,7 @@
     "tslint": "^5.16.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-security": "^1.16.0",
-    "tslint-immutable": "^5.5.2",
-    "typescript": "^3.5.1"
+    "tslint-immutable": "^5.5.2"
   },
   "repository": {
     "type": "git",

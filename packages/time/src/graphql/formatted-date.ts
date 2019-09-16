@@ -17,9 +17,9 @@ import { extractResolvers } from "./utils";
 // }
 
 const getDate = (millis: unknown): Date => {
-  if (typeof millis === "number") {
-    return new Date(millis);
-  }
+  // tslint:disable-next-line:no-if-statement
+  if (typeof millis === "number") return new Date(millis);
+
   throw new GraphQLError("Input must be milliseconds since Unix Epoch.");
 };
 

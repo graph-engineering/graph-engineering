@@ -1,7 +1,7 @@
 import { Array, Error, Option, pipe, Task, TaskEither, These } from ".";
 
 namespace Right {
-  export const values = [1, 2, 3];
+  export const values = [1, 2, 3] as const;
   export const tasks = pipe(
     values,
     Array.map(result => TaskEither.tryCatchError(() => Promise.resolve(result)))

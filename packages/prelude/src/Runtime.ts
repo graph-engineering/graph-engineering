@@ -13,8 +13,20 @@ export type ReadonlyTypeOf<A extends Runtime.Any> = Readonly<Runtime.TypeOf<A>>;
 
 export const maybe = <A extends Runtime.Any>(
   type: A
-): Runtime.UnionC<[A, Runtime.NullC, Runtime.UndefinedC]> =>
+): Runtime.UnionC<readonly [A, Runtime.NullC, Runtime.UndefinedC]> =>
   Runtime.union([type, Runtime.null, Runtime.undefined]);
+
+export const fromPredicate = <A>(
+  name: string,
+  predicate: (a: unknown) => a is A
+): Runtime.Type<A> =>
+  new Runtime.Type(
+    name,
+    predicate,
+    (a, context) =>
+      predicate(a) ? Runtime.success(a) : Runtime.failure(a, context),
+    Runtime.identity
+  );
 
 export const decode = <
   Type extends Runtime.Any,
@@ -27,7 +39,7 @@ export const decode = <
     Either.mapLeft(
       flow(
         Array.map(errorMessage),
-        Array.reduce([] as string[], (previous, message) =>
+        Array.reduce(Array.empty(), (previous, message) =>
           pipe(
             message,
             Option.fold(() => previous, message => [...previous, message])

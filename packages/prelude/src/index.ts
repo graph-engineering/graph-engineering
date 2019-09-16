@@ -4,6 +4,8 @@ export { Do as chainFrom } from "fp-ts-contrib/lib/Do";
 export { pipe } from "fp-ts/lib/pipeable";
 export { flow } from "fp-ts/lib/function";
 
+export const hole = <A>(): A => Error.throw("Unfilled hole") as A;
+
 // tslint:disable-next-line: no-console
 export const spy = <A>(a: A): A => void console.log(a) || a;
 
