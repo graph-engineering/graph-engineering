@@ -1,4 +1,4 @@
-import { makeSimpleUnitTypes } from "./utils/simple-unit-adapter-creator";
+import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
 // NOTE: terrestrial weight: i.e. a practical weight that is generally relevant to humans on Earth
 

@@ -7,7 +7,7 @@ import {
 const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
 
 describe("distance", () => {
-  describe("the default adapter should come with all the appropriate responses", () => {
+  describe("the default should come with all the appropriate responses", () => {
     test("that 23783 millimeters makes the right distances", () => {
       expectSimpleObjectType(
         Distance.outputType.rawType,

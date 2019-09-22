@@ -2,11 +2,11 @@ import { ApolloServer } from "apollo-server";
 import gql from "graphql-tag";
 import { makeExecutableSchema } from "graphql-tools";
 
-import * as Adapters from ".";
+import * as Units from ".";
 
 const schema = makeExecutableSchema({
   typeDefs: gql`
-    ${Adapters.allTypeDefs}
+    ${Units.allTypeDefs}
 
     type Query {
       angle(input: AngleInput!): AngleOutput!
@@ -21,7 +21,7 @@ const schema = makeExecutableSchema({
     }
   `,
   resolvers: {
-    ...Adapters.allResolvers,
+    ...Units.allResolvers,
     Query: {
       angle: (_, args) => args.input,
       area: (_, args) => args.input,

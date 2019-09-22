@@ -17,14 +17,14 @@ import {
   StringsToNumbers
 } from "./types";
 
-export interface SimpleUnitAdapterConfig<T> {
+export interface SimpleUnitConfig<T> {
   readonly strict?: boolean;
   readonly name?: string;
   readonly selectedFields?: ReadonlyArray<keyof T>;
   readonly customFields?: { readonly [key: string]: number };
 }
 
-export interface SimpleUnitAdapter {
+export interface SimpleUnit {
   readonly inputType: {
     readonly typeDefs: any;
     readonly rawType: GraphQLInputObjectType;
@@ -41,7 +41,7 @@ export const makeSimpleUnitTypes = <
 >(
   baseRatioTable: T,
   typeName: string
-): SimpleUnitAdapter =>
+): SimpleUnit =>
   pipe(
     baseRatioTable,
     makeTableAsFunctions,

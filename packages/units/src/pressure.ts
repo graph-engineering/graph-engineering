@@ -1,4 +1,4 @@
-import { makeSimpleUnitTypes } from "./utils/simple-unit-adapter-creator";
+import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
 export const relationships = {
   pascals: 1,

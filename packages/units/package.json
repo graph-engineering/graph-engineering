@@ -1,5 +1,5 @@
 {
-  "name": "@grapheng/adapters",
+  "name": "@grapheng/units",
   "private": true,
   "scripts": {
     "generate:code": "gql-gen",

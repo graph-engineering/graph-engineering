@@ -1,4 +1,4 @@
-import { makeSimpleUnitTypes } from "./utils/simple-unit-adapter-creator";
+import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
 const ratio = 235.2145833;
 const convert = (num: number): number => (num === 0 ? 0 : ratio / num);
