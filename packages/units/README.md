@@ -1,5 +1,11 @@
 ### TODO
 
+for release:
+
+- add date / duration
+
+### TODO
+
 - much better documentation
 - better system for handling default configs (so that editor can see)
 - adding new properties be explained (understand relative to base unit)
@@ -7,21 +13,13 @@
 - save fp until export then export both functional and conventional styles?
 - use objectmap
 
-- new types (low-hanging fruit):
-  - angle
-
 * new types (harder):
-  - weight (assuming earth) or mass?
-  - duration (from time)
-  - date
   - location -> tries to go out and get stuff async
   - price / or specific types like dollar?
 
 TODO:
 
-- adding together input fields
-- input types for precision and direction
-- DistanceInput && DistanceOutput
+- fix `moment` library drift (1000 years -> milliseconds -> years)
 
 - scalar distance
 

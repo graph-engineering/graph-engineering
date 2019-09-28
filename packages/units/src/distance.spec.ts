@@ -4,7 +4,7 @@ import {
   getObjectKeysAsSelection
 } from "./utils/helpers";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
+const allDistanceFieldsSelection = getObjectKeysAsSelection(relationships);
 
 describe("distance", () => {
   describe("the default should come with all the appropriate responses", () => {
@@ -12,7 +12,7 @@ describe("distance", () => {
       expectSimpleObjectType(
         Distance.outputType.rawType,
         { millimeters: 23783 },
-        allDurationFieldsSelection
+        allDistanceFieldsSelection
       ).resolves.toEqual({
         centimeters: 2378.3,
         feet: 78.0282152230971,
@@ -29,7 +29,7 @@ describe("distance", () => {
       expectSimpleObjectType(
         Distance.outputType.rawType,
         { millimeters: 1000 },
-        allDurationFieldsSelection
+        allDistanceFieldsSelection
       ).resolves.toEqual({
         centimeters: 100,
         feet: 3.2808398950131235,
