@@ -2,27 +2,15 @@ import { pipe, Record } from "@grapheng/prelude";
 import {
   GraphQLFloat,
   GraphQLInputObjectType,
-  GraphQLNonNull,
   GraphQLObjectType
 } from "graphql";
 
-import * as BasicRounder from "./basic-rounder";
 import {
-  createGraphQLInputObjectTypeExports,
-  createGraphQLObjectTypeExports,
+  createInputOutputTypeExports,
+  makeFieldsFromSimpleTable,
   makeTableAsFunctions
 } from "./helpers";
-import {
-  RatioTableWithNumbersOrRelationshipFunctions,
-  StringsToNumbers
-} from "./types";
-
-export interface SimpleUnitConfig<T> {
-  readonly strict?: boolean;
-  readonly name?: string;
-  readonly selectedFields?: ReadonlyArray<keyof T>;
-  readonly customFields?: { readonly [key: string]: number };
-}
+import { RatioTableWithNumbersOrRelationshipFunctions } from "./types";
 
 export interface SimpleUnit {
   readonly inputType: {
@@ -56,35 +44,8 @@ export const makeSimpleUnitTypes = <
       }),
       outputType: new GraphQLObjectType({
         name: `${typeName}Output`,
-        fields: () =>
-          Object.entries(ratioTable).reduce(
-            (previous, [unit, unitFunctions]) => ({
-              ...previous,
-              [unit]: {
-                type: new GraphQLNonNull(GraphQLFloat),
-                args: { round: { type: BasicRounder.RoundingInputType } },
-                resolve: (
-                  source: Partial<StringsToNumbers>,
-                  args: { readonly round: BasicRounder.RoundingArgs }
-                ) =>
-                  pipe(
-                    source,
-                    Record.reduceWithIndex(
-                      0,
-                      (unit, previous, value) =>
-                        previous + ratioTable[unit].toBaseUnit(value as number)
-                    ),
-                    unitFunctions.fromBaseUnit,
-                    num => BasicRounder.round(num, args.round)
-                  )
-              }
-            }),
-            {}
-          )
-      })
+        fields: makeFieldsFromSimpleTable(ratioTable)
+      }) as GraphQLObjectType
     }),
-    ({ inputType, outputType }) => ({
-      inputType: createGraphQLInputObjectTypeExports(inputType),
-      outputType: createGraphQLObjectTypeExports(outputType)
-    })
+    createInputOutputTypeExports
   );

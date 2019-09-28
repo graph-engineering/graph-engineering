@@ -1,16 +1,21 @@
-import { pipe } from "@grapheng/prelude";
+import { pipe, Record } from "@grapheng/prelude";
 import {
   graphql,
   GraphQLFieldResolver,
+  GraphQLFloat,
   GraphQLInputObjectType,
+  GraphQLNonNull,
   GraphQLObjectType,
   GraphQLSchema,
   printType
 } from "graphql";
 import gql from "graphql-tag";
+
+import * as BasicRounder from "./basic-rounder";
 import {
   RatioTableWithNumbersOrRelationshipFunctions,
-  RatioTableWithOnlyRelationshipFunctions
+  RatioTableWithOnlyRelationshipFunctions,
+  StringsToNumbers
 } from "./types";
 
 export const extractResolvers = (
@@ -70,6 +75,14 @@ export const createGraphQLObjectTypeExports = <T extends GraphQLObjectType>(
   ...createRawTypeAndTypesDefs(type)
 });
 
+export const createInputOutputTypeExports = (types: {
+  readonly inputType: GraphQLInputObjectType;
+  readonly outputType: GraphQLObjectType;
+}) => ({
+  inputType: createGraphQLInputObjectTypeExports(types.inputType),
+  outputType: createGraphQLObjectTypeExports(types.outputType)
+});
+
 export const createGraphQLInputObjectTypeExports = <
   T extends GraphQLInputObjectType
 >(
@@ -98,4 +111,29 @@ export const makeTableAsFunctions = (
     }),
     // tslint:disable-next-line:no-object-literal-type-assertion
     {} as RatioTableWithOnlyRelationshipFunctions
+  );
+
+export const makeFieldsFromSimpleTable = (
+  table: RatioTableWithOnlyRelationshipFunctions
+) =>
+  pipe(
+    table,
+    Record.map(unitFunctions => ({
+      type: new GraphQLNonNull(GraphQLFloat),
+      args: { round: { type: BasicRounder.RoundingInputType } },
+      resolve: (
+        source: Partial<StringsToNumbers>,
+        args: { readonly round: BasicRounder.RoundingArgs }
+      ) =>
+        pipe(
+          source,
+          Record.reduceWithIndex(
+            0,
+            (unit, previous, value) =>
+              previous + table[unit].toBaseUnit(value as number)
+          ),
+          unitFunctions.fromBaseUnit,
+          num => BasicRounder.round(num, args.round)
+        )
+    }))
   );

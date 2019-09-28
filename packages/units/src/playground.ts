@@ -18,6 +18,7 @@ const schema = makeExecutableSchema({
       velocity(input: VelocityInput!): VelocityOutput!
       volume(input: VolumeInput!): VolumeOutput!
       weight(input: WeightInput!): WeightOutput!
+      duration(input: DurationInput!): DurationOutput!
     }
   `,
   resolvers: {
@@ -31,7 +32,8 @@ const schema = makeExecutableSchema({
       distance: (_, args) => args.input,
       velocity: (_, args) => args.input,
       volume: (_, args) => args.input,
-      weight: (_, args) => args.input
+      weight: (_, args) => args.input,
+      duration: (_, args) => args.input
     }
   }
 });
