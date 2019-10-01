@@ -1,7 +1,8 @@
+import * as Fn from "fp-ts/lib/function";
+
 import { pipe, property } from ".";
 import * as Either from "./Either";
 import * as Error from "./Error";
-import { Fn } from "./FP";
 
 export const parse = (string: string): Either.ErrorOr<unknown> =>
   Either.parseJSON(string, Error.from);

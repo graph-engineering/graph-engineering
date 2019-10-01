@@ -1,11 +1,11 @@
 export * from "fp-ts/lib/TaskEither";
 import * as Apply from "fp-ts/lib/Apply";
+import * as Fn from "fp-ts/lib/function";
 import * as TaskEither from "fp-ts/lib/TaskEither";
 
 import { chainFrom, flow, identity } from ".";
 import * as Either from "./Either";
 import * as Error from "./Error";
-import { Fn } from "./FP";
 
 export type ErrorOr<A, L extends Error = Error> = TaskEither.TaskEither<L, A>;
 

@@ -1,9 +1,9 @@
 export * from "fp-ts/lib/These";
+import * as NonEmptyArray from "fp-ts/lib/NonEmptyArray";
 
 import { pipe } from ".";
 import * as Array from "./Array";
 import * as Either from "./Either";
-import { NonEmptyArray } from "./FP";
 import * as Nullable from "./Nullable";
 import * as Option from "./Option";
 import * as These from "./These";

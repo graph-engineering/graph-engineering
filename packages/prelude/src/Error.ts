@@ -1,6 +1,7 @@
-import { pipe } from ".";
+import * as Fn from "fp-ts/lib/function";
+
+import { identity, pipe } from ".";
 import * as Array from "./Array";
-import { Fn } from "./FP";
 import * as JSON from "./JSON";
 import * as Nullable from "./Nullable";
 import * as Option from "./Option";
@@ -67,7 +68,7 @@ export const detailedL = (
       These.fromNullables(details, error),
       Option.fold(
         Fn.constUndefined,
-        These.fold(Fn.identity, Fn.identity, (details, error) => ({
+        These.fold(identity, identity, (details, error) => ({
           details,
           error
         }))
