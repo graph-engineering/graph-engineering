@@ -4,13 +4,16 @@ export { Do as chainFrom } from "fp-ts-contrib/lib/Do";
 export { pipe } from "fp-ts/lib/pipeable";
 export { flow } from "fp-ts/lib/function";
 
-export const hole = <A>(): A => Error.throw("Unfilled hole") as A;
+export const hole = <A>(): A => Error.throw("Unfilled hole!") as A;
 
 // tslint:disable-next-line: no-console
 export const spy = <A>(a: A): A => void console.log(a) || a;
 
 export const equal = <A>(a: A) => (b: A): boolean => a === b;
-export const notEqual = <A>(a: A) => (b: A): boolean => a !== b;
+export const notEqual = <A>(a: A) => (b: A): boolean => !equal(a)(b);
+
+export const identity = <A>(a: A) => a;
+export const always = <A>(a: A) => () => a;
 
 export const property = <Key extends keyof any>(key: Key) => <
   A extends B[Key],
@@ -24,6 +27,7 @@ import * as Either from "./Either";
 import * as Error from "./Error";
 import * as Immutable from "./Immutable";
 import * as JSON from "./JSON";
+import * as Nullable from "./Nullable";
 import * as Option from "./Option";
 import * as Runtime from "./Runtime";
 import * as String from "./String";
@@ -38,6 +42,7 @@ export {
   Error,
   Immutable,
   JSON,
+  Nullable,
   Option,
   Runtime,
   String,
@@ -49,5 +54,3 @@ export {
 };
 
 export * from "./FP";
-
-export type Maybe<A> = A | null | undefined;

@@ -11,7 +11,7 @@ import * as String from "./String";
 
 export type ReadonlyTypeOf<A extends Runtime.Any> = Readonly<Runtime.TypeOf<A>>;
 
-export const maybe = <A extends Runtime.Any>(
+export const nullable = <A extends Runtime.Any>(
   type: A
 ): Runtime.UnionC<readonly [A, Runtime.NullC, Runtime.UndefinedC]> =>
   Runtime.union([type, Runtime.null, Runtime.undefined]);
@@ -55,8 +55,7 @@ export const errorMessage = (
   error: Runtime.ValidationError
 ): Option.Option<string> =>
   pipe(
-    error.context,
-    Array.last,
+    Array.last(error.context),
     Option.map(context =>
       pipe(
         error.context
