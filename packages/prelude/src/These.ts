@@ -19,8 +19,7 @@ export const fromEithers = <A, B>(
   These.These<NonEmptyArray.NonEmptyArray<B>, NonEmptyArray.NonEmptyArray<A>>
 > =>
   pipe(
-    eithers,
-    Array.separate,
+    Array.separate(eithers),
     ({ left, right }) =>
       pipe(
         These.fromOptions(
