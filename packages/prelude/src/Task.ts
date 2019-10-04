@@ -1,9 +1,9 @@
 export * from "fp-ts/lib/Task";
+import * as NonEmptyArray from "fp-ts/lib/NonEmptyArray";
 import * as Task from "fp-ts/lib/Task";
 
 import { pipe } from ".";
-import * as Array from "./Array";
-import { NonEmptyArray } from "./FP";
+import * as List from "./List";
 import * as Option from "./Option";
 import * as TaskEither from "./TaskEither";
 import * as These from "./These";
@@ -17,6 +17,6 @@ export const fromTaskEithers = <A, B>(
 > =>
   pipe(
     taskEithers,
-    Array.array.sequence(Task.task),
+    List.array.sequence(Task.task),
     Task.map(These.fromEithers)
   );

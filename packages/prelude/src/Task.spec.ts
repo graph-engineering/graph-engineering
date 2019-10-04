@@ -1,13 +1,13 @@
-import { Array, Error, Option, Task, TaskEither, These } from ".";
+import { Exception, List, Option, Task, TaskEither, These } from ".";
 
 namespace Right {
   export const values = [1, 2, 3] as const;
-  export const tasks = Array.map(TaskEither.right)(values);
+  export const tasks = List.map(TaskEither.right)(values);
 }
 
 namespace Left {
-  export const values = Array.map(Error.from)([4, 5, 6]);
-  export const tasks = Array.map(TaskEither.left)(values);
+  export const values = List.map(Exception.from)([4, 5, 6]);
+  export const tasks = List.map(TaskEither.left)(values);
 }
 
 describe("Task", () => {

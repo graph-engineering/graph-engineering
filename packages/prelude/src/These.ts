@@ -2,8 +2,8 @@ export * from "fp-ts/lib/These";
 import * as NonEmptyArray from "fp-ts/lib/NonEmptyArray";
 
 import { pipe } from ".";
-import * as Array from "./Array";
 import * as Either from "./Either";
+import * as List from "./List";
 import * as Nullable from "./Nullable";
 import * as Option from "./Option";
 import * as These from "./These";
@@ -20,7 +20,7 @@ export const fromEithers = <A, B>(
   These.These<NonEmptyArray.NonEmptyArray<B>, NonEmptyArray.NonEmptyArray<A>>
 > =>
   pipe(
-    Array.separate(eithers),
+    List.separate(eithers),
     ({ left, right }) =>
       pipe(
         These.fromOptions(

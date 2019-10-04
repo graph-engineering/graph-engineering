@@ -1,6 +1,6 @@
-import * as Array from "./Array";
+import * as List from "./List";
 
-describe("Array", () => {
+describe("List", () => {
   const booleans: readonly boolean[] = [true, false];
   const numbers: readonly number[] = [1, 2, 3];
   const strings: readonly string[] = ["a", "b", "c"];
@@ -24,12 +24,12 @@ describe("Array", () => {
       ${1}        | ${false}
       ${"a"}      | ${false}
       ${{ a: 2 }} | ${false}
-    `("Array.is($a) === $expected", ({ a, expected }) =>
-      expect(Array.is(a)).toEqual(expected)
+    `("is($a) === $expected", ({ a, expected }) =>
+      expect(List.is(a)).toEqual(expected)
     );
   });
 
-  test("empty", () => expect(Array.empty()).toEqual([]));
+  test("empty", () => expect(List.empty()).toEqual([]));
 
   describe("from", () => {
     test.each`
@@ -43,8 +43,8 @@ describe("Array", () => {
       ${1}        | ${[1]}
       ${"a"}      | ${["a"]}
       ${{ a: 2 }} | ${[{ a: 2 }]}
-    `("Array.from($a) === $expected", ({ a, expected }) =>
-      expect(Array.from(a)).toEqual(expected)
+    `("from($a) === $expected", ({ a, expected }) =>
+      expect(List.from(a)).toEqual(expected)
     );
   });
 
@@ -56,8 +56,8 @@ describe("Array", () => {
       ${[undefined, ...strings, null, null]} | ${strings}
       ${[undefined, ...objects, null]}       | ${objects}
       ${[null, undefined, ...mixed, null]}   | ${mixed}
-    `("Array.is($a) === $expected", ({ a, expected }) =>
-      expect(Array.nonNullables(a)).toEqual(expected)
+    `("nonNullables($a) === $expected", ({ a, expected }) =>
+      expect(List.nonNullables(a)).toEqual(expected)
     );
   });
 });

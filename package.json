@@ -20,7 +20,7 @@
     "prelude:test": "lerna exec --scope @grapheng/prelude -- npm run test",
     "prelude:test:watch": "lerna exec --scope @grapheng/prelude -- npm run test:watch",
     "prelude:dev": "tst dev prelude",
-    "prelude:build": "tst build prelude",
+    "prelude:build": "lerna exec --scope @grapheng/prelude -- npm run build",
     "time:test": "tst test time",
     "time:test:watch": "tst test time --watch",
     "time:dev": "tst dev time",

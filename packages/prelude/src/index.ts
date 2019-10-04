@@ -1,5 +1,3 @@
-import * as Lens from "monocle-ts";
-
 export { Do as chainFrom } from "fp-ts-contrib/lib/Do";
 export { pipe } from "fp-ts/lib/pipeable";
 export { flow } from "fp-ts/lib/function";
@@ -95,7 +93,7 @@ export {
   writer as Writer
 } from "fp-ts";
 
-export const hole = <A>(): A => Error.throw("Unfilled hole!") as A;
+export const hole = <A>(): A => Exception.throw("Unfilled hole!") as A;
 
 // tslint:disable-next-line: no-console
 export const spy = <A>(a: A): A => void console.log(a) || a;
@@ -113,11 +111,10 @@ export const property = <Key extends keyof any>(key: Key) => <
   object: B
 ): A => object[key];
 
-import * as Array from "./Array";
 import * as Either from "./Either";
-import * as Error from "./Error";
-import * as Immutable from "./Immutable";
+import * as Exception from "./Exception";
 import * as JSON from "./JSON";
+import * as List from "./List";
 import * as Nullable from "./Nullable";
 import * as Option from "./Option";
 import * as Runtime from "./Runtime";
@@ -128,11 +125,10 @@ import * as These from "./These";
 import * as Time from "./Time";
 
 export {
-  Array,
   Either,
-  Error,
-  Immutable,
+  Exception,
   JSON,
+  List,
   Nullable,
   Option,
   Runtime,
@@ -140,6 +136,5 @@ export {
   Task,
   TaskEither,
   These,
-  Time,
-  Lens
+  Time
 };

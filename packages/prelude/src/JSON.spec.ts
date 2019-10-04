@@ -1,6 +1,4 @@
-import * as Fn from "fp-ts/lib/function";
-
-import { Either, JSON, pipe } from ".";
+import { Either, Fn, JSON, pipe } from ".";
 
 describe("JSON", () => {
   describe("parse", () => {

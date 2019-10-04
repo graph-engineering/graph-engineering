@@ -1,5 +1,8 @@
 export * from "fp-ts/lib/Array";
-import * as Array_ from "fp-ts/lib/Array";
+
+export { array as list } from "fp-ts/lib/Array";
+
+import * as List from "fp-ts/lib/Array";
 
 import * as Nullable from "./Nullable";
 import * as Option from "./Option";
@@ -15,4 +18,4 @@ export const from = <A>(a: A): readonly A[] => [a];
 
 export const nonNullables = <A>(
   as: readonly Nullable.Nullable<A>[]
-): readonly A[] => Array_.filterMap(Option.fromNullable)(as);
+): readonly A[] => List.filterMap(Option.fromNullable)(as);
