@@ -1,43 +1,52 @@
-import { Maybe, pipe } from ".";
+import * as Fn from "fp-ts/lib/function";
+
+import { identity, pipe } from ".";
 import * as Array from "./Array";
-import { Fn } from "./FP";
 import * as JSON from "./JSON";
+import * as Nullable from "./Nullable";
 import * as Option from "./Option";
 import * as These from "./These";
 
-export { throw_ as throw };
+export { Error_ as Error };
+
+// tslint:disable-next-line: variable-name
+const Error_ = Error;
 
 export type ErrorOr<A> = A | Error;
 
-export const from = (error?: Maybe<unknown>): Error =>
-  pipe(
+export const from = (error?: Nullable.Nullable<unknown>): Error => {
+  const unknownMessage = "An unknown error occurred";
+
+  const errorFromNoInput = () => Error(unknownMessage);
+  const errorFromInput = (error: unknown) =>
+    error instanceof Error
+      ? error
+      : typeof error === "string"
+      ? Error(error)
+      : Error(`${unknownMessage}...\n\n${JSON.Stringify.Always.pretty(error)}`);
+
+  return pipe(
     error,
     Option.fromNullable,
-    Option.fold(
-      () => Error("An unknown error occurred"),
-      error =>
-        error instanceof Error
-          ? error
-          : typeof error === "string"
-          ? Error(error)
-          : Error(
-              `An unknown error occurred...\n\n${JSON.Stringify.Always.pretty(
-                error
-              )}`
-            )
-    )
+    Option.map(errorFromInput),
+    Option.getOrElse(errorFromNoInput)
   );
+};
 
-export const fromL = (error?: Maybe<unknown>) => (): Error => from(error);
+export const fromL = (error?: Nullable.Nullable<unknown>) => (): Error =>
+  from(error);
 
-export const throwL = (error?: Maybe<unknown>) => (): never => throw_(error);
-const throw_ = (error?: Maybe<unknown>): never => {
+export const throwL = (error?: Nullable.Nullable<unknown>) => (): never =>
+  throw_(error);
+
+export { throw_ as throw };
+const throw_ = (error?: Nullable.Nullable<unknown>): never => {
   throw from(error);
 };
 
 export const detailed = (
-  messageOrError?: Maybe<unknown>,
-  details?: Maybe<unknown>
+  messageOrError?: Nullable.Nullable<unknown>,
+  details?: Nullable.Nullable<unknown>
 ): Error =>
   pipe(
     These.fromNullables(messageOrError, details),
@@ -50,16 +59,16 @@ export const detailed = (
   );
 
 export const detailedL = (
-  messageOrError?: Maybe<unknown>,
-  details?: Maybe<unknown>
-) => (error?: Maybe<unknown>): Error =>
+  messageOrError?: Nullable.Nullable<unknown>,
+  details?: Nullable.Nullable<unknown>
+) => (error?: Nullable.Nullable<unknown>): Error =>
   detailed(
     messageOrError,
     pipe(
       These.fromNullables(details, error),
       Option.fold(
         Fn.constUndefined,
-        These.fold(Fn.identity, Fn.identity, (details, error) => ({
+        These.fold(identity, identity, (details, error) => ({
           details,
           error
         }))
