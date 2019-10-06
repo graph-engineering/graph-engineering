@@ -11,11 +11,11 @@ import Moment from "moment-timezone";
 import {
   createInputOutputTypeExports,
   makeFieldsFromSimpleTable,
-  makeTableAsFunctions
-} from "../utils/helpers";
-import { SimpleUnit } from "../utils/simple-unit-creator";
-import { StringsToNumbers } from "../utils/types";
-import DurationEnglishInput from "./english";
+  makeNumberTableAsFunctions,
+  squashToBaseUnit
+} from "./utils/helpers";
+import { SimpleUnit } from "./utils/simple-unit-creator";
+import { StringsToNumbers } from "./utils/types";
 
 export const relationships = {
   milliseconds: 1,
@@ -57,14 +57,13 @@ export const relationships = {
 
 const Duration: SimpleUnit = pipe(
   relationships,
-  makeTableAsFunctions,
+  makeNumberTableAsFunctions,
   refinedTable => ({
     inputType: new GraphQLInputObjectType({
       name: `DurationInput`,
       fields: pipe(
         refinedTable,
-        Record.map(() => ({ type: GraphQLFloat })),
-        fields => ({ ...fields, humanized: { type: DurationEnglishInput } })
+        Record.map(() => ({ type: GraphQLFloat }))
       )
     }),
     outputType: new GraphQLObjectType({
@@ -75,12 +74,7 @@ const Duration: SimpleUnit = pipe(
           type: new GraphQLNonNull(GraphQLString),
           resolve: (source: Partial<StringsToNumbers>) =>
             pipe(
-              source,
-              Record.reduceWithIndex(
-                0,
-                (unit, previous, value) =>
-                  previous + refinedTable[unit].toBaseUnit(value as number)
-              ),
+              squashToBaseUnit(refinedTable, source),
               baseUnit => Moment.duration(baseUnit).humanize()
             )
         }

@@ -8,7 +8,7 @@ import {
 import {
   createInputOutputTypeExports,
   makeFieldsFromSimpleTable,
-  makeTableAsFunctions
+  makeNumberTableAsFunctions
 } from "./helpers";
 import { RatioTableWithNumbersOrRelationshipFunctions } from "./types";
 
@@ -32,7 +32,7 @@ export const makeSimpleUnitTypes = <
 ): SimpleUnit =>
   pipe(
     baseRatioTable,
-    makeTableAsFunctions,
+    makeNumberTableAsFunctions,
     ratioTable => ({
       inputType: new GraphQLInputObjectType({
         name: `${typeName}Input`,

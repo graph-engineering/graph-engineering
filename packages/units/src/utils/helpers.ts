@@ -95,22 +95,19 @@ export const getObjectKeysAsSelection = (type: object): string =>
     fields => `{ ${fields} }`
   );
 
-export const makeTableAsFunctions = (
+export const makeNumberTableAsFunctions = (
   table: RatioTableWithNumbersOrRelationshipFunctions
 ): RatioTableWithOnlyRelationshipFunctions =>
-  Object.entries(table).reduce(
-    (previous, [key, value]) => ({
-      ...previous,
-      [key]:
-        typeof value === "number"
-          ? {
-              toBaseUnit: (num: number) => num * value,
-              fromBaseUnit: (num: number) => num / value
-            }
-          : value
-    }),
-    // tslint:disable-next-line:no-object-literal-type-assertion
-    {} as RatioTableWithOnlyRelationshipFunctions
+  pipe(
+    table,
+    Record.map(value =>
+      typeof value === "number"
+        ? {
+            toBaseUnit: (num: number) => num * value,
+            fromBaseUnit: (num: number) => num / value
+          }
+        : value
+    )
   );
 
 export const makeFieldsFromSimpleTable = (
@@ -126,14 +123,22 @@ export const makeFieldsFromSimpleTable = (
         args: { readonly round: BasicRounder.RoundingArgs }
       ) =>
         pipe(
-          source,
-          Record.reduceWithIndex(
-            0,
-            (unit, previous, value) =>
-              previous + table[unit].toBaseUnit(value as number)
-          ),
+          squashToBaseUnit(table, source),
           unitFunctions.fromBaseUnit,
           num => BasicRounder.round(num, args.round)
         )
     }))
+  );
+
+export const squashToBaseUnit = (
+  table: RatioTableWithOnlyRelationshipFunctions,
+  source: Partial<StringsToNumbers>
+): number =>
+  pipe(
+    source,
+    Record.reduceWithIndex(
+      0,
+      (unit, previous, value) =>
+        previous + table[unit].toBaseUnit(value as number)
+    )
   );

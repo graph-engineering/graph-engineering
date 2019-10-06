@@ -1,8 +1,8 @@
-import Duration, { relationships } from "../duration";
+import Duration, { relationships } from "./duration";
 import {
   expectSimpleObjectType,
   getObjectKeysAsSelection
-} from "../utils/helpers";
+} from "./utils/helpers";
 
 const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
 

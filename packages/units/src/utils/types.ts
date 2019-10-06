@@ -1,4 +1,4 @@
-export interface RelationshipFunctions {
+export interface NumberRelationshipFunctions {
   readonly toBaseUnit: (num: number) => number;
   readonly fromBaseUnit: (num: number) => number;
 }
@@ -10,9 +10,9 @@ export interface StringsToNumbers {
 }
 
 export interface RatioTableWithNumbersOrRelationshipFunctions {
-  readonly [key: string]: number | RelationshipFunctions;
+  readonly [key: string]: number | NumberRelationshipFunctions;
 }
 
 export interface RatioTableWithOnlyRelationshipFunctions {
-  readonly [key: string]: RelationshipFunctions;
+  readonly [key: string]: NumberRelationshipFunctions;
 }

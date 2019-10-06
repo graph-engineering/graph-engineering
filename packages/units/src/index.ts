@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 
 import Angle from "./angle";
 import Area from "./area";
+import Date from "./date";
 import Distance from "./distance";
 import Duration from "./duration";
 import FuelEfficiency from "./fuel-efficiency";
@@ -26,7 +27,8 @@ export {
   Velocity,
   Volume,
   Weight,
-  Duration
+  Duration,
+  Date
 };
 
 export const allTypeDefs = gql`
@@ -53,6 +55,8 @@ export const allTypeDefs = gql`
   ${Weight.inputType.typeDefs}
   ${Duration.outputType.typeDefs}
   ${Duration.inputType.typeDefs}
+  ${Date.outputType.typeDefs}
+  ${Date.inputType.typeDefs}
 `;
 
 export const allResolvers = {
@@ -65,5 +69,6 @@ export const allResolvers = {
   VelocityOutput: Velocity.outputType.resolvers,
   VolumeOutput: Volume.outputType.resolvers,
   WeightOutput: Weight.outputType.resolvers,
-  DurationOutput: Duration.outputType.resolvers
+  DurationOutput: Duration.outputType.resolvers,
+  DateOutput: Date.outputType.resolvers
 };
