@@ -1,8 +1,14 @@
-// import { Array, Monoid, pipe, Record } from "@grapheng/prelude";
-
 import * as Resolvers from "./Resolvers";
 
 describe("`Resolvers`", () => {
+  test("`rename`", () =>
+    expect(
+      Resolvers.rename(
+        { SomeType: "AnotherType", someField: "anotherField" },
+        { SomeType: { someField: true } }
+      )
+    ).toMatchObject({ AnotherType: { anotherField: true } }));
+
   describe("`concat`", () => {
     const resolvers = {
       A: {

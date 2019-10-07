@@ -4,14 +4,14 @@ import { gql } from "..";
 import { JSON, pipe } from "@grapheng/prelude";
 import * as Document from ".";
 
-const equal = (x: Document.Document, y: Document.Document): boolean => {
+const equal = (x: Document.Document, y: Document.Document): string => {
   const toString = (document: Document.Document): string =>
     pipe(
       GraphQL.visit(document, { enter: node => ({ ...node, loc: null }) }),
       JSON.Stringify.Always.short
     );
 
-  return toString(x) === toString(y);
+  return expect(toString(x)).toEqual(toString(y));
 };
 
 describe("`Document`", () => {
@@ -23,6 +23,36 @@ describe("`Document`", () => {
     `
   };
 
+  test("`rename`", () =>
+    equal(
+      Document.rename(
+        {
+          SomeType: "AnotherType",
+          someField: "anotherField"
+        },
+        gql`
+          type Query {
+            a: SomeType!
+            b: SomeType
+          }
+
+          type SomeType {
+            someField: Int!
+          }
+        `
+      ),
+      gql`
+        type Query {
+          a: AnotherType!
+          b: AnotherType
+        }
+
+        type AnotherType {
+          anotherField: Int!
+        }
+      `
+    ));
+
   describe("`concat`", () => {
     test("returns empty for two empty documents", () =>
       expect(Document.concat(Document.empty, Document.empty)).toEqual(
@@ -30,37 +60,33 @@ describe("`Document`", () => {
       ));
 
     test("same document is unchanged", () =>
-      expect(
-        equal(
-          documents.simple,
-          Document.concat(documents.simple, documents.simple)
-        )
-      ).toEqual(true));
+      equal(
+        documents.simple,
+        Document.concat(documents.simple, documents.simple)
+      ));
 
     describe("merging objects", () => {
       test("objects are merged", () =>
-        expect(
-          equal(
-            Document.concat(
-              gql`
-                type A {
-                  a: String
-                }
-              `,
-              gql`
-                type A {
-                  b: Int
-                }
-              `
-            ),
+        equal(
+          Document.concat(
             gql`
               type A {
                 a: String
+              }
+            `,
+            gql`
+              type A {
                 b: Int
               }
             `
-          )
-        ).toEqual(true));
+          ),
+          gql`
+            type A {
+              a: String
+              b: Int
+            }
+          `
+        ));
     });
   });
 });
