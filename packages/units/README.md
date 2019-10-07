@@ -1,14 +1,14 @@
-## Getting Started
+# Units
 
-##### Install
+An experimental collection of GraphQL Types to represent units of measurement in various systems.
+
+# Getting Started
+
+#### Install
 
 `npm i -D @grapheng/units`
 
-##### Abstract
-
-adds all up
-
-##### Use
+#### Use
 
 Output types: Minimal Example:
 
@@ -61,26 +61,26 @@ const resolvers = {
 };
 ```
 
-##### Experiment
+#### Experiment
 
 `cd` into this package and `npm run start` then open `http://localhost:4000/graphql` in your browser
 
-## Further Development TODOs
+# Further Development TODOs
 
-##### Bugs
+#### Bugs
 
 - fix `moment` library drift (1000 years -> milliseconds -> years)
 
-##### General Improvements
+#### General Improvements
 
 - make types better
 
-##### Implement new types
+#### Implement new types
 
 - location -> tries to go out and get stuff async
 - price / or specific types like dollar?
 
-##### Complete API Re-Design:
+#### Complete API Re-Design:
 
 - export each package individually?
 - investigate making graphql queries completely flexible (e.g. fuel efficiency -> miles per gallon, or km per milliliter, etc.)
