@@ -19,4 +19,15 @@ describe("velocity", () => {
       milesPerHour: 44.73872584108805
     });
   });
+
+  test("that velocity convertInput works", () => {
+    expect(
+      Velocity.convertInput({ metersPerSecond: 10, kilometersPerHour: 36 })
+    ).toEqual({
+      kilometersPerHour: 71.99997120002304,
+      knots: 38.87687433162192,
+      metersPerSecond: 20.000008,
+      milesPerHour: 44.738743736578385
+    });
+  });
 });

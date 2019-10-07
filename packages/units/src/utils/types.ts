@@ -5,14 +5,25 @@ export interface NumberRelationshipFunctions {
 
 export type AllRelationships<T> = { [K in keyof T]: number };
 
-export interface StringsToNumbers {
-  readonly [key: string]: number;
+export interface SimpleObject {
+  readonly [key: string]: any;
 }
 
-export interface RatioTableWithNumbersOrRelationshipFunctions {
-  readonly [key: string]: number | NumberRelationshipFunctions;
-}
+export type StringsToNumbers<T = SimpleObject> = {
+  [K in keyof T]: number;
+};
 
-export interface RatioTableWithOnlyRelationshipFunctions {
-  readonly [key: string]: NumberRelationshipFunctions;
-}
+export type RatioTableWithNumbersOrRelationshipFunctions<T = SimpleObject> = {
+  readonly [K in keyof T]: number | NumberRelationshipFunctions;
+};
+
+export type RatioTableWithOnlyRelationshipFunctions<
+  T = SimpleObject,
+  B = NumberRelationshipFunctions
+> = {
+  [K in keyof T]: B;
+};
+
+export type InputTypeConverter<T = SimpleObject> = (
+  source: Partial<StringsToNumbers<T>>
+) => StringsToNumbers<T>;

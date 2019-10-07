@@ -7,6 +7,19 @@ import {
 const allDistanceFieldsSelection = getObjectKeysAsSelection(relationships);
 
 describe("distance", () => {
+  test("that distance convertInput works", () => {
+    expect(Distance.convertInput({ feet: 6, inches: 12 })).toEqual({
+      centimeters: 213.36000000000004,
+      feet: 7.000000000000001,
+      inches: 84.00000000000001,
+      kilometers: 0.0021336000000000003,
+      meters: 2.1336000000000004,
+      miles: 0.001325757575757576,
+      millimeters: 2133.6000000000004,
+      yards: 2.333333333333334
+    });
+  });
+
   describe("the default should come with all the appropriate responses", () => {
     test("that 23783 millimeters makes the right distances", () => {
       expectSimpleObjectType(

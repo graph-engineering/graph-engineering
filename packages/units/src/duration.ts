@@ -9,7 +9,9 @@ import {
 import Moment from "moment-timezone";
 
 import {
-  createInputOutputTypeExports,
+  createGraphQLInputObjectTypeExports,
+  createGraphQLObjectTypeExports,
+  explodeTypeFromBaseUnit,
   makeFieldsFromSimpleTable,
   makeNumberTableAsFunctions,
   squashToBaseUnit
@@ -18,7 +20,10 @@ import { SimpleUnit } from "./utils/simple-unit-creator";
 import { StringsToNumbers } from "./utils/types";
 
 export const relationships = {
-  milliseconds: 1,
+  milliseconds: {
+    fromBaseUnit: (millis: number) => millis,
+    toBaseUnit: (millis: number) => millis
+  },
   seconds: {
     fromBaseUnit: (millis: number) => Moment.duration(millis).asSeconds(),
     toBaseUnit: (seconds: number) =>
@@ -55,7 +60,28 @@ export const relationships = {
   }
 };
 
-const Duration: SimpleUnit = pipe(
+export type ExplodedDuration = Omit<
+  { [K in keyof typeof relationships]: number },
+  "humanized"
+> & {
+  readonly humanized: string;
+};
+
+export const explodeDurationFromBaseUnit = (val: number): ExplodedDuration => ({
+  milliseconds: relationships.milliseconds.fromBaseUnit(val),
+  seconds: relationships.seconds.fromBaseUnit(val),
+  minutes: relationships.minutes.fromBaseUnit(val),
+  hours: relationships.hours.fromBaseUnit(val),
+  days: relationships.days.fromBaseUnit(val),
+  weeks: relationships.weeks.fromBaseUnit(val),
+  months: relationships.months.fromBaseUnit(val),
+  years: relationships.years.fromBaseUnit(val),
+  humanized: Moment.duration(val).humanize()
+});
+
+export type Relationships = typeof relationships;
+
+const Duration: SimpleUnit<Relationships> = pipe(
   relationships,
   makeNumberTableAsFunctions,
   refinedTable => ({
@@ -66,6 +92,14 @@ const Duration: SimpleUnit = pipe(
         Record.map(() => ({ type: GraphQLFloat }))
       )
     }),
+    convertInput: (source: Partial<StringsToNumbers<Relationships>>) =>
+      pipe(
+        squashToBaseUnit(relationships, source),
+        val => ({
+          ...explodeTypeFromBaseUnit(relationships, val),
+          humanized: Moment.duration(val).humanize()
+        })
+      ),
     outputType: new GraphQLObjectType({
       name: `DurationOutput`,
       fields: {
@@ -75,13 +109,17 @@ const Duration: SimpleUnit = pipe(
           resolve: (source: Partial<StringsToNumbers>) =>
             pipe(
               squashToBaseUnit(refinedTable, source),
-              baseUnit => Moment.duration(baseUnit).humanize()
+              baseUnit => explodeDurationFromBaseUnit(baseUnit).humanized
             )
         }
       }
     }) as GraphQLObjectType
   }),
-  createInputOutputTypeExports
+  obj => ({
+    inputType: createGraphQLInputObjectTypeExports(obj.inputType),
+    outputType: createGraphQLObjectTypeExports(obj.outputType),
+    convertInput: obj.convertInput
+  })
 );
 
 export default Duration;

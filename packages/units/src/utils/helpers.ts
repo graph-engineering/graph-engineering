@@ -13,6 +13,8 @@ import gql from "graphql-tag";
 
 import * as BasicRounder from "./basic-rounder";
 import {
+  InputTypeConverter,
+  NumberRelationshipFunctions,
   RatioTableWithNumbersOrRelationshipFunctions,
   RatioTableWithOnlyRelationshipFunctions,
   StringsToNumbers
@@ -75,12 +77,14 @@ export const createGraphQLObjectTypeExports = <T extends GraphQLObjectType>(
   ...createRawTypeAndTypesDefs(type)
 });
 
-export const createInputOutputTypeExports = (types: {
+export const createSimpleUnitTypeExports = <T>(obj: {
   readonly inputType: GraphQLInputObjectType;
   readonly outputType: GraphQLObjectType;
+  readonly convertInput: InputTypeConverter<T>;
 }) => ({
-  inputType: createGraphQLInputObjectTypeExports(types.inputType),
-  outputType: createGraphQLObjectTypeExports(types.outputType)
+  inputType: createGraphQLInputObjectTypeExports(obj.inputType),
+  outputType: createGraphQLObjectTypeExports(obj.outputType),
+  convertInput: obj.convertInput
 });
 
 export const createGraphQLInputObjectTypeExports = <
@@ -95,9 +99,11 @@ export const getObjectKeysAsSelection = (type: object): string =>
     fields => `{ ${fields} }`
   );
 
-export const makeNumberTableAsFunctions = (
-  table: RatioTableWithNumbersOrRelationshipFunctions
-): RatioTableWithOnlyRelationshipFunctions =>
+export const makeNumberTableAsFunctions = <
+  T extends RatioTableWithNumbersOrRelationshipFunctions<T>
+>(
+  table: T
+): RatioTableWithOnlyRelationshipFunctions<T> =>
   pipe(
     table,
     Record.map(value =>
@@ -107,7 +113,20 @@ export const makeNumberTableAsFunctions = (
             fromBaseUnit: (num: number) => num / value
           }
         : value
-    )
+    ) as any
+  );
+
+export const explodeTypeFromBaseUnit = <
+  T extends RatioTableWithOnlyRelationshipFunctions<T>
+>(
+  baseRatioTable: T,
+  val: number
+): StringsToNumbers<T> =>
+  pipe(
+    baseRatioTable,
+    Record.map<NumberRelationshipFunctions, any>(value =>
+      value.fromBaseUnit(val)
+    ) as any
   );
 
 export const makeFieldsFromSimpleTable = (

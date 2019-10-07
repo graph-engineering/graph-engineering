@@ -17,4 +17,11 @@ describe("fuel efficiency", () => {
       milesPerGallon: 30
     });
   });
+
+  test("that fuel efficiency convertInput works", () => {
+    expect(FuelEfficiency.convertInput({ milesPerGallon: 10 })).toEqual({
+      litersPer100KM: 23.521458329999998,
+      milesPerGallon: 10
+    });
+  });
 });

@@ -31,9 +31,17 @@ export {
   Date
 };
 
+export const Rounding = {
+  typeDefs: gql`
+    ${printType(RoundingDirectionEnum)}
+    ${printType(RoundingInputType)}
+  `,
+  RoundingDirectionEnum,
+  RoundingInputType
+};
+
 export const allTypeDefs = gql`
-  ${printType(RoundingDirectionEnum)}
-  ${printType(RoundingInputType)}
+  ${Rounding.typeDefs}
 
   ${Angle.outputType.typeDefs}
   ${Angle.inputType.typeDefs}

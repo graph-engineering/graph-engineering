@@ -21,4 +21,15 @@ describe("pressure", () => {
       torr: 92.5951147298316
     });
   });
+
+  test("that pressure convertInput works", () => {
+    expect(Pressure.convertInput({ atmospheres: 3, pascals: 101325 })).toEqual({
+      atmospheres: 3.999999901307683,
+      bars: 4.0530003,
+      pascals: 405300.02999999997,
+      poundsPerSquareFoot: 8464.867137425881,
+      poundsPerSquareInch: 58.78377637510224,
+      torr: 3040.000225018565
+    });
+  });
 });

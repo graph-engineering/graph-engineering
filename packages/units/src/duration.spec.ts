@@ -25,6 +25,20 @@ describe("duration", () => {
       });
     });
 
+    test("that duration convertInput works", () => {
+      expect(Duration.convertInput({ seconds: 60, minutes: 10 })).toEqual({
+        days: 0.007638888888888889,
+        hours: 0.18333333333333332,
+        humanized: "11 minutes",
+        milliseconds: 660000,
+        minutes: 11,
+        months: 0.00025097480897394653,
+        seconds: 660,
+        weeks: 0.0010912698412698413,
+        years: 0.000020914567414495543
+      });
+    });
+
     test("that combinations of measurements come up with the right totals", () => {
       expectSimpleObjectType(
         Duration.outputType.rawType,

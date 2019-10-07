@@ -23,4 +23,17 @@ describe("area", () => {
       squareYards: 5176.2471490575
     });
   });
+
+  test("that area convertInput works", () => {
+    expect(Area.convertInput({ acres: 1, squareFeet: 43560 })).toEqual({
+      acres: 1.9999986854005327,
+      hectares: 0.809371468,
+      squareFeet: 87120.05726402807,
+      squareInches: 12545282.84456569,
+      squareKilometers: 0.008093714680000001,
+      squareMeters: 8093.71468,
+      squareMiles: 0.003124986362934363,
+      squareYards: 9680.006362669787
+    });
+  });
 });

@@ -16,4 +16,29 @@ describe("date", () => {
       }
     });
   });
+
+  test("that date convertInput works", () => {
+    expect(
+      Date.convertInput({
+        unix: { seconds: 5 },
+        iso: "2019-10-01T00:48:59.611Z"
+      })
+    ).toEqual(
+      expect.objectContaining({
+        humanized: "7 days ago",
+        iso: "2019-10-01T00:49:04.611Z",
+        unix: {
+          days: 18170.034081145834,
+          hours: 436080.8179475,
+          humanized: "50 years",
+          milliseconds: 1569890944611,
+          minutes: 26164849.07685,
+          months: 596.97436353587,
+          seconds: 1569890944.611,
+          weeks: 2595.719154449405,
+          years: 49.74786362798917
+        }
+      })
+    );
+  });
 });

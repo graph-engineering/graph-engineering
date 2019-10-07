@@ -18,4 +18,12 @@ describe("temperature", () => {
       kelvin: 303.15
     });
   });
+
+  test("that temperature convertInput works", () => {
+    expect(Temperature.convertInput({ celsius: 10, fahrenheit: 30 })).toEqual({
+      celsius: 8.88888888888889,
+      fahrenheit: 48,
+      kelvin: 282.0388888888889
+    });
+  });
 });

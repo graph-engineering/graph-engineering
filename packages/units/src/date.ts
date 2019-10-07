@@ -9,11 +9,11 @@ import Moment from "moment-timezone";
 
 import * as Duration from "./duration";
 import {
-  createInputOutputTypeExports,
+  createGraphQLInputObjectTypeExports,
+  createGraphQLObjectTypeExports,
   makeNumberTableAsFunctions,
   squashToBaseUnit
 } from "./utils/helpers";
-import { SimpleUnit } from "./utils/simple-unit-creator";
 import { StringsToNumbers } from "./utils/types";
 
 export const relationships = {
@@ -22,9 +22,8 @@ export const relationships = {
     toBaseUnit: (millis: number) => millis
   },
   unix: {
-    fromBaseUnit: (millis: number) => ({
-      milliseconds: millis
-    }),
+    fromBaseUnit: (millis: number) =>
+      Duration.explodeDurationFromBaseUnit(millis),
     toBaseUnit: (unix: Partial<StringsToNumbers>) =>
       squashToBaseUnit(makeNumberTableAsFunctions(Duration.relationships), unix)
   },
@@ -34,11 +33,30 @@ export const relationships = {
   },
   humanized: {
     fromBaseUnit: (millis: number) => Moment(millis).fromNow()
+  },
+  formatted: {
+    fromBaseUnit: (millis: number) => (args: FormattedArgs) =>
+      Moment(millis)
+        .tz(args.zone || "UTC")
+        .format(args.template)
   }
 };
 
+interface ExplodedDate {
+  readonly unix: Duration.ExplodedDuration;
+  readonly iso: string;
+  readonly humanized: string;
+  // tslint:disable-next-line:no-mixed-interface
+  readonly formatted: (options: FormattedArgs) => string;
+}
+
+interface FormattedArgs {
+  readonly template: string;
+  readonly zone?: string;
+}
+
 type Source = Partial<{
-  readonly unix: Partial<StringsToNumbers>;
+  readonly unix: Partial<StringsToNumbers<Duration.Relationships>>;
   readonly iso: string;
 }>;
 
@@ -51,7 +69,14 @@ const maybeSumISO = (iso?: string): number =>
 const squashDateToBaseUnit = (source: Source): number =>
   maybeSumUnix(source.unix) + maybeSumISO(source.iso);
 
-const Date: SimpleUnit = pipe(
+export const explodeDateFromBaseUnit = (val: number): ExplodedDate => ({
+  unix: relationships.unix.fromBaseUnit(val),
+  iso: relationships.iso.fromBaseUnit(val),
+  humanized: relationships.humanized.fromBaseUnit(val),
+  formatted: relationships.formatted.fromBaseUnit(val)
+});
+
+const Date = pipe(
   {
     inputType: new GraphQLInputObjectType({
       name: `DateInput`,
@@ -60,6 +85,11 @@ const Date: SimpleUnit = pipe(
         iso: { type: GraphQLString }
       }
     }),
+    convertInput: (source: Source): ExplodedDate =>
+      pipe(
+        squashDateToBaseUnit(source),
+        val => explodeDateFromBaseUnit(val)
+      ),
     outputType: new GraphQLObjectType({
       name: `DateOutput`,
       fields: {
@@ -68,7 +98,7 @@ const Date: SimpleUnit = pipe(
           resolve: (source: Source) =>
             pipe(
               squashDateToBaseUnit(source),
-              relationships.unix.fromBaseUnit
+              milliseconds => ({ milliseconds })
             )
         },
         iso: {
@@ -84,7 +114,7 @@ const Date: SimpleUnit = pipe(
           resolve: (source: Source) =>
             pipe(
               squashDateToBaseUnit(source),
-              millis => Moment(millis).fromNow()
+              relationships.humanized.fromBaseUnit
             )
         },
         formatted: {
@@ -93,19 +123,20 @@ const Date: SimpleUnit = pipe(
             template: { type: new GraphQLNonNull(GraphQLString) },
             zone: { type: GraphQLString }
           },
-          resolve: (source: Source, args: any) =>
+          resolve: (source: Source, args: FormattedArgs) =>
             pipe(
               squashDateToBaseUnit(source),
-              millis =>
-                Moment(millis)
-                  .tz(args.zone || "UTC")
-                  .format(args.template)
+              millis => relationships.formatted.fromBaseUnit(millis)(args)
             )
         }
       }
     }) as GraphQLObjectType
   },
-  createInputOutputTypeExports
+  obj => ({
+    inputType: createGraphQLInputObjectTypeExports(obj.inputType),
+    outputType: createGraphQLObjectTypeExports(obj.outputType),
+    convertInput: obj.convertInput
+  })
 );
 
 export default Date;
