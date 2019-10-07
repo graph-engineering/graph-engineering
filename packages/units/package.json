@@ -1,0 +1,17 @@
+{
+  "name": "@grapheng/units",
+  "private": true,
+  "scripts": {
+    "start": "ts-node src/playground.ts"
+  },
+  "devDependencies": {
+    "@types/moment-timezone": "^0.5.12",
+    "apollo-server": "^2.8.2",
+    "graphql": "^14.4.2",
+    "graphql-tag": "^2.10.1"
+  },
+  "dependencies": {
+    "@grapheng/prelude": "^10.0.0",
+    "moment-timezone": "^0.5.26"
+  }
+}
