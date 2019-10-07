@@ -18,8 +18,8 @@
     "build": "tsc"
   },
   "dependencies": {
-    "fp-ts": "^2.0.2",
-    "fp-ts-contrib": "^0.1.2",
-    "io-ts": "^2.0.0"
+    "fp-ts": "^2.1.0",
+    "fp-ts-contrib": "^0.1.5",
+    "io-ts": "^2.0.1"
   }
 }

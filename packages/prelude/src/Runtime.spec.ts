@@ -1,4 +1,4 @@
-import { Array, Either, Nullable, Runtime } from ".";
+import { Either, List, Option, Runtime } from ".";
 
 describe("Runtime", () => {
   describe("nullable", () => {
@@ -7,16 +7,16 @@ describe("Runtime", () => {
       ${Runtime.boolean} | ${"boolean"} | ${[1, "a"]}    | ${[true, false]}
       ${Runtime.number}  | ${"number"}  | ${["a", true]} | ${[1, -50]}
       ${Runtime.string}  | ${"string"}  | ${[1, true]}   | ${["a", ""]}
-    `("maybe($name)", ({ a, lefts, rights }) => {
-      const decodeValues = Array.map(Runtime.decode(Runtime.nullable(a)));
-      const rightsWithMaybes: ReadonlyArray<Nullable.Nullable<any>> = [
+    `("nullable($name)", ({ a, lefts, rights }) => {
+      const decodeValues = List.map(Runtime.decode(Runtime.nullable(a)));
+      const rightsWithMaybes: ReadonlyArray<Option.Nullable<any>> = [
         ...rights,
         null,
         undefined
       ];
 
-      expect(Array.rights(decodeValues(lefts)).length).toEqual(0);
-      expect(Array.lefts(decodeValues(rightsWithMaybes)).length).toEqual(0);
+      expect(List.rights(decodeValues(lefts)).length).toEqual(0);
+      expect(List.lefts(decodeValues(rightsWithMaybes)).length).toEqual(0);
     });
   });
 

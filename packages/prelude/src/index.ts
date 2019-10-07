@@ -93,16 +93,13 @@ export {
   writer as Writer
 } from "fp-ts";
 
-export const hole = <A>(): A => Exception.throw("Unfilled hole!") as A;
+export const hole = <A>(): A => Exception.crash("Unfilled hole!") as A;
 
 // tslint:disable-next-line: no-console
 export const spy = <A>(a: A): A => void console.log(a) || a;
-
 export const equal = <A>(a: A) => (b: A): boolean => a === b;
 export const notEqual = <A>(a: A) => (b: A): boolean => !equal(a)(b);
-
 export const identity = <A>(a: A) => a;
-export const always = <A>(a: A) => () => a;
 
 export const property = <Key extends keyof any>(key: Key) => <
   A extends B[Key],
@@ -115,10 +112,8 @@ import * as Either from "./Either";
 import * as Exception from "./Exception";
 import * as JSON from "./JSON";
 import * as List from "./List";
-import * as Nullable from "./Nullable";
 import * as Option from "./Option";
 import * as Runtime from "./Runtime";
-import * as String from "./String";
 import * as Task from "./Task";
 import * as TaskEither from "./TaskEither";
 import * as These from "./These";
@@ -129,10 +124,8 @@ export {
   Exception,
   JSON,
   List,
-  Nullable,
   Option,
   Runtime,
-  String,
   Task,
   TaskEither,
   These,

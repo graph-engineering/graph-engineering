@@ -1,4 +1,4 @@
-import { always, equal, hole, identity, notEqual, property, spy } from ".";
+import { equal, hole, identity, notEqual, property, spy } from ".";
 
 // tslint:disable: no-mixed-interface
 
@@ -79,17 +79,16 @@ describe("notEqual", () => {
   );
 });
 
-test.each`
-  a       | expected
-  ${true} | ${true}
-  ${1}    | ${1}
-  ${"a"}  | ${"a"}
-`(
-  "identity($a) === always($a)() === $expected",
-  ({ a, expected }) =>
-    expect(identity(a)).toEqual(expected) &&
-    expect(always(a)()).toEqual(expected)
-);
+describe("identity", () => {
+  test.each`
+    a       | expected
+    ${true} | ${true}
+    ${1}    | ${1}
+    ${"a"}  | ${"a"}
+  `("identity($a) === $expected", ({ a, expected }) =>
+    expect(identity(a)).toEqual(expected)
+  );
+});
 
 describe("property", () => {
   test.each`

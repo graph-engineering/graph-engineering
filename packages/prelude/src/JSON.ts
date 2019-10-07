@@ -2,10 +2,10 @@ import * as Fn from "fp-ts/lib/function";
 
 import { pipe, property } from ".";
 import * as Either from "./Either";
-import * as Error from "./Error";
+import * as Exception from "./Exception";
 
 export const parse = (string: string): Either.ErrorOr<unknown> =>
-  Either.parseJSON(string, Error.from);
+  Either.parseJSON(string, Exception.from);
 
 export namespace Stringify {
   export const short = (json: unknown): Either.ErrorOr<string> =>
@@ -17,19 +17,17 @@ export namespace Stringify {
   export namespace Always {
     export const short = (json: unknown): string =>
       pipe(
-        json,
-        Stringify.short,
+        Stringify.short(json),
         Either.fold(property("message"), Fn.identity)
       );
 
     export const pretty = (json: unknown): string =>
       pipe(
-        json,
-        Stringify.pretty,
+        Stringify.pretty(json),
         Either.fold(property("message"), Fn.identity)
       );
   }
 }
 
 const onError: (error: unknown) => Error = () =>
-  Error.from("Unrepresentable JSON value...");
+  Exception.from("Unrepresentable JSON value...");

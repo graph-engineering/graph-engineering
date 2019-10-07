@@ -17,6 +17,6 @@ export const fromTaskEithers = <A, B>(
 > =>
   pipe(
     taskEithers,
-    List.array.sequence(Task.task),
+    List.list.sequence(Task.task),
     Task.map(These.fromEithers)
   );

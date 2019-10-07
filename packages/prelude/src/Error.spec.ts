@@ -25,21 +25,9 @@ describe("Exception", () => {
     });
   });
 
-  describe("fromL", () => {
-    test("returns function which returns an `Error`", () => {
-      const error = Exception.from("some error message");
-      expect(Exception.fromL(error)()).toEqual(error);
-    });
-  });
-
-  describe("throwL", () => {
-    test("returns lazy function which throws an `Error`", () =>
-      expect(Exception.throwL()).toThrowError());
-  });
-
-  describe("throw", () => {
+  describe("crash", () => {
     test("throws an `Error`", () =>
-      expect(() => Exception.throw()).toThrowError());
+      expect(() => Exception.crash()).toThrowError());
   });
 
   describe("detailed", () => {
@@ -49,17 +37,16 @@ describe("Exception", () => {
 
     test.each`
       a                                         | expected
-      ${Error.Error("error")}                   | ${Error.Error("error")}
-      ${null}                                   | ${Error.Error(unknownMessage)}
-      ${undefined}                              | ${Error.Error(unknownMessage)}
-      ${true}                                   | ${Error.Error(unknownMessageWithDetails(true))}
-      ${1}                                      | ${Error.Error(unknownMessageWithDetails(1))}
-      ${"a"}                                    | ${Error.Error("a")}
-      ${{ some: "object" }}                     | ${Error.Error(unknownMessageWithDetails({ some: "object" }))}
-      ${{ some: { bigger: { object: null } } }} | ${Error.Error(unknownMessageWithDetails({ some: { bigger: { object: null } } }))}
-    `("detailed($a) === detailedL($a)() === $expected", ({ a, expected }) => {
+      ${Error("error")}                         | ${Error("error")}
+      ${null}                                   | ${Error(unknownMessage)}
+      ${undefined}                              | ${Error(unknownMessage)}
+      ${true}                                   | ${Error(unknownMessageWithDetails(true))}
+      ${1}                                      | ${Error(unknownMessageWithDetails(1))}
+      ${"a"}                                    | ${Error("a")}
+      ${{ some: "object" }}                     | ${Error(unknownMessageWithDetails({ some: "object" }))}
+      ${{ some: { bigger: { object: null } } }} | ${Error(unknownMessageWithDetails({ some: { bigger: { object: null } } }))}
+    `("detailed($a) === $expected", ({ a, expected }) => {
       expect(Exception.detailed(a)).toEqual(expected);
-      expect(Exception.detailedL(a)()).toEqual(expected);
     });
   });
 

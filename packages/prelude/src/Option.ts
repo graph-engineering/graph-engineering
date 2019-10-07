@@ -4,6 +4,8 @@ import * as Option from "fp-ts/lib/Option";
 
 import { chainFrom } from ".";
 
+export type Nullable<A> = A | null | undefined;
+
 export const chained = chainFrom(Option.option);
 export const fromRecord = Apply.sequenceS(Option.option);
 export const fromTuple = Apply.sequenceT(Option.option);
