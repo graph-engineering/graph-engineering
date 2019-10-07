@@ -1,6 +1,13 @@
 {
   "name": "@grapheng/units",
-  "private": true,
+  "version": "0.0.1",
+  "description": "GraphQL types for common units of measurements",
+  "license": "MIT",
+  "main": ".dist/index.js",
+  "types": ".dist/index.d.ts",
+  "files": [
+    ".dist"
+  ],
   "scripts": {
     "start": "ts-node src/playground.ts"
   },
