@@ -1,26 +1,28 @@
 export * from "fp-ts/lib/TaskEither";
+import * as Apply from "fp-ts/lib/Apply";
+import * as Fn from "fp-ts/lib/function";
 import * as TaskEither from "fp-ts/lib/TaskEither";
 
-import { chainFrom, flow } from ".";
+import { chainFrom, flow, identity } from ".";
 import * as Either from "./Either";
-import * as Error from "./Error";
-import { Fn } from "./FP";
+import * as Exception from "./Exception";
 
 export type ErrorOr<A, L extends Error = Error> = TaskEither.TaskEither<L, A>;
 
 export const chained = chainFrom(TaskEither.taskEither);
-
-export const fromRight = <A, L = Error>(a: A): TaskEither.TaskEither<L, A> =>
-  TaskEither.fromEither(Either.right(a));
+export const fromRecord = Apply.sequenceS(TaskEither.taskEither);
+export const fromTuple = Apply.sequenceT(TaskEither.taskEither);
 
 export const tryCatchError = <A>(fn: Fn.Lazy<Promise<A>>): ErrorOr<A> =>
-  TaskEither.tryCatch(fn, Error.from);
+  TaskEither.tryCatch(fn, Exception.from);
 
-export const runUnsafe = <A>(taskEither: ErrorOr<A>): Promise<A> | never =>
+export const runUnsafe = <A>(
+  taskEither: TaskEither.TaskEither<unknown, A>
+): Promise<A> | never =>
   taskEither().then(
-    Either.fold(Error.throw, Fn.identity),
+    Either.fold(Exception.crash, identity),
     flow(
-      Error.from,
-      Error.throw
+      Exception.from,
+      Exception.crash
     )
   );

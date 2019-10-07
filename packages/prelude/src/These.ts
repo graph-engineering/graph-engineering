@@ -1,15 +1,15 @@
 export * from "fp-ts/lib/These";
+import * as NonEmptyArray from "fp-ts/lib/NonEmptyArray";
 
-import { Maybe, pipe } from ".";
-import * as Array from "./Array";
+import { pipe } from ".";
 import * as Either from "./Either";
-import { NonEmptyArray } from "./FP";
+import * as List from "./List";
 import * as Option from "./Option";
 import * as These from "./These";
 
 export const fromNullables = <A, B>(
-  a?: Maybe<A>,
-  b?: Maybe<B>
+  a?: Option.Nullable<A>,
+  b?: Option.Nullable<B>
 ): Option.Option<These.These<A, B>> =>
   These.fromOptions(Option.fromNullable(a), Option.fromNullable(b));
 
@@ -19,8 +19,7 @@ export const fromEithers = <A, B>(
   These.These<NonEmptyArray.NonEmptyArray<B>, NonEmptyArray.NonEmptyArray<A>>
 > =>
   pipe(
-    eithers,
-    Array.separate,
+    List.separate(eithers),
     ({ left, right }) =>
       pipe(
         These.fromOptions(

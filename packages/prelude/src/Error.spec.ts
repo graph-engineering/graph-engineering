@@ -1,117 +1,75 @@
-import { Array, flow, JSON } from ".";
+import { Exception, JSON, List } from ".";
 
-import { pipe } from "fp-ts/lib/pipeable";
-import * as PreludeError from "./Error";
-import { Fn } from "./FP";
+describe("Exception", () => {
+  describe("from", () => {
+    test("returns default `Error` when given nothing", () => {
+      const error = Exception.from();
+      expect(error).toBeInstanceOf(Error);
+      expect(error.message).toBeDefined();
+    });
 
-describe("`from`", () => {
-  test(
-    "returns default `Error` when none was given",
-    flow(
-      () => PreludeError.from(),
-      error =>
-        expect(error).toBeInstanceOf(Error) &&
-        expect(error.message).toBeDefined()
-    )
-  );
+    test("returns unchanged `Error` when given an `Error`", () => {
+      const error = Error("this should be unchanged");
+      expect(Exception.from(error)).toEqual(error);
+    });
 
-  test(
-    "returns unchanged `Error` returned given an `Error`",
-    flow(
-      () => Error("this should be unchanged"),
-      error => expect(PreludeError.from(error)).toEqual(error)
-    )
-  );
+    test("returns `Error` with message from a given `string`", () => {
+      const message = "this should be the error message";
+      expect(Exception.from(message)).toEqual(Error(message));
+    });
 
-  test(
-    "returns `Error` with message from given `string`",
-    flow(
-      () => "this should be the error message",
-      message => expect(PreludeError.from(message)).toEqual(Error(message))
-    )
-  );
+    test("returns `Error` with details when given `unknown` data", () => {
+      const data = { unknown: "what is this?" };
+      const error = Exception.from(data);
+      expect(error.message).toMatch(JSON.Stringify.Always.pretty(data));
+    });
+  });
 
-  test(
-    "returns `Error` with message from given `string`",
-    flow(
-      () => "this should be the error message",
-      message => expect(PreludeError.from(message)).toEqual(Error(message))
-    )
-  );
+  describe("crash", () => {
+    test("throws an `Error`", () =>
+      expect(() => Exception.crash()).toThrowError());
+  });
 
-  test(
-    "returns `Error` with details when given `unknown` data",
-    flow(
-      () => ({ unknown: "what is this?" }),
-      data =>
-        expect(PreludeError.from(data).message).toMatch(
-          JSON.Stringify.Always.pretty(data)
-        )
-    )
-  );
-});
+  describe("detailed", () => {
+    const unknownMessage = "An unknown error occurred";
+    const unknownMessageWithDetails = (details: unknown) =>
+      `${unknownMessage}...\n\n${JSON.Stringify.Always.pretty(details)}`;
 
-describe("`fromL`", () => {
-  test(
-    "returns lazy function which returns an `Error`",
-    flow(
-      () => PreludeError.from("some error message"),
-      error => expect(PreludeError.fromL(error)()).toEqual(error)
-    )
-  );
-});
+    test.each`
+      a                                         | expected
+      ${Error("error")}                         | ${Error("error")}
+      ${null}                                   | ${Error(unknownMessage)}
+      ${undefined}                              | ${Error(unknownMessage)}
+      ${true}                                   | ${Error(unknownMessageWithDetails(true))}
+      ${1}                                      | ${Error(unknownMessageWithDetails(1))}
+      ${"a"}                                    | ${Error("a")}
+      ${{ some: "object" }}                     | ${Error(unknownMessageWithDetails({ some: "object" }))}
+      ${{ some: { bigger: { object: null } } }} | ${Error(unknownMessageWithDetails({ some: { bigger: { object: null } } }))}
+    `("detailed($a) === $expected", ({ a, expected }) => {
+      expect(Exception.detailed(a)).toEqual(expected);
+    });
+  });
 
-describe("`throwL`", () => {
-  test("returns lazy function which throws an `Error`", () =>
-    expect(PreludeError.throwL()).toThrowError());
-});
+  const errors = List.map(Exception.from)([
+    "first message",
+    "second one",
+    "last error"
+  ]);
 
-describe("`throw_`", () => {
-  test("throws an `Error`", () =>
-    expect(() => PreludeError.throw()).toThrowError());
-});
+  describe("concat", () => {
+    test("returns one `Error` with combined messages when two are given", () => {
+      const { message } = Exception.concat(errors[0], errors[1]);
+      expect(message).toMatch(errors[0].message);
+      expect(message).toMatch(errors[1].message);
+    });
+  });
 
-describe("`detailed`", () => {
-  test.skip("TODO", Fn.constVoid);
-});
-
-describe("`detailedL`", () => {
-  test.skip("TODO", Fn.constVoid);
-});
-
-describe("`concat`", () => {
-  test(
-    "returns one `Error` when two are given",
-    flow(
-      () => ["first message", "second one"],
-      ([first, second]) =>
-        pipe(
-          PreludeError.concat(
-            PreludeError.from(first),
-            PreludeError.from(second)
-          ).message,
-          message =>
-            expect(message).toMatch(first) && expect(message).toMatch(second)
-        )
-    )
-  );
-});
-
-describe("`concatAll`", () => {
-  test(
-    "returns one `Error` when many are given",
-    flow(
-      () => ["first message", "second one", "last error text"],
-      ([first, second, third]) =>
-        pipe(
-          [first, second, third],
-          Array.map(PreludeError.from),
-          PreludeError.concatAll,
-          ({ message }) =>
-            expect(message).toMatch(first) &&
-            expect(message).toMatch(second) &&
-            expect(message).toMatch(third)
-        )
-    )
-  );
+  describe("concatAll", () => {
+    test("returns one `Error` when many are given", () => {
+      const { message } = Exception.concatAll(errors);
+      expect(message).toMatch(errors[0].message);
+      expect(message).toMatch(errors[1].message);
+      expect(message).toMatch(errors[2].message);
+    });
+  });
 });

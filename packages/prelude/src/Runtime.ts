@@ -2,16 +2,15 @@ export * from "io-ts";
 import * as Runtime from "io-ts";
 
 import { flow, pipe } from ".";
-import * as Array from "./Array";
 import * as Either from "./Either";
-import * as Error from "./Error";
+import * as Exception from "./Exception";
 import * as JSON from "./JSON";
+import * as List from "./List";
 import * as Option from "./Option";
-import * as String from "./String";
 
 export type ReadonlyTypeOf<A extends Runtime.Any> = Readonly<Runtime.TypeOf<A>>;
 
-export const maybe = <A extends Runtime.Any>(
+export const nullable = <A extends Runtime.Any>(
   type: A
 ): Runtime.UnionC<readonly [A, Runtime.NullC, Runtime.UndefinedC]> =>
   Runtime.union([type, Runtime.null, Runtime.undefined]);
@@ -38,15 +37,14 @@ export const decode = <
     type.decode(value),
     Either.mapLeft(
       flow(
-        Array.map(errorMessage),
-        Array.reduce(Array.empty(), (previous, message) =>
+        List.map(errorMessage),
+        List.reduce(List.empty(), (previous, message) =>
           pipe(
             message,
             Option.fold(() => previous, message => [...previous, message])
           )
         ),
-        String.join("\n"),
-        Error.from
+        list => Exception.from(list.join("\n"))
       )
     )
   );
@@ -55,8 +53,7 @@ export const errorMessage = (
   error: Runtime.ValidationError
 ): Option.Option<string> =>
   pipe(
-    error.context,
-    Array.last,
+    List.last(error.context),
     Option.map(context =>
       pipe(
         error.context
