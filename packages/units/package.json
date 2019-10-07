@@ -2,13 +2,9 @@
   "name": "@grapheng/units",
   "private": true,
   "scripts": {
-    "generate:code": "gql-gen",
     "start": "ts-node src/playground.ts"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.6.1",
-    "@graphql-codegen/typescript": "^1.6.1",
-    "@graphql-codegen/typescript-operations": "^1.6.1",
     "apollo-server": "^2.8.2",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1"
