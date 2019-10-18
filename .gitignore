@@ -19,3 +19,5 @@ node_modules
 .psa*
  
 .DS_STORE
+
+*.tgz

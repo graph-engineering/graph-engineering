@@ -9,7 +9,8 @@
     ".dist"
   ],
   "scripts": {
-    "start": "ts-node src/playground.ts"
+    "start": "ts-node src/playground.ts",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/moment-timezone": "^0.5.12",
