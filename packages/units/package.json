@@ -14,11 +14,11 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "@graphql-codegen/add": "1.8.0",
-    "@graphql-codegen/cli": "1.8.0",
-    "@graphql-codegen/typescript-operations": "1.8.0",
-    "@graphql-codegen/typescript-resolvers": "1.8.0",
-    "@graphql-codegen/typescript": "1.8.0",
+    "@graphql-codegen/add": "^1.8.1",
+    "@graphql-codegen/cli": "^1.8.1",
+    "@graphql-codegen/typescript": "^1.8.1",
+    "@graphql-codegen/typescript-operations": "^1.8.1",
+    "@graphql-codegen/typescript-resolvers": "^1.8.1",
     "@types/moment-timezone": "^0.5.12",
     "apollo-server": "^2.8.2",
     "graphql": "^14.4.2",
