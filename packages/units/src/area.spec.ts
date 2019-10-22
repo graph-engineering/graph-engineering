@@ -1,17 +1,23 @@
-import Area, { relationships } from "./area";
-import {
-  expectSimpleObjectType,
-  getObjectKeysAsSelection
-} from "./utils/helpers";
+import * as Area from "./area";
+import { expectSimpleObjectType } from "./utils/helpers";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
+const allFieldsSelection = `{
+  acres
+  hectares
+  squareFeet
+  squareInches
+  squareKilometers
+  squareMeters
+  squareMiles
+  squareYards
+}`;
 
 describe("area", () => {
   test("that 4328 square meters makes the correct areas", () => {
     expectSimpleObjectType(
-      Area.outputType.rawType,
+      Area.GraphQL.outputType.rawType,
       { squareMeters: 4328 },
-      allDurationFieldsSelection
+      allFieldsSelection
     ).resolves.toEqual({
       acres: 1.0694711455301147,
       hectares: 0.4328,

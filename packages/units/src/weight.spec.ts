@@ -1,17 +1,22 @@
-import {
-  expectSimpleObjectType,
-  getObjectKeysAsSelection
-} from "./utils/helpers";
-import Weight, { relationships } from "./weight";
+import { expectSimpleObjectType } from "./utils/helpers";
+import * as Weight from "./weight";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
+const allFieldsSelection = `{
+  grams
+  kilograms
+  metricTons
+  milligrams
+  ounces
+  pounds
+  tons
+}`;
 
 describe("weight", () => {
   test("that 1mil milligrams should equal the correct things ", () => {
     expectSimpleObjectType(
-      Weight.outputType.rawType,
+      Weight.GraphQL.outputType.rawType,
       { milligrams: 1000000 },
-      allDurationFieldsSelection
+      allFieldsSelection
     ).resolves.toEqual({
       grams: 1000,
       kilograms: 1,

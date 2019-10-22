@@ -13,6 +13,10 @@ export type StringsToNumbers<T = SimpleObject> = {
   [K in keyof T]: number;
 };
 
+export type StringsToNumbersOrNull<T = SimpleObject> = {
+  [K in keyof T]: number | null;
+};
+
 export type RatioTableWithNumbersOrRelationshipFunctions<T = SimpleObject> = {
   readonly [K in keyof T]: number | NumberRelationshipFunctions;
 };
@@ -25,5 +29,5 @@ export type RatioTableWithOnlyRelationshipFunctions<
 };
 
 export type InputTypeConverter<T = SimpleObject> = (
-  source: Partial<StringsToNumbers<T>>
-) => StringsToNumbers<T>;
+  source: Partial<StringsToNumbersOrNull<T>>
+) => StringsToNumbersOrNull<T>;

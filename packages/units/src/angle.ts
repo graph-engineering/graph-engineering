@@ -1,6 +1,13 @@
+import { Angle } from ".";
+import {
+  makeInputConverter,
+  makeNumberTableAsFunctions,
+  NumberObj,
+  PartialWithNulls
+} from "./utils/helpers";
 import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
-export const relationships = {
+const relationships = makeNumberTableAsFunctions({
   radians: 1,
   milliradians: 0.001,
   degrees: {
@@ -19,7 +26,10 @@ export const relationships = {
     fromBaseUnit: (radians: number) => radians * (648000 / Math.PI),
     toBaseUnit: (arcSeconds: number) => arcSeconds * (Math.PI / 648000)
   }
-};
+});
 
-const Angle = makeSimpleUnitTypes(relationships, "Angle");
-export default Angle;
+export const GraphQL = makeSimpleUnitTypes(relationships, "Angle");
+export const convertInput = makeInputConverter(relationships);
+
+export type Angle = NumberObj<typeof relationships>;
+export type AngleInput = PartialWithNulls<Angle>;

@@ -1,6 +1,12 @@
+import {
+  makeInputConverter,
+  makeNumberTableAsFunctions,
+  NumberObj,
+  PartialWithNulls
+} from "./utils/helpers";
 import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
-export const relationships = {
+const relationships = makeNumberTableAsFunctions({
   celsius: 1,
   fahrenheit: {
     fromBaseUnit: (celsius: number) => celsius * (9 / 5) + 32,
@@ -10,7 +16,10 @@ export const relationships = {
     fromBaseUnit: (celsius: number) => celsius + 273.15,
     toBaseUnit: (kelvin: number) => kelvin - 273.15
   }
-};
+});
 
-const Temperature = makeSimpleUnitTypes(relationships, "Temperature");
-export default Temperature;
+export const GraphQL = makeSimpleUnitTypes(relationships, "Temperature");
+export const convertInput = makeInputConverter(relationships);
+
+export type Temperature = NumberObj<typeof relationships>;
+export type TemperatureInput = PartialWithNulls<Temperature>;

@@ -1,17 +1,26 @@
-import {
-  expectSimpleObjectType,
-  getObjectKeysAsSelection
-} from "./utils/helpers";
-import Volume, { relationships } from "./volume";
+import { expectSimpleObjectType } from "./utils/helpers";
+import * as Volume from "./volume";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
+const allFieldsSelection = `{
+  cubicFeet
+  cubicInches
+  cubicMeters
+  cups
+  gallons
+  liters
+  milliliters
+  pints
+  quarts
+  tablespoons
+  teaspoons
+}`;
 
 describe("volume", () => {
   test("that 20000 milliliters makes the correct volumes", () => {
     expectSimpleObjectType(
-      Volume.outputType.rawType,
+      Volume.GraphQL.outputType.rawType,
       { milliliters: 20000 },
-      allDurationFieldsSelection
+      allFieldsSelection
     ).resolves.toEqual({
       cubicFeet: 0.7062933344297717,
       cubicInches: 1220.4748818946457,

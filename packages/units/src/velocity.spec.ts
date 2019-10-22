@@ -1,17 +1,14 @@
-import {
-  expectSimpleObjectType,
-  getObjectKeysAsSelection
-} from "./utils/helpers";
-import Velocity, { relationships } from "./velocity";
+import { expectSimpleObjectType } from "./utils/helpers";
+import * as Velocity from "./velocity";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
+const allFieldsSelection = `{ kilometersPerHour knots metersPerSecond milesPerHour }`;
 
 describe("velocity", () => {
   test("that 20 m/s makes the correct velocities", () => {
     expectSimpleObjectType(
-      Velocity.outputType.rawType,
+      Velocity.GraphQL.outputType.rawType,
       { metersPerSecond: 20 },
-      allDurationFieldsSelection
+      allFieldsSelection
     ).resolves.toEqual({
       kilometersPerHour: 71.99994240004608,
       knots: 38.87685878087841,

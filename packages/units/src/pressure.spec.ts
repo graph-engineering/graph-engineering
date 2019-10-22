@@ -1,17 +1,21 @@
-import Pressure, { relationships } from "./pressure";
-import {
-  expectSimpleObjectType,
-  getObjectKeysAsSelection
-} from "./utils/helpers";
+import * as Pressure from "./pressure";
+import { expectSimpleObjectType } from "./utils/helpers";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
+const allFieldsSelection = `{
+  atmospheres
+  bars
+  pascals
+  poundsPerSquareFoot
+  poundsPerSquareInch
+  torr
+}`;
 
 describe("pressure", () => {
   test("that 12345 pascals makes the correct pressures", () => {
     expectSimpleObjectType(
-      Pressure.outputType.rawType,
+      Pressure.GraphQL.outputType.rawType,
       { pascals: 12345 },
-      allDurationFieldsSelection
+      allFieldsSelection
     ).resolves.toEqual({
       atmospheres: 0.12183566525184651,
       bars: 0.12345,
