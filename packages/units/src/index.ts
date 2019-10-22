@@ -1,21 +1,21 @@
 import { printType } from "graphql";
 import gql from "graphql-tag";
 
-import Angle from "./angle";
-import Area from "./area";
-import Date from "./date";
-import Distance from "./distance";
-import Duration from "./duration";
-import FuelEfficiency from "./fuel-efficiency";
-import Pressure from "./pressure";
-import Temperature from "./temperature";
+import * as Angle from "./angle";
+import * as Area from "./area";
+import * as Date from "./date";
+import * as Distance from "./distance";
+import * as Duration from "./duration";
+import * as FuelEfficiency from "./fuel-efficiency";
+import * as Pressure from "./pressure";
+import * as Temperature from "./temperature";
 import {
   RoundingDirectionEnum,
   RoundingInputType
 } from "./utils/basic-rounder";
-import Velocity from "./velocity";
-import Volume from "./volume";
-import Weight from "./weight";
+import * as Velocity from "./velocity";
+import * as Volume from "./volume";
+import * as Weight from "./weight";
 
 export {
   Angle,
@@ -43,40 +43,40 @@ export const Rounding = {
 export const allTypeDefs = gql`
   ${Rounding.typeDefs}
 
-  ${Angle.outputType.typeDefs}
-  ${Angle.inputType.typeDefs}
-  ${Area.outputType.typeDefs}
-  ${Area.inputType.typeDefs}
-  ${FuelEfficiency.outputType.typeDefs}
-  ${FuelEfficiency.inputType.typeDefs}
-  ${Pressure.outputType.typeDefs}
-  ${Pressure.inputType.typeDefs}
-  ${Temperature.outputType.typeDefs}
-  ${Temperature.inputType.typeDefs}
-  ${Distance.outputType.typeDefs}
-  ${Distance.inputType.typeDefs}
-  ${Velocity.outputType.typeDefs}
-  ${Velocity.inputType.typeDefs}
-  ${Volume.outputType.typeDefs}
-  ${Volume.inputType.typeDefs}
-  ${Weight.outputType.typeDefs}
-  ${Weight.inputType.typeDefs}
-  ${Duration.outputType.typeDefs}
-  ${Duration.inputType.typeDefs}
-  ${Date.outputType.typeDefs}
-  ${Date.inputType.typeDefs}
+  ${Angle.GraphQL.outputType.typeDefs}
+  ${Angle.GraphQL.inputType.typeDefs}
+  ${Area.GraphQL.outputType.typeDefs}
+  ${Area.GraphQL.inputType.typeDefs}
+  ${FuelEfficiency.GraphQL.outputType.typeDefs}
+  ${FuelEfficiency.GraphQL.inputType.typeDefs}
+  ${Pressure.GraphQL.outputType.typeDefs}
+  ${Pressure.GraphQL.inputType.typeDefs}
+  ${Temperature.GraphQL.outputType.typeDefs}
+  ${Temperature.GraphQL.inputType.typeDefs}
+  ${Distance.GraphQL.outputType.typeDefs}
+  ${Distance.GraphQL.inputType.typeDefs}
+  ${Velocity.GraphQL.outputType.typeDefs}
+  ${Velocity.GraphQL.inputType.typeDefs}
+  ${Volume.GraphQL.outputType.typeDefs}
+  ${Volume.GraphQL.inputType.typeDefs}
+  ${Weight.GraphQL.outputType.typeDefs}
+  ${Weight.GraphQL.inputType.typeDefs}
+  ${Duration.GraphQL.outputType.typeDefs}
+  ${Duration.GraphQL.inputType.typeDefs}
+  ${Date.GraphQL.outputType.typeDefs}
+  ${Date.GraphQL.inputType.typeDefs}
 `;
 
 export const allResolvers = {
-  AngleOutput: Angle.outputType.resolvers,
-  AreaOutput: Area.outputType.resolvers,
-  FuelEfficiencyOutput: FuelEfficiency.outputType.resolvers,
-  PressureOutput: Pressure.outputType.resolvers,
-  TemperatureOutput: Temperature.outputType.resolvers,
-  DistanceOutput: Distance.outputType.resolvers,
-  VelocityOutput: Velocity.outputType.resolvers,
-  VolumeOutput: Volume.outputType.resolvers,
-  WeightOutput: Weight.outputType.resolvers,
-  DurationOutput: Duration.outputType.resolvers,
-  DateOutput: Date.outputType.resolvers
+  AngleOutput: Angle.GraphQL.outputType.resolvers,
+  AreaOutput: Area.GraphQL.outputType.resolvers,
+  FuelEfficiencyOutput: FuelEfficiency.GraphQL.outputType.resolvers,
+  PressureOutput: Pressure.GraphQL.outputType.resolvers,
+  TemperatureOutput: Temperature.GraphQL.outputType.resolvers,
+  DistanceOutput: Distance.GraphQL.outputType.resolvers,
+  VelocityOutput: Velocity.GraphQL.outputType.resolvers,
+  VolumeOutput: Volume.GraphQL.outputType.resolvers,
+  WeightOutput: Weight.GraphQL.outputType.resolvers,
+  DurationOutput: Duration.GraphQL.outputType.resolvers,
+  DateOutput: Date.GraphQL.outputType.resolvers
 };

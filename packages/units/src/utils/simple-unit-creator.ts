@@ -7,18 +7,11 @@ import {
 
 import {
   createSimpleUnitTypeExports,
-  explodeTypeFromBaseUnit,
-  makeFieldsFromSimpleTable,
-  makeNumberTableAsFunctions,
-  squashToBaseUnit
+  makeFieldsFromSimpleTable
 } from "./helpers";
-import {
-  InputTypeConverter,
-  RatioTableWithNumbersOrRelationshipFunctions,
-  StringsToNumbers
-} from "./types";
+import { RatioTableWithOnlyRelationshipFunctions } from "./types";
 
-export interface SimpleUnit<T> {
+export interface SimpleUnit {
   readonly inputType: {
     readonly typeDefs: any;
     readonly rawType: GraphQLInputObjectType;
@@ -28,26 +21,17 @@ export interface SimpleUnit<T> {
     readonly rawType: GraphQLObjectType;
     readonly resolvers: object;
   };
-  readonly convertInput: InputTypeConverter<T>;
 }
 
 export const makeSimpleUnitTypes = <
-  T extends RatioTableWithNumbersOrRelationshipFunctions<T>
+  T extends RatioTableWithOnlyRelationshipFunctions<T>
 >(
   baseRatioTable: T,
   typeName: string
-): SimpleUnit<T> =>
+): SimpleUnit =>
   pipe(
     baseRatioTable,
-    makeNumberTableAsFunctions,
     ratioTable => ({
-      convertInput: (
-        source: Partial<StringsToNumbers<T>>
-      ): StringsToNumbers<T> =>
-        pipe(
-          squashToBaseUnit(ratioTable, source),
-          val => explodeTypeFromBaseUnit(ratioTable, val)
-        ),
       inputType: new GraphQLInputObjectType({
         name: `${typeName}Input`,
         fields: () =>

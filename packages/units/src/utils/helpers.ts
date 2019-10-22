@@ -13,7 +13,6 @@ import gql from "graphql-tag";
 
 import * as BasicRounder from "./basic-rounder";
 import {
-  InputTypeConverter,
   NumberRelationshipFunctions,
   RatioTableWithNumbersOrRelationshipFunctions,
   RatioTableWithOnlyRelationshipFunctions,
@@ -46,16 +45,11 @@ export function expectSimpleObjectType(
   });
 
   return expect(
-    graphql(schema, `{ arbitraryRootField ${queryString} }`).then(
-      response => {
-        // tslint:disable-next-line:no-if-statement
-        if (response.errors) throw new Error(response.errors[0].message);
-        else return response.data && response.data.arbitraryRootField;
-      }
-      // response.errors
-      //   ? fail(new Error(response.errors[0].message))
-      //   : response.data && response.data.arbitraryRootField
-    )
+    graphql(schema, `{ arbitraryRootField ${queryString} }`).then(response => {
+      // tslint:disable-next-line:no-if-statement
+      if (response.errors) throw new Error(response.errors[0].message);
+      else return response.data && response.data.arbitraryRootField;
+    })
   );
 }
 
@@ -77,14 +71,12 @@ export const createGraphQLObjectTypeExports = <T extends GraphQLObjectType>(
   ...createRawTypeAndTypesDefs(type)
 });
 
-export const createSimpleUnitTypeExports = <T>(obj: {
+export const createSimpleUnitTypeExports = (obj: {
   readonly inputType: GraphQLInputObjectType;
   readonly outputType: GraphQLObjectType;
-  readonly convertInput: InputTypeConverter<T>;
 }) => ({
   inputType: createGraphQLInputObjectTypeExports(obj.inputType),
-  outputType: createGraphQLObjectTypeExports(obj.outputType),
-  convertInput: obj.convertInput
+  outputType: createGraphQLObjectTypeExports(obj.outputType)
 });
 
 export const createGraphQLInputObjectTypeExports = <
@@ -92,12 +84,6 @@ export const createGraphQLInputObjectTypeExports = <
 >(
   type: T
 ) => createRawTypeAndTypesDefs(type);
-
-export const getObjectKeysAsSelection = (type: object): string =>
-  pipe(
-    Object.keys(type).join(" "),
-    fields => `{ ${fields} }`
-  );
 
 export const makeNumberTableAsFunctions = <
   T extends RatioTableWithNumbersOrRelationshipFunctions<T>
@@ -160,4 +146,14 @@ export const squashToBaseUnit = (
       (unit, previous, value) =>
         previous + table[unit].toBaseUnit(value as number)
     )
+  );
+
+export type NumberObj<T> = { [K in keyof T]: number };
+
+export const makeInputConverter = <T>(
+  relationships: RatioTableWithOnlyRelationshipFunctions<T>
+) => (source: Partial<StringsToNumbers<T>>): StringsToNumbers<T> =>
+  pipe(
+    squashToBaseUnit(relationships, source),
+    val => explodeTypeFromBaseUnit(relationships, val)
   );

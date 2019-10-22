@@ -1,10 +1,16 @@
-import Distance, { relationships } from "./distance";
-import {
-  expectSimpleObjectType,
-  getObjectKeysAsSelection
-} from "./utils/helpers";
+import * as Distance from "./distance";
+import { expectSimpleObjectType } from "./utils/helpers";
 
-const allDistanceFieldsSelection = getObjectKeysAsSelection(relationships);
+const allFieldsSelection = `{
+  centimeters
+  feet
+  inches
+  kilometers
+  meters
+  miles
+  millimeters
+  yards
+}`;
 
 describe("distance", () => {
   test("that distance convertInput works", () => {
@@ -23,9 +29,9 @@ describe("distance", () => {
   describe("the default should come with all the appropriate responses", () => {
     test("that 23783 millimeters makes the right distances", () => {
       expectSimpleObjectType(
-        Distance.outputType.rawType,
+        Distance.GraphQL.outputType.rawType,
         { millimeters: 23783 },
-        allDistanceFieldsSelection
+        allFieldsSelection
       ).resolves.toEqual({
         centimeters: 2378.3,
         feet: 78.0282152230971,
@@ -40,9 +46,9 @@ describe("distance", () => {
 
     test("that 1000 millimeters makes the right distances", () => {
       expectSimpleObjectType(
-        Distance.outputType.rawType,
+        Distance.GraphQL.outputType.rawType,
         { millimeters: 1000 },
-        allDistanceFieldsSelection
+        allFieldsSelection
       ).resolves.toEqual({
         centimeters: 100,
         feet: 3.2808398950131235,
@@ -59,7 +65,7 @@ describe("distance", () => {
   describe("more complicated examples work", () => {
     test("that limited selection with rounding works fine", () => {
       expectSimpleObjectType(
-        Distance.outputType.rawType,
+        Distance.GraphQL.outputType.rawType,
         { millimeters: 123910 },
         `{
           centimeters

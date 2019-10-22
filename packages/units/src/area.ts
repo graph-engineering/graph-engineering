@@ -1,6 +1,11 @@
+import {
+  makeInputConverter,
+  makeNumberTableAsFunctions,
+  NumberObj
+} from "./utils/helpers";
 import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
-export const relationships = {
+const relationships = makeNumberTableAsFunctions({
   squareMeters: 1,
   squareKilometers: 1000000,
   hectares: 10000,
@@ -9,7 +14,10 @@ export const relationships = {
   squareInches: 0.00064516,
   squareFeet: 0.092903,
   squareYards: 0.836127
-};
+});
 
-const Area = makeSimpleUnitTypes(relationships, "Area");
-export default Area;
+export const GraphQL = makeSimpleUnitTypes(relationships, "Area");
+export const convertInput = makeInputConverter(relationships);
+
+export type Area = NumberObj<typeof relationships>;
+export type AreaInput = Partial<Area>;
