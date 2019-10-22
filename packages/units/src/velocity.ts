@@ -1,7 +1,8 @@
 import {
   makeInputConverter,
   makeNumberTableAsFunctions,
-  NumberObj
+  NumberObj,
+  PartialWithNulls
 } from "./utils/helpers";
 import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
@@ -16,4 +17,4 @@ export const GraphQL = makeSimpleUnitTypes(relationships, "Velocity");
 export const convertInput = makeInputConverter(relationships);
 
 export type Velocity = NumberObj<typeof relationships>;
-export type VelocityInput = Partial<Velocity>;
+export type VelocityInput = PartialWithNulls<Velocity>;

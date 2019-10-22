@@ -1,7 +1,8 @@
 import {
   makeInputConverter,
   makeNumberTableAsFunctions,
-  NumberObj
+  NumberObj,
+  PartialWithNulls
 } from "./utils/helpers";
 import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
@@ -20,4 +21,4 @@ export const GraphQL = makeSimpleUnitTypes(relationships, "FuelEfficiency");
 export const convertInput = makeInputConverter(relationships);
 
 export type FuelEfficiency = NumberObj<typeof relationships>;
-export type FuelEfficiencyInput = Partial<FuelEfficiency>;
+export type FuelEfficiencyInput = PartialWithNulls<FuelEfficiency>;

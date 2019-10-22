@@ -1,7 +1,8 @@
 import {
   makeInputConverter,
   makeNumberTableAsFunctions,
-  NumberObj
+  NumberObj,
+  PartialWithNulls
 } from "./utils/helpers";
 import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
@@ -21,4 +22,4 @@ export const GraphQL = makeSimpleUnitTypes(relationships, "Temperature");
 export const convertInput = makeInputConverter(relationships);
 
 export type Temperature = NumberObj<typeof relationships>;
-export type TemperatureInput = Partial<Temperature>;
+export type TemperatureInput = PartialWithNulls<Temperature>;

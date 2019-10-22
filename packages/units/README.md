@@ -17,7 +17,7 @@ import { Distance, Rounding } from "@grapheng/units";
 
 const schema = makeExecutableSchema({
   typeDefs: gql`
-    ${Distance.outputType.typeDefs}
+    ${Distance.GraphQL.outputType.typeDefs}
     ${Rounding.typeDefs}
 
     type Query {
@@ -25,7 +25,7 @@ const schema = makeExecutableSchema({
     }
   `,
   resolvers: {
-    DistanceOutput: Distance.outputType.resolvers,
+    DistanceOutput: Distance.GraphQL.outputType.resolvers,
     Query: {
       myQuery: () => ({ meters: 3 })
     }
@@ -39,7 +39,7 @@ For Input types, writing
 import { Distance } from "@grapheng/units";
 
 gql`
-  ${Distance.inputType.typeDefs}
+  ${Distance.GraphQL.inputType.typeDefs}
 `;
 ```
 

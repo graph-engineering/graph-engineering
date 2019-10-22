@@ -10,9 +10,10 @@ import Moment from "moment-timezone";
 import * as Duration from "./duration";
 import {
   createGraphQLInputObjectTypeExports,
-  createGraphQLObjectTypeExports
+  createGraphQLObjectTypeExports,
+  PartialWithNulls
 } from "./utils/helpers";
-import { StringsToNumbers } from "./utils/types";
+import { StringsToNumbersOrNull } from "./utils/types";
 
 const relationships = {
   milliseconds: {
@@ -22,7 +23,7 @@ const relationships = {
   unix: {
     fromBaseUnit: (millis: number) =>
       Duration.convertInput({ milliseconds: millis }),
-    toBaseUnit: (unix: Partial<StringsToNumbers>) =>
+    toBaseUnit: (unix: Partial<StringsToNumbersOrNull>) =>
       Duration.convertInput(unix).milliseconds
   },
   iso: {
@@ -53,15 +54,15 @@ export interface Date {
   readonly formatted: (options: FormattedArgs) => string;
 }
 
-export type DateInput = Partial<{
-  readonly unix: Partial<StringsToNumbers<Duration.Relationships>>;
+export type DateInput = PartialWithNulls<{
+  readonly unix: Duration.DurationInput;
   readonly iso: string;
 }>;
 
-const maybeSumUnix = (unix?: Partial<StringsToNumbers>): number =>
-  unix ? relationships.unix.toBaseUnit(unix) : 0;
+const maybeSumUnix = (unix?: Partial<StringsToNumbersOrNull> | null): number =>
+  unix ? Duration.convertInput(unix).milliseconds : 0;
 
-const maybeSumISO = (iso?: string): number =>
+const maybeSumISO = (iso?: string | null): number =>
   iso ? relationships.iso.toBaseUnit(iso) : 0;
 
 const squashDateToBaseUnit = (source: DateInput): number =>

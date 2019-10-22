@@ -16,7 +16,8 @@ import {
   NumberRelationshipFunctions,
   RatioTableWithNumbersOrRelationshipFunctions,
   RatioTableWithOnlyRelationshipFunctions,
-  StringsToNumbers
+  StringsToNumbers,
+  StringsToNumbersOrNull
 } from "./types";
 
 export const extractResolvers = (
@@ -124,7 +125,7 @@ export const makeFieldsFromSimpleTable = (
       type: new GraphQLNonNull(GraphQLFloat),
       args: { round: { type: BasicRounder.RoundingInputType } },
       resolve: (
-        source: Partial<StringsToNumbers>,
+        source: Partial<StringsToNumbersOrNull>,
         args: { readonly round: BasicRounder.RoundingArgs }
       ) =>
         pipe(
@@ -137,22 +138,23 @@ export const makeFieldsFromSimpleTable = (
 
 export const squashToBaseUnit = (
   table: RatioTableWithOnlyRelationshipFunctions,
-  source: Partial<StringsToNumbers>
+  source: Partial<StringsToNumbersOrNull>
 ): number =>
   pipe(
     source,
     Record.reduceWithIndex(
       0,
-      (unit, previous, value) =>
-        previous + table[unit].toBaseUnit(value as number)
+      (unit, previous, value) => previous + table[unit].toBaseUnit(value || 0)
     )
   );
 
 export type NumberObj<T> = { [K in keyof T]: number };
 
+export type PartialWithNulls<T> = { [P in keyof T]?: T[P] | null };
+
 export const makeInputConverter = <T>(
   relationships: RatioTableWithOnlyRelationshipFunctions<T>
-) => (source: Partial<StringsToNumbers<T>>): StringsToNumbers<T> =>
+) => (source: Partial<StringsToNumbersOrNull<T>>): StringsToNumbersOrNull<T> =>
   pipe(
     squashToBaseUnit(relationships, source),
     val => explodeTypeFromBaseUnit(relationships, val)

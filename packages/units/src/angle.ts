@@ -2,7 +2,8 @@ import { Angle } from ".";
 import {
   makeInputConverter,
   makeNumberTableAsFunctions,
-  NumberObj
+  NumberObj,
+  PartialWithNulls
 } from "./utils/helpers";
 import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
@@ -31,4 +32,4 @@ export const GraphQL = makeSimpleUnitTypes(relationships, "Angle");
 export const convertInput = makeInputConverter(relationships);
 
 export type Angle = NumberObj<typeof relationships>;
-export type AngleInput = Partial<Angle>;
+export type AngleInput = PartialWithNulls<Angle>;

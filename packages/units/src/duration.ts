@@ -17,7 +17,7 @@ import {
   squashToBaseUnit
 } from "./utils/helpers";
 import { SimpleUnit } from "./utils/simple-unit-creator";
-import { StringsToNumbers } from "./utils/types";
+import { StringsToNumbersOrNull } from "./utils/types";
 
 const relationships = {
   milliseconds: {
@@ -67,9 +67,9 @@ export type Duration = Omit<
   readonly humanized: string;
 };
 
-export type DurationInput = Partial<StringsToNumbers<Relationships>>;
+export type DurationInput = Partial<StringsToNumbersOrNull<Relationships>>;
 
-export const convertInput = (source: DurationInput) =>
+export const convertInput = (source: DurationInput): Duration =>
   pipe(
     squashToBaseUnit(relationships, source),
     val => ({
@@ -78,7 +78,7 @@ export const convertInput = (source: DurationInput) =>
     })
   );
 
-export type Relationships = typeof relationships;
+type Relationships = typeof relationships;
 
 export const GraphQL: SimpleUnit = pipe(
   relationships,
@@ -97,7 +97,7 @@ export const GraphQL: SimpleUnit = pipe(
         ...makeFieldsFromSimpleTable(refinedTable),
         humanized: {
           type: new GraphQLNonNull(GraphQLString),
-          resolve: (source: Partial<StringsToNumbers>) =>
+          resolve: (source: Partial<StringsToNumbersOrNull>) =>
             pipe(
               squashToBaseUnit(refinedTable, source),
               baseUnit => convertInput({ milliseconds: baseUnit }).humanized

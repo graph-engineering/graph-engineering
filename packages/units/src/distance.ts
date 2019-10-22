@@ -1,7 +1,8 @@
 import {
   makeInputConverter,
   makeNumberTableAsFunctions,
-  NumberObj
+  NumberObj,
+  PartialWithNulls
 } from "./utils/helpers";
 import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
@@ -20,4 +21,4 @@ export const GraphQL = makeSimpleUnitTypes(relationships, "Distance");
 export const convertInput = makeInputConverter(relationships);
 
 export type Distance = NumberObj<typeof relationships>;
-export type DistanceInput = Partial<Distance>;
+export type DistanceInput = PartialWithNulls<Distance>;

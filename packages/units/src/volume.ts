@@ -1,7 +1,8 @@
 import {
   makeInputConverter,
   makeNumberTableAsFunctions,
-  NumberObj
+  NumberObj,
+  PartialWithNulls
 } from "./utils/helpers";
 import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
@@ -23,4 +24,4 @@ export const GraphQL = makeSimpleUnitTypes(relationships, "Volume");
 export const convertInput = makeInputConverter(relationships);
 
 export type Volume = NumberObj<typeof relationships>;
-export type VolumeInput = Partial<Volume>;
+export type VolumeInput = PartialWithNulls<Volume>;
