@@ -1,6 +1,6 @@
 {
   "name": "@grapheng/units",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "GraphQL types for common units of measurements",
   "license": "MIT",
   "main": ".dist/index.js",
