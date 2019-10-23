@@ -154,7 +154,7 @@ export type PartialWithNulls<T> = { [P in keyof T]?: T[P] | null };
 
 export const makeInputConverter = <T>(
   relationships: RatioTableWithOnlyRelationshipFunctions<T>
-) => (source: Partial<StringsToNumbersOrNull<T>>): StringsToNumbersOrNull<T> =>
+) => (source: Partial<StringsToNumbersOrNull<T>>): StringsToNumbers<T> =>
   pipe(
     squashToBaseUnit(relationships, source),
     val => explodeTypeFromBaseUnit(relationships, val)
