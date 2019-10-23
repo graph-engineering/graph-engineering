@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["./src/**/*"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "src/playground/**/*", "src/**/*.spec.ts"],
   "compilerOptions": {
     "outDir": ".dist"
   }

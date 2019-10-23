@@ -1,6 +1,6 @@
 {
   "name": "@grapheng/units",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "GraphQL types for common units of measurements",
   "license": "MIT",
   "main": ".dist/index.js",
@@ -11,7 +11,7 @@
   "scripts": {
     "start": "ts-node src/playground/index.ts",
     "generate:code": "TS_NODE_TRANSPILE_ONLY=true gql-gen",
-    "build": "tsc"
+    "build": "rm -rf .dist && tsc"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^1.8.1",
