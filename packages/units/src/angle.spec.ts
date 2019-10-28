@@ -19,6 +19,17 @@ describe("angle", () => {
     });
   });
 
+  test("that an input of 0 convert things properly", () => {
+    expect(Angle.convertInput({})).toEqual({
+      arcMinutes: 0,
+      arcSeconds: 0,
+      degrees: 0,
+      gradians: 0,
+      milliradians: 0,
+      radians: 0
+    });
+  });
+
   test("that angle convertInput works", () => {
     expect(Angle.convertInput({ radians: 1, milliradians: 1000 })).toEqual({
       arcMinutes: 6875.493541569879,

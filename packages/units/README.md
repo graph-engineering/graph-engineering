@@ -6,7 +6,7 @@ An experimental collection of GraphQL Types to represent units of measurement in
 
 #### Install
 
-`npm i -D @grapheng/units`
+`npm i --save @grapheng/units`
 
 #### Use
 
@@ -61,9 +61,9 @@ const resolvers = {
 };
 ```
 
-#### Experiment
+#### Playground
 
-`cd` into this package and `npm run start` then open `http://localhost:4000/graphql` in your browser
+`cd` into this package and `npm run start` then open `http://localhost:4000/graphql` in your browser. The playground shows you a hands on example of how it feels to use this library, both client-side in the browser and server-side in the `src/playground` folder. Also note that it also contains code that demonstrates how to integrate it with the popular [GraphQL Code Generator](https://github.com/dotansimha/graphql-code-generator) library.
 
 # Further Development TODOs
 
@@ -73,7 +73,8 @@ const resolvers = {
 
 #### General Improvements
 
-- make types better
+- make typescript types better with more generics
+- make tests more rigorous by apply a similar set of tests to each type
 
 #### Implement new types
 
