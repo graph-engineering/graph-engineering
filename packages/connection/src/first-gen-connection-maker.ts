@@ -1,17 +1,20 @@
 import { encodeCursor } from "./cursor";
 
-export function makeConnection<
+export const makeConnection = <
   T extends {
-    id: string;
+    readonly id: string;
   },
   K
 >(
-  items: Array<{ node: T; additionalEdgeProperties: K }>,
+  items: ReadonlyArray<{
+    readonly node: T;
+    readonly additionalEdgeProperties: K;
+  }>,
   first?: number | null,
   after?: string | null
-) {
+) => {
   const itemsLength = items.length;
-  const itemsCopy = [...items];
+  const itemsCopy: ReadonlyArray<any> = [...items];
 
   const indexOfGivenCursor = after
     ? itemsCopy
@@ -38,4 +41,4 @@ export function makeConnection<
       ...item.additionalEdgeProperties
     }))
   };
-}
+};

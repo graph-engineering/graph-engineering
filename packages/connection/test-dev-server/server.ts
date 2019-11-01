@@ -1,11 +1,14 @@
-import { ApolloServer, makeExecutableSchema } from "apollo-server";
-import { resolvers, typeDefs } from ".";
+import { ApolloServer } from "apollo-server";
+import { GraphQLSchema } from "graphql";
 
+import { query } from "./query";
+
+// tslint:disable
 new ApolloServer({
-  schema: makeExecutableSchema({ typeDefs, resolvers })
+  schema: new GraphQLSchema({ query })
 })
   .listen()
   .then(({ url }) => {
-    // tslint:disable-next-line:no-console
     console.log(`🚀 Server ready at ${url}`);
   });
+// tslint:enable

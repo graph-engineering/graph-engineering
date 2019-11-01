@@ -29,5 +29,8 @@
 	},
 	"publishConfig": {
 		"access": "public"
+	},
+	"dependencies": {
+		"@grapheng/prelude": "^11.1.0"
 	}
 }
