@@ -3,7 +3,6 @@ import * as Runtime from "io-ts";
 
 import { flow, pipe } from ".";
 import * as Either from "./Either";
-import * as Exception from "./Exception";
 import * as JSON from "./JSON";
 import * as List from "./List";
 import * as Option from "./Option";
@@ -36,16 +35,7 @@ export const decode = <
   pipe(
     type.decode(value),
     Either.mapLeft(
-      flow(
-        List.map(errorMessage),
-        List.reduce(List.empty(), (previous, message) =>
-          pipe(
-            message,
-            Option.fold(() => previous, message => [...previous, message])
-          )
-        ),
-        list => Exception.from(list.join("\n"))
-      )
+      flow(List.filterMap(errorMessage), list => Error(list.join("\n")))
     )
   );
 
@@ -53,21 +43,19 @@ export const errorMessage = (
   error: Runtime.ValidationError
 ): Option.Option<string> =>
   pipe(
-    List.last(error.context),
-    Option.map(context =>
-      pipe(
-        error.context
-          .map(context => context.key)
-          .filter(key => key.length > 0)
-          .join("."),
-        path =>
-          `Expecting \`${context.type.name}\`${
-            path === "" ? " " : ` at \`${path}\` `
-          }but instead got \`${
-            error.value === undefined
-              ? "undefined"
-              : JSON.Stringify.Always.short(error.value)
-          }\``
-      )
-    )
+    List.head(error.context),
+    Option.map(context => {
+      const path = error.context
+        .map(context => context.key)
+        .filter(key => key.length > 0)
+        .join(".");
+
+      const expected = `Expecting \`${context.type.name}\` at \`${path}\``;
+      const actual =
+        error.value === undefined
+          ? "undefined"
+          : JSON.Stringify.Always.short(error.value);
+
+      return `${expected}, but instead got \`${actual}\``;
+    })
   );

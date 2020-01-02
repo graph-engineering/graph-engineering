@@ -22,6 +22,7 @@
     "no-internal-module": false,
     "no-namespace": false,
     "no-empty-interface": false,
+    "interface-over-type-literal": false,
     "callable-types": false,
 
     "object-literal-sort-keys": false,

@@ -6,7 +6,7 @@ import * as List from "fp-ts/lib/Array";
 
 import * as Option from "./Option";
 
-// TODO – This is a temporary fix for dealing with fp-ts's mutable `Array` module
+// TODO This is a temporary fix for dealing with fp-ts's mutable `Array` module
 declare global {
   interface ReadonlyArray<T> extends Array<T> {}
 }

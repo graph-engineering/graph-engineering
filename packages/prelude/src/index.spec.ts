@@ -1,15 +1,13 @@
-import { equal, hole, identity, notEqual, property, spy } from ".";
+import { equal, hole, identity, notEqual, spy } from ".";
 
-// tslint:disable: no-mixed-interface
-
-interface ComplicatedRecord {
+type ComplicatedRecord = {
   readonly boolean: true;
   readonly number: 1;
   readonly string: "a";
   readonly function: () => any;
   readonly object: { readonly sup: "my dude" };
   readonly array: readonly (boolean | 1 | "trash" | "anything, really")[];
-}
+};
 
 // tslint:enable
 
@@ -29,7 +27,7 @@ describe("hole", () => {
       })
     ).toThrow());
 
-  test("throws if used", () => expect(() => hole()).toThrow());
+  test("isn't actually defined", () => expect(() => hole()).toThrow());
 });
 
 describe("spy", () => {
@@ -87,16 +85,5 @@ describe("identity", () => {
     ${"a"}  | ${"a"}
   `("identity($a) === $expected", ({ a, expected }) =>
     expect(identity(a)).toEqual(expected)
-  );
-});
-
-describe("property", () => {
-  test.each`
-    a      | b              | expected
-    ${"a"} | ${{ a: true }} | ${true}
-    ${"b"} | ${{ b: 1 }}    | ${1}
-    ${"c"} | ${{ c: "a" }}  | ${"a"}
-  `("property($a)($b) === $expected", ({ a, b, expected }) =>
-    expect(property(a)(b)).toEqual(expected)
   );
 });

@@ -1,17 +1,21 @@
-import { Either, Exception } from ".";
+import { Either } from ".";
 
 describe("Either", () => {
-  describe("tryCatchError", () => {
+  describe("fromTry", () => {
     test.each`
-      a                                | expected
-      ${() => 1}                       | ${Either.right(1)}
-      ${() => "a"}                     | ${Either.right("a")}
-      ${() => true}                    | ${Either.right(true)}
-      ${() => null}                    | ${Either.right(null)}
-      ${() => [3]}                     | ${Either.right([3])}
-      ${() => Exception.crash("Oof!")} | ${Either.left(Exception.from("Oof!"))}
+      a                     | expected
+      ${() => 1}            | ${Either.right(1)}
+      ${() => "a"}          | ${Either.right("a")}
+      ${() => true}         | ${Either.right(true)}
+      ${() => null}         | ${Either.right(null)}
+      ${() => [3]}          | ${Either.right([3])}
+      ${() => throwError()} | ${Either.left(Error("Oof!"))}
     `("returns `$expected`", ({ a, expected }) =>
-      expect(Either.tryCatchError(a)).toEqual(expected)
+      expect(Either.fromTry(a)).toEqual(expected)
     );
   });
+
+  const throwError = () => {
+    throw Error("Oof!");
+  };
 });

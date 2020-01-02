@@ -93,41 +93,32 @@ export {
   writer as Writer
 } from "fp-ts";
 
-export const hole = <A>(): A => Exception.crash("Unfilled hole!") as A;
+export declare const hole: <A>() => A;
 
 // tslint:disable-next-line: no-console
-export const spy = <A>(a: A): A => void console.log(a) || a;
+export const spy = <A>(a: A): A => void console.log(a) ?? a;
 export const equal = <A>(a: A) => (b: A): boolean => a === b;
 export const notEqual = <A>(a: A) => (b: A): boolean => !equal(a)(b);
 export const identity = <A>(a: A) => a;
 
-export const property = <Key extends keyof any>(key: Key) => <
-  A extends B[Key],
-  B extends Pick<any, Key>
->(
-  object: B
-): A => object[key];
-
 import * as Either from "./Either";
-import * as Exception from "./Exception";
 import * as JSON from "./JSON";
 import * as List from "./List";
 import * as Option from "./Option";
 import * as Runtime from "./Runtime";
-import * as Task from "./Task";
 import * as TaskEither from "./TaskEither";
 import * as These from "./These";
 import * as Time from "./Time";
+import * as Validation from "./Validation";
 
 export {
   Either,
-  Exception,
   JSON,
   List,
   Option,
   Runtime,
-  Task,
   TaskEither,
   These,
-  Time
+  Time,
+  Validation
 };
