@@ -1,10 +1,11 @@
-import Date from "./date";
+import Moment from "moment-timezone";
+import * as Date from "./date";
 import { expectSimpleObjectType } from "./utils/helpers";
 
 describe("date", () => {
   test("that some date equals what it should", () => {
     expectSimpleObjectType(
-      Date.outputType.rawType,
+      Date.GraphQL.outputType.rawType,
       { iso: "2019-10-01T00:48:59.611Z", unix: { seconds: 5 } },
       `{ unix { milliseconds seconds } iso formatted(template: "MM/DD/YYYY hh:mm:ss A ZZ", zone: "America/Los_Angeles")  }`
     ).resolves.toEqual({
@@ -18,14 +19,17 @@ describe("date", () => {
   });
 
   test("that date convertInput works", () => {
+    const iso = "2019-10-01T00:48:59.611Z";
     expect(
       Date.convertInput({
         unix: { seconds: 5 },
-        iso: "2019-10-01T00:48:59.611Z"
+        iso
       })
     ).toEqual(
       expect.objectContaining({
-        humanized: "7 days ago",
+        humanized: Moment(iso)
+          .add(5, "seconds")
+          .fromNow(),
         iso: "2019-10-01T00:49:04.611Z",
         unix: {
           days: 18170.034081145834,

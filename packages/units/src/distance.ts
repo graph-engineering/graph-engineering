@@ -1,6 +1,12 @@
+import {
+  makeInputConverter,
+  makeNumberTableAsFunctions,
+  NumberObj,
+  PartialWithNulls
+} from "./utils/helpers";
 import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
-export const relationships = {
+const relationships = makeNumberTableAsFunctions({
   millimeters: 1,
   centimeters: 10,
   meters: 1000,
@@ -9,7 +15,10 @@ export const relationships = {
   feet: 304.8,
   yards: 914.4,
   miles: 1609344
-};
+});
 
-const Distance = makeSimpleUnitTypes(relationships, "Distance");
-export default Distance;
+export const GraphQL = makeSimpleUnitTypes(relationships, "Distance");
+export const convertInput = makeInputConverter(relationships);
+
+export type Distance = NumberObj<typeof relationships>;
+export type DistanceInput = PartialWithNulls<Distance>;

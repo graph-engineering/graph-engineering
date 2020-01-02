@@ -1,18 +1,24 @@
-import Duration, { relationships } from "./duration";
-import {
-  expectSimpleObjectType,
-  getObjectKeysAsSelection
-} from "./utils/helpers";
+import * as Duration from "./duration";
+import { expectSimpleObjectType } from "./utils/helpers";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
+const allFieldsSelection = `{
+  milliseconds
+  seconds
+  minutes
+  hours
+  days
+  weeks
+  months
+  years
+}`;
 
 describe("duration", () => {
   describe("a few basic use cases work as expected", () => {
     test("that 60 seconds makes the correct durations", () => {
       expectSimpleObjectType(
-        Duration.outputType.rawType,
+        Duration.GraphQL.outputType.rawType,
         { seconds: 60 },
-        allDurationFieldsSelection
+        allFieldsSelection
       ).resolves.toEqual({
         milliseconds: 60000,
         seconds: 60,
@@ -41,9 +47,9 @@ describe("duration", () => {
 
     test("that combinations of measurements come up with the right totals", () => {
       expectSimpleObjectType(
-        Duration.outputType.rawType,
+        Duration.GraphQL.outputType.rawType,
         { seconds: 60, minutes: 3, milliseconds: 60000 },
-        allDurationFieldsSelection
+        allFieldsSelection
       ).resolves.toEqual({
         milliseconds: 300000,
         seconds: 300,

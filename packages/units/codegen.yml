@@ -1,0 +1,24 @@
+schema:
+  - ./src/playground/index.ts
+require:
+  - ts-node/register
+generates:
+  GeneratedCode.ts:
+    plugins:
+      - add: "// THIS IS A GENERATED FILE, DO NOT MODIFY"
+      - add: "// tslint:disable"
+      - typescript
+      - typescript-resolvers
+    config:
+      mappers:
+        AngleOutput: ./src/playground/example-mappers#AngleMapper
+        AreaOutput: ./src/playground/example-mappers#AreaMapper
+        FuelEfficiencyOutput: ./src/playground/example-mappers#FuelEfficiencyMapper
+        PressureOutput: ./src/playground/example-mappers#PressureMapper
+        TemperatureOutput: ./src/playground/example-mappers#TemperatureMapper
+        DistanceOutput: ./src/playground/example-mappers#DistanceMapper
+        VelocityOutput: ./src/playground/example-mappers#VelocityMapper
+        VolumeOutput: ./src/playground/example-mappers#VolumeMapper
+        WeightOutput: ./src/playground/example-mappers#WeightMapper
+        DurationOutput: ./src/playground/example-mappers#DurationMapper
+        DateOutput: ./src/playground/example-mappers#DateMapper

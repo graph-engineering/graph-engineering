@@ -1,6 +1,12 @@
+import {
+  makeInputConverter,
+  makeNumberTableAsFunctions,
+  NumberObj,
+  PartialWithNulls
+} from "./utils/helpers";
 import { makeSimpleUnitTypes } from "./utils/simple-unit-creator";
 
-export const relationships = {
+const relationships = makeNumberTableAsFunctions({
   milliliters: 1,
   liters: 1000,
   cubicMeters: 1000000,
@@ -12,7 +18,10 @@ export const relationships = {
   cups: 240,
   tablespoons: 16.2307,
   teaspoons: 48.6922
-};
+});
 
-const Volume = makeSimpleUnitTypes(relationships, "Volume");
-export default Volume;
+export const GraphQL = makeSimpleUnitTypes(relationships, "Volume");
+export const convertInput = makeInputConverter(relationships);
+
+export type Volume = NumberObj<typeof relationships>;
+export type VolumeInput = PartialWithNulls<Volume>;

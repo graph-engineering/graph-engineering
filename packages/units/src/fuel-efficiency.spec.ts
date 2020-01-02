@@ -1,17 +1,14 @@
-import FuelEfficiency, { relationships } from "./fuel-efficiency";
-import {
-  expectSimpleObjectType,
-  getObjectKeysAsSelection
-} from "./utils/helpers";
+import * as FuelEfficiency from "./fuel-efficiency";
+import { expectSimpleObjectType } from "./utils/helpers";
 
-const allDurationFieldsSelection = getObjectKeysAsSelection(relationships);
+const allFieldsSelection = `{ litersPer100KM milesPerGallon }`;
 
 describe("fuel efficiency", () => {
   test("that 30 mpg makes the correct unit amounts", () => {
     expectSimpleObjectType(
-      FuelEfficiency.outputType.rawType,
+      FuelEfficiency.GraphQL.outputType.rawType,
       { milesPerGallon: 30 },
-      allDurationFieldsSelection
+      allFieldsSelection
     ).resolves.toEqual({
       litersPer100KM: 7.84048611,
       milesPerGallon: 30

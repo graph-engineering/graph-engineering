@@ -7,10 +7,13 @@
     "tst:deps": "tst deps",
     "units:test": "tst test units",
     "units:test:watch": "tst test units --watch",
+    "units:build": "lerna exec --scope @grapheng/units -- npm run build",
+    "units:pack": "lerna exec --scope @grapheng/units -- npm pack",
     "connection:test": "tst test connection",
     "connection:test:watch": "tst test connection --watch",
     "connection:dev": "lerna exec --scope @grapheng/connection -- npm run start",
     "connection:build": "lerna exec --scope @grapheng/connection -- npm run build",
+    "connection:pack": "lerna exec --scope @grapheng/connection -- npm pack",
     "graphql-extra:test": "tst test graphql-extra",
     "graphql-extra:test:watch": "tst test graphql-extra --watch",
     "graphql-extra:dev": "tst dev graphql-extra",
@@ -18,14 +21,7 @@
     "prelude:test": "lerna exec --scope @grapheng/prelude -- npm run test",
     "prelude:test:watch": "lerna exec --scope @grapheng/prelude -- npm run test:watch",
     "prelude:dev": "tst dev prelude",
-    "prelude:build": "lerna exec --scope @grapheng/prelude -- npm run build",
-    "time:test": "tst test time",
-    "time:test:watch": "tst test time --watch",
-    "time:dev": "tst dev time",
-    "time:build": "npm run time:test && lerna exec --scope @grapheng/time -- npm run build",
-    "connection:pack": "lerna exec --scope @grapheng/connection -- npm pack",
-    "time:dev1": "lerna exec --scope @grapheng/time -- npm run example1",
-    "time:dev2": "lerna exec --scope @grapheng/time -- npm run example2"
+    "prelude:build": "lerna exec --scope @grapheng/prelude -- npm run build"
   },
   "dependencies": {
     "typescript-tooling": "^4.1.0"

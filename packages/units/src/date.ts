@@ -11,21 +11,20 @@ import * as Duration from "./duration";
 import {
   createGraphQLInputObjectTypeExports,
   createGraphQLObjectTypeExports,
-  makeNumberTableAsFunctions,
-  squashToBaseUnit
+  PartialWithNulls
 } from "./utils/helpers";
-import { StringsToNumbers } from "./utils/types";
+import { StringsToNumbersOrNull } from "./utils/types";
 
-export const relationships = {
+const relationships = {
   milliseconds: {
     fromBaseUnit: (millis: number) => millis,
     toBaseUnit: (millis: number) => millis
   },
   unix: {
     fromBaseUnit: (millis: number) =>
-      Duration.explodeDurationFromBaseUnit(millis),
-    toBaseUnit: (unix: Partial<StringsToNumbers>) =>
-      squashToBaseUnit(makeNumberTableAsFunctions(Duration.relationships), unix)
+      Duration.convertInput({ milliseconds: millis }),
+    toBaseUnit: (unix: Partial<StringsToNumbersOrNull>) =>
+      Duration.convertInput(unix).milliseconds
   },
   iso: {
     fromBaseUnit: (millis: number) => Moment(millis).toISOString(),
@@ -42,50 +41,50 @@ export const relationships = {
   }
 };
 
-interface ExplodedDate {
-  readonly unix: Duration.ExplodedDuration;
+interface FormattedArgs {
+  readonly template: string;
+  readonly zone?: string;
+}
+
+export interface Date {
+  readonly unix: Duration.Duration;
   readonly iso: string;
   readonly humanized: string;
   // tslint:disable-next-line:no-mixed-interface
   readonly formatted: (options: FormattedArgs) => string;
 }
 
-interface FormattedArgs {
-  readonly template: string;
-  readonly zone?: string;
-}
-
-type Source = Partial<{
-  readonly unix: Partial<StringsToNumbers<Duration.Relationships>>;
+export type DateInput = PartialWithNulls<{
+  readonly unix: Duration.DurationInput;
   readonly iso: string;
 }>;
 
-const maybeSumUnix = (unix?: Partial<StringsToNumbers>): number =>
-  unix ? relationships.unix.toBaseUnit(unix) : 0;
+const maybeSumUnix = (unix?: Partial<StringsToNumbersOrNull> | null): number =>
+  unix ? Duration.convertInput(unix).milliseconds : 0;
 
-const maybeSumISO = (iso?: string): number =>
+const maybeSumISO = (iso?: string | null): number =>
   iso ? relationships.iso.toBaseUnit(iso) : 0;
 
-const squashDateToBaseUnit = (source: Source): number =>
+const squashDateToBaseUnit = (source: DateInput): number =>
   maybeSumUnix(source.unix) + maybeSumISO(source.iso);
 
-export const explodeDateFromBaseUnit = (val: number): ExplodedDate => ({
+const explodeDateFromBaseUnit = (val: number): Date => ({
   unix: relationships.unix.fromBaseUnit(val),
   iso: relationships.iso.fromBaseUnit(val),
   humanized: relationships.humanized.fromBaseUnit(val),
   formatted: relationships.formatted.fromBaseUnit(val)
 });
 
-const Date = pipe(
+export const GraphQL = pipe(
   {
     inputType: new GraphQLInputObjectType({
       name: `DateInput`,
       fields: {
-        unix: { type: Duration.default.inputType.rawType },
+        unix: { type: Duration.GraphQL.inputType.rawType },
         iso: { type: GraphQLString }
       }
     }),
-    convertInput: (source: Source): ExplodedDate =>
+    convertInput: (source: DateInput): Date =>
       pipe(
         squashDateToBaseUnit(source),
         val => explodeDateFromBaseUnit(val)
@@ -94,8 +93,8 @@ const Date = pipe(
       name: `DateOutput`,
       fields: {
         unix: {
-          type: new GraphQLNonNull(Duration.default.outputType.rawType),
-          resolve: (source: Source) =>
+          type: new GraphQLNonNull(Duration.GraphQL.outputType.rawType),
+          resolve: (source: DateInput) =>
             pipe(
               squashDateToBaseUnit(source),
               milliseconds => ({ milliseconds })
@@ -103,7 +102,7 @@ const Date = pipe(
         },
         iso: {
           type: new GraphQLNonNull(GraphQLString),
-          resolve: (source: Source) =>
+          resolve: (source: DateInput) =>
             pipe(
               squashDateToBaseUnit(source),
               relationships.iso.fromBaseUnit
@@ -111,7 +110,7 @@ const Date = pipe(
         },
         humanized: {
           type: new GraphQLNonNull(GraphQLString),
-          resolve: (source: Source) =>
+          resolve: (source: DateInput) =>
             pipe(
               squashDateToBaseUnit(source),
               relationships.humanized.fromBaseUnit
@@ -123,7 +122,7 @@ const Date = pipe(
             template: { type: new GraphQLNonNull(GraphQLString) },
             zone: { type: GraphQLString }
           },
-          resolve: (source: Source, args: FormattedArgs) =>
+          resolve: (source: DateInput, args: FormattedArgs) =>
             pipe(
               squashDateToBaseUnit(source),
               millis => relationships.formatted.fromBaseUnit(millis)(args)
@@ -134,9 +133,12 @@ const Date = pipe(
   },
   obj => ({
     inputType: createGraphQLInputObjectTypeExports(obj.inputType),
-    outputType: createGraphQLObjectTypeExports(obj.outputType),
-    convertInput: obj.convertInput
+    outputType: createGraphQLObjectTypeExports(obj.outputType)
   })
 );
 
-export default Date;
+export const convertInput = (source: DateInput): Date =>
+  pipe(
+    squashDateToBaseUnit(source),
+    val => explodeDateFromBaseUnit(val)
+  );

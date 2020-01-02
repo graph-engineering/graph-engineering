@@ -1,10 +1,24 @@
 {
   "name": "@grapheng/units",
-  "private": true,
+  "version": "0.0.5",
+  "description": "GraphQL types for common units of measurements",
+  "license": "MIT",
+  "main": ".dist/index.js",
+  "types": ".dist/index.d.ts",
+  "files": [
+    ".dist"
+  ],
   "scripts": {
-    "start": "ts-node src/playground.ts"
+    "start": "ts-node src/playground/index.ts",
+    "generate:code": "TS_NODE_TRANSPILE_ONLY=true gql-gen",
+    "build": "rm -rf .dist && tsc"
   },
   "devDependencies": {
+    "@graphql-codegen/add": "^1.8.1",
+    "@graphql-codegen/cli": "^1.8.1",
+    "@graphql-codegen/typescript": "^1.8.1",
+    "@graphql-codegen/typescript-operations": "^1.8.1",
+    "@graphql-codegen/typescript-resolvers": "^1.8.1",
     "@types/moment-timezone": "^0.5.12",
     "apollo-server": "^2.8.2",
     "graphql": "^14.4.2",
