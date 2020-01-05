@@ -13,8 +13,8 @@ export const fromRecord = Apply.sequenceS(TaskEither.taskEither);
 export const fromTuple = Apply.sequenceT(TaskEither.taskEither);
 
 export const fromTry = <A>(fn: Fn.Lazy<Promise<A>>): ErrorOr<A> =>
-  TaskEither.tryCatch(
-    fn,
-    error =>
-      new Error(`Unknown error...\n\n${JSON.Stringify.Always.pretty(error)}`)
+  TaskEither.tryCatch(fn, error =>
+    error instanceof Error
+      ? error
+      : new Error(`Unknown error...\n\n${JSON.Stringify.Always.pretty(error)}`)
   );
