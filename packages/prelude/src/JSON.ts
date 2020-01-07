@@ -1,12 +1,9 @@
-import * as Fn from "fp-ts/lib/function";
-
-import { pipe } from ".";
-import * as Either from "./Either";
+import { Either, identity, pipe } from ".";
 
 export const parse = (string: string): Either.ErrorOr<unknown> =>
   Either.parseJSON(string, onError);
 
-const onError = (error: unknown): Error =>
+const onError = (error: unknown) =>
   Error(`Unrepresentable JSON value...\n\n${error}`);
 
 export namespace Stringify {
@@ -18,10 +15,10 @@ export namespace Stringify {
 
   export namespace Always {
     export const short = (json: unknown): string =>
-      pipe(Stringify.short(json), Either.fold(onError, Fn.identity));
+      pipe(Stringify.short(json), Either.fold(onError, identity));
 
     export const pretty = (json: unknown): string =>
-      pipe(Stringify.pretty(json), Either.fold(onError, Fn.identity));
+      pipe(Stringify.pretty(json), Either.fold(onError, identity));
 
     const onError = () => "{}";
   }

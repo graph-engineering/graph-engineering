@@ -1,6 +1,28 @@
+import * as Either from "./Either";
+import * as Exception from "./Exception";
+import * as JSON from "./JSON";
+import * as List from "./List";
+import * as Option from "./Option";
+import * as Runtime from "./Runtime";
+import * as TaskEither from "./TaskEither";
+import * as These from "./These";
+import * as Time from "./Time";
+
 export { Do as chainFrom } from "fp-ts-contrib/lib/Do";
 export { pipe } from "fp-ts/lib/pipeable";
 export { flow } from "fp-ts/lib/function";
+
+export {
+  Either,
+  Exception,
+  JSON,
+  List,
+  Option,
+  Runtime,
+  TaskEither,
+  These,
+  Time
+};
 
 // Every commented-out export is re-exported by another file...
 export {
@@ -95,30 +117,7 @@ export {
 
 export declare const hole: <A>() => A;
 
-// tslint:disable-next-line: no-console
-export const spy = <A>(a: A): A => void console.log(a) ?? a;
+export const spy = <A>(a: A): A => void console.log(a) ?? a; // tslint:disable-line: no-console
 export const equal = <A>(a: A) => (b: A): boolean => a === b;
 export const notEqual = <A>(a: A) => (b: A): boolean => !equal(a)(b);
 export const identity = <A>(a: A) => a;
-
-import * as Either from "./Either";
-import * as JSON from "./JSON";
-import * as List from "./List";
-import * as Option from "./Option";
-import * as Runtime from "./Runtime";
-import * as TaskEither from "./TaskEither";
-import * as These from "./These";
-import * as Time from "./Time";
-import * as Validation from "./Validation";
-
-export {
-  Either,
-  JSON,
-  List,
-  Option,
-  Runtime,
-  TaskEither,
-  These,
-  Time,
-  Validation
-};

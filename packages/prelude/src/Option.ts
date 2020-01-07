@@ -1,11 +1,9 @@
-export * from "fp-ts/lib/Option";
-import * as Apply from "fp-ts/lib/Apply";
-import * as Option from "fp-ts/lib/Option";
+import { Apply, chainFrom, Option } from ".";
 
-import { chainFrom } from ".";
+export * from "fp-ts/lib/Option";
 
 export type Nullable<A> = A | null | undefined;
 
-export const chained = chainFrom(Option.option);
-export const fromRecord = Apply.sequenceS(Option.option);
-export const fromTuple = Apply.sequenceT(Option.option);
+export const chained = () => chainFrom(Option.option);
+export const fromRecord = () => Apply.sequenceS(Option.option);
+export const fromTuple = () => Apply.sequenceT(Option.option);

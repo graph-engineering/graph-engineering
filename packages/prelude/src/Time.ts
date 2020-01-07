@@ -1,4 +1,4 @@
-import * as IO from "fp-ts/lib/IO";
+import { IO } from ".";
 
 export type Time = number;
 

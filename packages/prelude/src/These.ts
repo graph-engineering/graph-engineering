@@ -1,11 +1,6 @@
-export * from "fp-ts/lib/These";
-import * as NonEmptyArray from "fp-ts/lib/NonEmptyArray";
+import { Either, List, NonEmptyArray, Option, pipe, These } from ".";
 
-import { pipe } from ".";
-import * as Either from "./Either";
-import * as List from "./List";
-import * as Option from "./Option";
-import * as These from "./These";
+export * from "fp-ts/lib/These";
 
 export const fromNullables = <A, B>(
   a?: Option.Nullable<A>,

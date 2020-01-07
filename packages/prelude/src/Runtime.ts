@@ -1,13 +1,14 @@
+import { Either, flow, identity, JSON, List, Option, pipe, Runtime } from ".";
+
 export * from "io-ts";
-import * as Runtime from "io-ts";
 
-import { flow, pipe } from ".";
-import * as Either from "./Either";
-import * as JSON from "./JSON";
-import * as List from "./List";
-import * as Option from "./Option";
-
-export type ReadonlyTypeOf<A extends Runtime.Any> = Readonly<Runtime.TypeOf<A>>;
+export type ToType<
+  A extends (() => Runtime.Any) | Runtime.Any
+> = A extends () => Runtime.Any
+  ? Readonly<Runtime.TypeOf<ReturnType<A>>>
+  : A extends Runtime.Any
+  ? Readonly<Runtime.TypeOf<A>>
+  : never;
 
 export const nullable = <A extends Runtime.Any>(
   type: A
@@ -23,19 +24,18 @@ export const fromPredicate = <A>(
     predicate,
     (a, context) =>
       predicate(a) ? Runtime.success(a) : Runtime.failure(a, context),
-    Runtime.identity
+    identity
   );
 
-export const decode = <
-  Type extends Runtime.Any,
-  A extends ReadonlyTypeOf<Type>
->(
+export const decode = <Type extends Runtime.Any, A extends ToType<Type>>(
   type: Type
-) => (value: unknown): Either.ErrorOr<A> =>
+) => (value?: Option.Nullable<unknown>): Either.ErrorOr<A> =>
   pipe(
     type.decode(value),
     Either.mapLeft(
-      flow(List.filterMap(errorMessage), list => Error(list.join("\n")))
+      flow(List.filterMap(errorMessage), messages =>
+        Error(messages.join("\n\n"))
+      )
     )
   );
 
